@@ -1,0 +1,27 @@
+{
+  "name": "corners-game",
+  "version": "1.0.0",
+  "description": "implementation of corners game",
+  "homepage": "https://github.com/Sergey-Ado/corners-game#readme",
+  "bugs": {
+    "url": "https://github.com/Sergey-Ado/corners-game/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sergey-Ado/corners-game.git"
+  },
+  "license": "ISC",
+  "author": "sergey-ado",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.7"
+  },
+  "packageManager": "npm@11.7.0",
+  "workspaces": [
+    "apps/*"
+  ]
+}

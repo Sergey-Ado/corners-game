@@ -15,9 +15,15 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "turbo run lint",
+    "dev": "turbo dev",
+    "build": "turbo run build",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "eslint": "^10.12.0",
+    "prettier": "^3.9.9",
     "turbo": "^2.11.7"
   },
   "packageManager": "npm@11.7.0",

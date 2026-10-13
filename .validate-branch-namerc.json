@@ -1,0 +1,4 @@
+{
+  "pattern": "^(init|feat|fix|refactor|docs|style|chore)_[0-9]{2,}\/[a-zA-Z_]+$",
+  "errorMsg": "Incorrect branch name. Example: feat_01/add_new_feature"
+}

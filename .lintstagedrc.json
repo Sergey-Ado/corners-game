@@ -1,0 +1,4 @@
+{
+  "src/**/*.ts": ["npm run format"],
+  "src/**/*.html": ["npm run format"]
+}

@@ -1,7 +1,7 @@
 export function Header() {
   return (
     <header>
-      <div className="bg-amber-400">Logo</div>
+      <div className="visual-panel p-2">Logo</div>
     </header>
   );
 }

@@ -28,13 +28,15 @@ export default function WelcomePage() {
           <button
             className="button py-2 px-4"
             type="button"
-            onClick={onLoginClick}>
+            onClick={onLoginClick}
+            role="login-button">
             login
           </button>
           <button
             className="button py-2 px-4"
             type="button"
-            onClick={onRegisterClick}>
+            onClick={onRegisterClick}
+            role="register-button">
             register
           </button>
         </div>

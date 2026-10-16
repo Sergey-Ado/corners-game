@@ -1,4 +1,4 @@
-import { Header } from '@components/header/Header';
+import Header from '@components/header/Header';
 import clsx from 'clsx';
 import WelcomePage from '@pages/welcomePage/WelcomePage';
 

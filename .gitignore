@@ -1,6 +1,5 @@
 node_modules
 .turbo
-package-lock.json
 coverage
 .env
 dist

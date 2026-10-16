@@ -1,34 +1,18 @@
 name: Test Corners App
 on: workflow_dispatch
 jobs:
-  coverage:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      pull-requests: write
-
-    steps:
-      - name: Get repository
-        uses: actions/checkout@v7
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Run coverage
-        run: npm run coverage
-
-      - name: Report client coverage
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          working-directory: ./apps/client
-
   lint:
     runs-on: ubuntu-latest
 
     steps:
       - name: Get repository
         uses: actions/checkout@v7
+
+      - name: Cache deps
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: npm i
@@ -43,8 +27,42 @@ jobs:
       - name: Get repository
         uses: actions/checkout@v7
 
+      - name: Cache deps
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
         run: npm i
 
       - name: Build application
         run: npm run build
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v7
+
+      - name: Cache deps
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Report client coverage
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: ./apps/client

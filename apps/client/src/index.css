@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+@custom-variant can-dur (&:where(.can-dur, .can-dur *));
+
+@font-face {
+  font-family: 'Permanent Marker';
+  src: url('/fonts/PermanentMarker-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Rubik Spray Paint';
+  src: url('/fonts/RubikSprayPaint-Regular.ttf');
+}
+
+@theme {
+  --font-perm: 'Permanent Marker', sans-serif;
+  --font-rub: 'Rubik', sans-serif;
+  --font-rub-spray: 'Rubik Spray Paint', sans-serif;
+
+  --color-primary-light: var(--color-white);
+  --color-third-light: var(--color-blue-600);
+  --color-hover-light: var(--color-blue-200);
+  --color-container-light: #ffffff73;
+  --color-border-light: var(--color-black);
+
+  --color-primary-dark: var(--color-amber-700);
+  --color-hover-dark: var(--color-amber-500);
+  --color-text-dark: var(--color-white);
+  --color-container-dark: #00000073;
+  --color-border-dark: var(--color-white);
+
+  --breakpoint-2xs: 24rem;
+  --breakpoint-xs: 32rem;
+}
+
+@layer components {
+  .visual-panel {
+    @apply border rounded-lg bg-container-light dark:bg-container-dark shadow-[0_0_20px_0_#27272773] border-border-light dark:border-border-dark;
+  }
+
+  .button {
+    @apply bg-primary-light dark:bg-primary-dark rounded-lg capitalize hover:not-disabled:bg-hover-light dark:hover:not-disabled:bg-hover-dark can-dur:duration-300 outline-none not-disabled:cursor-pointer border dark:text-text-dark disabled:text-gray-400;
+  }
+}

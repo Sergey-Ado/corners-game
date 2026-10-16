@@ -1,0 +1,25 @@
+import Header from '@components/header/Header';
+import clsx from 'clsx';
+import WelcomePage from '@pages/welcomePage/WelcomePage';
+
+export default function App() {
+  return (
+    <div
+      className={clsx(
+        'min-h-screen',
+        'flex flex-col items-stretch',
+        'bg-[url(/images/background-light.png)] dark:bg-[url(/images/background-dark.png)] bg-no-repeat bg-fixed bg-cover',
+        'pt-2 pb-2',
+        'font-rub select-none'
+      )}>
+      <div
+        className={clsx(
+          'ml-auto mr-auto w-full max-w-7xl pl-2 pr-2 grow',
+          'flex flex-col gap-2'
+        )}>
+        <Header />
+        <WelcomePage />
+      </div>
+    </div>
+  );
+}

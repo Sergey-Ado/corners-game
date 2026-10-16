@@ -10,6 +10,12 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "coverage": {
+      "dependsOn": ["^coverage"]
+    },
     "dev": {
       "persistent": true,
       "cache": false

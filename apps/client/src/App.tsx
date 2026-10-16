@@ -1,6 +1,6 @@
 import { Header } from '@components/header/Header';
 import clsx from 'clsx';
-import { WelcomePage } from '@pages/welcomePage/WelcomePage';
+import WelcomePage from '@pages/welcomePage/WelcomePage';
 
 export default function App() {
   return (

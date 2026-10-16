@@ -20,7 +20,8 @@
     "build": "turbo run build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",

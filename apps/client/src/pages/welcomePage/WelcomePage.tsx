@@ -3,7 +3,7 @@ import clsx from 'clsx';
 const onLoginClick = () => console.log('login');
 const onRegisterClick = () => console.log('register');
 
-export function WelcomePage() {
+export default function WelcomePage() {
   return (
     <main className="visual-panel p-2 grow flex items-center justify-center">
       <div

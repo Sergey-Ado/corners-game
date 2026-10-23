@@ -2,8 +2,6 @@ import { Pages } from '@/types/general';
 import clsx from 'clsx';
 import { Link } from 'react-router';
 
-const onRegisterClick = () => console.log('register');
-
 export default function WelcomePage() {
   return (
     <main className="visual-panel p-2 grow flex items-center justify-center">
@@ -32,13 +30,11 @@ export default function WelcomePage() {
               login
             </span>
           </Link>
-          <button
-            className="button py-2 px-4"
-            type="button"
-            onClick={onRegisterClick}
-            role="register-button">
-            register
-          </button>
+          <Link to={`/${Pages.REGISTER}`}>
+            <span className="button py-2 px-4" role="register-link">
+              register
+            </span>
+          </Link>
         </div>
       </div>
     </main>

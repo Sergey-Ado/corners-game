@@ -1,6 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 import WelcomePage from './WelcomePage';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -27,15 +26,12 @@ describe('WelcomePage', () => {
     expect(link?.getAttribute('href')).toBe(`/${Pages.LOGIN}`);
   });
 
-  it('should call console.log when you click on REGISTER', async () => {
+  it('should call link to Login page when you click on REGISTER', () => {
     renderWithRouter(<WelcomePage />);
 
-    const user = userEvent.setup();
-    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const link = screen.getByRole('register-link').closest('a');
+    expect(link).toBeInTheDocument();
 
-    const button = screen.getByRole('register-button');
-    await user.click(button);
-
-    expect(logSpy).toHaveBeenCalledWith('register');
+    expect(link?.getAttribute('href')).toBe(`/${Pages.REGISTER}`);
   });
 });

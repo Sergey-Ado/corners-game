@@ -1,6 +1,7 @@
+import { Pages } from '@/types/general';
 import clsx from 'clsx';
+import { Link } from 'react-router';
 
-const onLoginClick = () => console.log('login');
 const onRegisterClick = () => console.log('register');
 
 export default function WelcomePage() {
@@ -15,7 +16,8 @@ export default function WelcomePage() {
             'font-rub-spray text-4xl uppercase',
             'text-third-light text-shadow-[4px_4px_rgb(0,0,0)]',
             'xs:text-5xl'
-          )}>
+          )}
+          role="game-name">
           corners
         </h1>
         <p className="text-center my-4">
@@ -25,13 +27,11 @@ export default function WelcomePage() {
           decisions. Shall we play?
         </p>
         <div className="flex gap-4">
-          <button
-            className="button py-2 px-4"
-            type="button"
-            onClick={onLoginClick}
-            role="login-button">
-            login
-          </button>
+          <Link to={`/${Pages.LOGIN}`}>
+            <span className="button py-2 px-4" role="login-link">
+              login
+            </span>
+          </Link>
           <button
             className="button py-2 px-4"
             type="button"

@@ -2,26 +2,33 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import WelcomePage from './WelcomePage';
+import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router';
+import { Pages } from '@/types/general';
+
+function renderWithRouter(ui: ReactNode) {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+}
 
 describe('WelcomePage', () => {
   it('should rendered', () => {
-    render(<WelcomePage />);
+    renderWithRouter(<WelcomePage />);
+
+    const h1 = screen.getByRole('game-name').closest('h1');
+    expect(h1).toBeInTheDocument();
   });
 
-  it('should call console.log when you click on LOGIN', async () => {
-    render(<WelcomePage />);
+  it('should call link to Login page when you click on LOGIN', () => {
+    renderWithRouter(<WelcomePage />);
 
-    const user = userEvent.setup();
-    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const link = screen.getByRole('login-link').closest('a');
+    expect(link).toBeInTheDocument();
 
-    const button = screen.getByRole('login-button');
-    await user.click(button);
-
-    expect(logSpy).toHaveBeenCalledWith('login');
+    expect(link?.getAttribute('href')).toBe(`/${Pages.LOGIN}`);
   });
 
   it('should call console.log when you click on REGISTER', async () => {
-    render(<WelcomePage />);
+    renderWithRouter(<WelcomePage />);
 
     const user = userEvent.setup();
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});

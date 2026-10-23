@@ -1,6 +1,6 @@
 import Header from '@components/header/Header';
 import clsx from 'clsx';
-import WelcomePage from '@pages/welcomePage/WelcomePage';
+import { Outlet } from 'react-router';
 
 export default function App() {
   return (
@@ -18,7 +18,7 @@ export default function App() {
           'flex flex-col gap-2'
         )}>
         <Header />
-        <WelcomePage />
+        <Outlet />
       </div>
     </div>
   );

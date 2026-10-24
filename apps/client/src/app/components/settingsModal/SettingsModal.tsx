@@ -2,6 +2,7 @@ import ModalWrapper from '@components/modalWrapper/ModalWrapper';
 import clsx from 'clsx';
 import CrossButton from '@components/crossButton/CrossButton';
 import ThemeSwitcher from '../switchers/themeSwitcher/ThemeSwitcher';
+import LangSwitcher from '../switchers/langSwitcher/LangSwitcher';
 
 const onCloseHandler = () => console.log('close');
 
@@ -19,6 +20,10 @@ export default function SettingsModal() {
         <div className="flex items-center gap-5">
           <span>Theme</span>
           <ThemeSwitcher />
+        </div>
+        <div className="flex items-center gap-5">
+          <span>Language</span>
+          <LangSwitcher />
         </div>
         <CrossButton onCloseHandler={onCloseHandler} />
       </div>

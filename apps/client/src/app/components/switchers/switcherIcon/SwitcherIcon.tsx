@@ -45,5 +45,19 @@ export default function SwitcherIcon({ iconType, onClick }: props) {
         </svg>
       );
     }
+    case 'english': {
+      return (
+        <div className="ml-2.5 cursor-pointer" onClick={onClick}>
+          en
+        </div>
+      );
+    }
+    case 'russian': {
+      return (
+        <div className="ml-2.5 cursor-pointer" onClick={onClick}>
+          ru
+        </div>
+      );
+    }
   }
 }

@@ -1,6 +1,7 @@
 import ModalWrapper from '@components/modalWrapper/ModalWrapper';
 import clsx from 'clsx';
 import CrossButton from '@components/crossButton/CrossButton';
+import ThemeSwitcher from '../switchers/themeSwitcher/ThemeSwitcher';
 
 const onCloseHandler = () => console.log('close');
 
@@ -15,6 +16,10 @@ export default function SettingsModal() {
         )}
         role="settings-modal">
         <span className="self-center mb-3 text-3xl">Settings</span>
+        <div className="flex items-center gap-5">
+          <span>Theme</span>
+          <ThemeSwitcher />
+        </div>
         <CrossButton onCloseHandler={onCloseHandler} />
       </div>
     </ModalWrapper>

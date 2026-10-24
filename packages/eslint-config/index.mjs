@@ -36,6 +36,15 @@ const eslintBaseConfig = [
           },
         },
       ],
+      'unicorn/prevent-abbreviations': [
+        'error',
+        {
+          allowList: {
+            props: true,
+            Props: true,
+          },
+        },
+      ],
     },
   },
   {

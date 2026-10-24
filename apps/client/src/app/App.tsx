@@ -1,6 +1,7 @@
 import Header from '@components/header/Header';
 import clsx from 'clsx';
 import { Outlet } from 'react-router';
+import ModalWrapper from '@components/modalWrapper/ModalWrapper';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         )}>
         <Header />
         <Outlet />
+        <ModalWrapper>Modal Wrapper</ModalWrapper>
       </div>
     </div>
   );

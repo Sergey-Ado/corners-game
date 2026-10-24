@@ -1,6 +1,7 @@
 import Header from '@components/header/Header';
 import clsx from 'clsx';
 import { Outlet } from 'react-router';
+import SettingsModal from '@components/settingsModal/SettingsModal';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         )}>
         <Header />
         <Outlet />
+        <SettingsModal />
       </div>
     </div>
   );

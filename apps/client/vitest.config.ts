@@ -10,6 +10,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json'],
       include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/**/*.types.{ts,tsx}'],
     },
     testTimeout: 20_000,
   },

@@ -23,12 +23,14 @@
   --font-rub-spray: 'Rubik Spray Paint', sans-serif;
 
   --color-primary-light: var(--color-white);
+  --color-secondary-light: var(--color-blue-200);
   --color-third-light: var(--color-blue-600);
   --color-hover-light: var(--color-blue-200);
   --color-container-light: #ffffff73;
   --color-border-light: var(--color-black);
 
   --color-primary-dark: var(--color-amber-700);
+  --color-secondary-dark: var(--color-amber-950);
   --color-hover-dark: var(--color-amber-500);
   --color-text-dark: var(--color-white);
   --color-container-dark: #00000073;

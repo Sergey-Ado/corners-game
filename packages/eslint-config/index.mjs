@@ -36,6 +36,14 @@ const eslintBaseConfig = [
           },
         },
       ],
+      'unicorn/name-replacements': [
+        'error',
+        {
+          replacements: {
+            props: { properties: false },
+          },
+        },
+      ],
     },
   },
   {

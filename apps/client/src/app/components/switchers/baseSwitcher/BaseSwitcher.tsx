@@ -22,7 +22,8 @@ export default function BaseSwitcher({ position, leftIcon, rightIcon }: props) {
         className={clsx(
           'bg-primary-light dark:bg-primary-dark w-8 h-8 rounded-full absolute cursor-auto duration-200 border',
           shift
-        )}></div>
+        )}
+        role="switcher-circle"></div>
     </div>
   );
 }

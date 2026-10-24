@@ -17,7 +17,7 @@ export default function SwitcherIcon({ iconType, onClick }: props) {
           stroke="currentColor"
           className="size-7 ml-2 cursor-pointer"
           onClick={onClick}
-          role="switch-light">
+          role="light-theme-icon">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -36,7 +36,7 @@ export default function SwitcherIcon({ iconType, onClick }: props) {
           stroke="currentColor"
           className="size-6 ml-2 cursor-pointer"
           onClick={onClick}
-          role="switch-dark">
+          role="dark-theme-icon">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -47,14 +47,20 @@ export default function SwitcherIcon({ iconType, onClick }: props) {
     }
     case 'english': {
       return (
-        <div className="ml-2.5 cursor-pointer" onClick={onClick}>
+        <div
+          className="ml-2.5 cursor-pointer"
+          onClick={onClick}
+          role="english-icon">
           en
         </div>
       );
     }
     case 'russian': {
       return (
-        <div className="ml-2.5 cursor-pointer" onClick={onClick}>
+        <div
+          className="ml-2.5 cursor-pointer"
+          onClick={onClick}
+          role="russian-icon">
           ru
         </div>
       );

@@ -36,12 +36,11 @@ const eslintBaseConfig = [
           },
         },
       ],
-      'unicorn/prevent-abbreviations': [
+      'unicorn/name-replacements': [
         'error',
         {
-          allowList: {
-            props: true,
-            Props: true,
+          replacements: {
+            props: { properties: false },
           },
         },
       ],

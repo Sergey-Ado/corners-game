@@ -1,4 +1,4 @@
-import { Pages } from '@/types/general';
+import { Pages } from '@/types/general.types';
 import clsx from 'clsx';
 import { Link } from 'react-router';
 

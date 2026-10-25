@@ -2,8 +2,14 @@ import Header from '@components/header/Header';
 import clsx from 'clsx';
 import { Outlet } from 'react-router';
 import SettingsModal from '@components/settingsModal/SettingsModal';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 
 export default function App() {
+  const isShowSetting = useSelector(
+    (state: RootState) => state.general.isShowSettings
+  );
+
   return (
     <div
       className={clsx(
@@ -20,7 +26,7 @@ export default function App() {
         )}>
         <Header />
         <Outlet />
-        <SettingsModal />
+        {isShowSetting && <SettingsModal />}
       </div>
     </div>
   );

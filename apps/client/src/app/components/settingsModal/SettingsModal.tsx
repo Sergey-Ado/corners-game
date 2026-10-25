@@ -3,10 +3,14 @@ import clsx from 'clsx';
 import CrossButton from '@components/crossButton/CrossButton';
 import ThemeSwitcher from '../switchers/themeSwitcher/ThemeSwitcher';
 import LangSwitcher from '../switchers/langSwitcher/LangSwitcher';
-
-const onCloseHandler = () => console.log('close');
+import { useDispatch } from 'react-redux';
+import { changeShowSettings } from '@/app/store/generalSlice';
 
 export default function SettingsModal() {
+  const dispatch = useDispatch();
+
+  const onCloseHandler = () => dispatch(changeShowSettings(false));
+
   return (
     <ModalWrapper>
       <div

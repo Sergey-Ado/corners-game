@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
-  isShowSettings: true,
+  isShowSettings: false,
 };
 
 const generalSlice = createSlice({

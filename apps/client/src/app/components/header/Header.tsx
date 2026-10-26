@@ -1,11 +1,16 @@
 import { Pages } from '@/types/general.types';
 import clsx from 'clsx';
 import { Link } from 'react-router';
+import Burger from './burger/Burger';
 
 export default function Header() {
   return (
     <header>
-      <div className="visual-panel p-2">
+      <div
+        className={clsx(
+          'visual-panel p-2',
+          'flex flex-row items-center justify-between'
+        )}>
         <Link to={`/${Pages.WELCOME}`}>
           <span
             className={clsx(
@@ -17,6 +22,7 @@ export default function Header() {
             corners
           </span>
         </Link>
+        <Burger />
       </div>
     </header>
   );

@@ -35,7 +35,8 @@ export default function BurgerMenu({ onCloseMenu }: props) {
         'absolute right-0 p-2 top-[calc(100%+8px)]',
         'flex flex-col',
         'bg-primary-light rounded-xl border dark:bg-primary-dark shadow-[0_0_20px_0_#272727]'
-      )}>
+      )}
+      role="burger-menu">
       <BurgerItem
         iconType="settings"
         title="Settings"

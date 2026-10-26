@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useMemo } from 'react';
 import { Style, Avatar as createAvatar } from '@dicebear/core';
 import lorelei from '@dicebear/styles/lorelei.json' with { type: 'json' };
@@ -24,7 +20,7 @@ export default function Avatar({
   }, [seed, size]);
 
   return (
-    <div className={clsx('flex', classes)} onClick={onClick}>
+    <div className={clsx('flex', classes)} onClick={onClick} role="avatar">
       <img src={avatar} alt="Avatar" />
     </div>
   );

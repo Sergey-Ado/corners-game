@@ -15,7 +15,7 @@ export default function Burger() {
   };
 
   return (
-    <div className="relative" id="burger">
+    <div className="relative" id="burger" role="burger">
       <Avatar
         className="cursor-pointer hover:shadow-[0_0_20px_0_#272727] rounded-full duration-300"
         onClick={onAvatarClick}

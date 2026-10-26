@@ -15,7 +15,8 @@ export default function BurgerItem({ iconType, title, onClick }: props) {
         'flex gap-2 p-2 cursor-pointer',
         ' hover:bg-hover-light duration-200 dark:hover:bg-hover-dark'
       )}
-      onClick={onClick}>
+      onClick={onClick}
+      role="burger-item">
       <BurgerIcon iconType={iconType} />
       <span>{title}</span>
     </div>

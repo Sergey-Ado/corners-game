@@ -1,5 +1,8 @@
 import clsx from 'clsx';
 import { useEffect } from 'react';
+import BurgerItem from './burgerItem/BurgerItem';
+import { useDispatch } from 'react-redux';
+import { changeShowSettings } from '@/app/store/generalSlice';
 
 interface props {
   onCloseMenu: () => void;
@@ -19,6 +22,13 @@ export default function BurgerMenu({ onCloseMenu }: props) {
     return () => document.removeEventListener('click', clickOver);
   });
 
+  const dispatch = useDispatch();
+
+  const onClickSettings = () => {
+    onCloseMenu();
+    dispatch(changeShowSettings(true));
+  };
+
   return (
     <div
       className={clsx(
@@ -26,7 +36,11 @@ export default function BurgerMenu({ onCloseMenu }: props) {
         'flex flex-col',
         'bg-primary-light rounded-xl border dark:bg-primary-dark shadow-[0_0_20px_0_#272727]'
       )}>
-      Burger&nbsp;Menu
+      <BurgerItem
+        iconType="settings"
+        title="Settings"
+        onClick={onClickSettings}
+      />
     </div>
   );
 }

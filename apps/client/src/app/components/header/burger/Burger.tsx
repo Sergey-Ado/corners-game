@@ -17,8 +17,9 @@ export default function Burger() {
   return (
     <div className="relative" id="burger">
       <Avatar
-        className="cursor-pointer hover:shadow-[0_0_20px_0_#272727] rounded-2xl duration-300"
+        className="cursor-pointer hover:shadow-[0_0_20px_0_#272727] rounded-full duration-300"
         onClick={onAvatarClick}
+        size={48}
       />
       {showMenu && <BurgerMenu onCloseMenu={onCloseMenu} />}
     </div>

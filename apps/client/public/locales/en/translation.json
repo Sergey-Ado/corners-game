@@ -1,0 +1,19 @@
+{
+  "welcome": {
+    "welcome": "Welcome",
+    "to-game": "to game",
+    "corners": "corners",
+    "about": "A classic logic game on a chessboard. Your goal is to be the first to move all your pieces from your corner to the opposite one — one step at a time or by jumping over other pieces. Simple rules, deep decisions. Shall we play?",
+    "login": "login",
+    "register": "register"
+  },
+  "header": {
+    "logo": "corners",
+    "settings": "settings"
+  },
+  "settings": {
+    "title": "settings",
+    "theme": "theme",
+    "language": "language"
+  }
+}

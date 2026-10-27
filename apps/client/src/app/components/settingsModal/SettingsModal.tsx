@@ -22,7 +22,7 @@ export default function SettingsModal() {
     <ModalWrapper>
       <div
         className={clsx(
-          'bg-primary-light dark:bg-secondary-dark ',
+          'bg-primary-light dark:bg-primary-dark ',
           'p-5 w-60 relative border rounded-lg',
           'flex flex-col items-end gap-5 capitalize'
         )}

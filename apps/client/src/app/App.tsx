@@ -17,7 +17,7 @@ export default function App() {
         'flex flex-col items-stretch',
         'bg-[url(/images/background-light.png)] dark:bg-[url(/images/background-dark.png)] bg-no-repeat bg-fixed bg-cover',
         'pt-2 pb-2',
-        'font-rub select-none'
+        'font-rub select-none text-text-light dark:text-text-dark'
       )}>
       <div
         className={clsx(

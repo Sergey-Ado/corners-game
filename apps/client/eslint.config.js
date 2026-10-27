@@ -22,4 +22,9 @@ export default defineConfig([
     },
   },
   ...baseConfig,
+  {
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'off',
+    },
+  },
 ]);

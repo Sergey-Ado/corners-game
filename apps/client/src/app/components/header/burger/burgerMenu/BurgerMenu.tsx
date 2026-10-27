@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import BurgerItem from './burgerItem/BurgerItem';
 import { useDispatch } from 'react-redux';
 import { changeShowSettings } from '@/app/store/generalSlice';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   onCloseMenu: () => void;
@@ -29,6 +30,9 @@ export default function BurgerMenu({ onCloseMenu }: props) {
     dispatch(changeShowSettings(true));
   };
 
+  const { t } = useTranslation();
+  const settings = t('header.settings');
+
   return (
     <div
       className={clsx(
@@ -39,7 +43,7 @@ export default function BurgerMenu({ onCloseMenu }: props) {
       role="burger-menu">
       <BurgerItem
         iconType="settings"
-        title="Settings"
+        title={settings}
         onClick={onClickSettings}
       />
     </div>

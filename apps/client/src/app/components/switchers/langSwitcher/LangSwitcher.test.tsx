@@ -1,7 +1,19 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import LangSwitcher from './LangSwitcher';
+import i18next from 'i18next';
 
+beforeEach(async () => {
+  await i18next.init({
+    lng: 'en',
+    supportedLngs: ['en', 'ru'],
+    fallbackLng: 'en',
+    resources: {
+      en: { translation: {} },
+      ru: { translation: {} },
+    },
+  });
+});
 describe('LangSwitcher', () => {
   it('should start in left position', () => {
     render(<LangSwitcher />);

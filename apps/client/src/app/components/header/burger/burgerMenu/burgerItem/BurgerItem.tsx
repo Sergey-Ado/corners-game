@@ -18,7 +18,7 @@ export default function BurgerItem({ iconType, title, onClick }: props) {
       onClick={onClick}
       role="burger-item">
       <BurgerIcon iconType={iconType} />
-      <span>{title}</span>
+      <span className="capitalize">{title}</span>
     </div>
   );
 }

@@ -2,8 +2,13 @@ import { Pages } from '@/types/general.types';
 import clsx from 'clsx';
 import { Link } from 'react-router';
 import Burger from './burger/Burger';
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+  const { t } = useTranslation();
+
+  const logo = t('header.logo');
+
   return (
     <header>
       <div
@@ -19,7 +24,7 @@ export default function Header() {
               'xs:text-3xl'
             )}
             role="logo">
-            corners
+            {logo}
           </span>
         </Link>
         <Burger />

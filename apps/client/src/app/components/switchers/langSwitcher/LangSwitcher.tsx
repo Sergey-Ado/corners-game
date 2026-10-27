@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SwitcherIcon from '../switcherIcon/SwitcherIcon';
 import BaseSwitcher from '../baseSwitcher/BaseSwitcher';
 import i18next from 'i18next';
+import { setLanguage } from '@/utils/storage';
 
 export default function LangSwitcher() {
   const [position, setPosition] = useState<SwitcherPosition>(
@@ -11,10 +12,12 @@ export default function LangSwitcher() {
 
   const onLeftClick = () => {
     i18next.changeLanguage('en');
+    setLanguage('en');
     setPosition('left');
   };
   const onRightClick = () => {
     i18next.changeLanguage('ru');
+    setLanguage('ru');
     setPosition('right');
   };
 

@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
 @custom-variant can-dur (&:where(.can-dur, .can-dur *));
 
 @font-face {
@@ -26,12 +27,13 @@
   --color-secondary-light: var(--color-blue-200);
   --color-third-light: var(--color-blue-600);
   --color-hover-light: var(--color-blue-200);
+  --color-text-light: var(--color-black);
   --color-container-light: #ffffff73;
   --color-border-light: var(--color-black);
 
-  --color-primary-dark: var(--color-amber-700);
-  --color-secondary-dark: var(--color-amber-950);
-  --color-hover-dark: var(--color-amber-500);
+  --color-primary-dark: var(--color-gray-800);
+  --color-secondary-dark: var(--color-gray-500);
+  --color-hover-dark: var(--color-gray-500);
   --color-text-dark: var(--color-white);
   --color-container-dark: #00000073;
   --color-border-dark: var(--color-white);
@@ -46,6 +48,6 @@
   }
 
   .button {
-    @apply bg-primary-light dark:bg-primary-dark rounded-lg capitalize hover:not-disabled:bg-hover-light dark:hover:not-disabled:bg-hover-dark can-dur:duration-300 outline-none not-disabled:cursor-pointer border dark:text-text-dark disabled:text-gray-400;
+    @apply bg-primary-light dark:bg-primary-dark rounded-lg capitalize hover:not-disabled:bg-hover-light dark:hover:not-disabled:bg-hover-dark duration-300 outline-none not-disabled:cursor-pointer border dark:text-text-dark disabled:text-gray-400;
   }
 }

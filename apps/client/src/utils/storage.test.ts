@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getLanguage } from './storage';
+import { getLanguage, getTheme, setLanguage, setTheme } from './storage';
 
 describe('getLanguage', () => {
   beforeEach(() => {
@@ -22,5 +22,23 @@ describe('getLanguage', () => {
     localStorage.setItem('corners-game-language', 'fr');
 
     expect(getLanguage()).toBe('en');
+  });
+
+  it('should not set language if language is invalid', () => {
+    setLanguage('en');
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    setLanguage('fr' as any);
+
+    expect(getLanguage()).toBe('en');
+  });
+
+  it('should not set theme if theme is invalid', () => {
+    setTheme('light');
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    setTheme('middle' as any);
+
+    expect(getTheme()).toBe('light');
   });
 });

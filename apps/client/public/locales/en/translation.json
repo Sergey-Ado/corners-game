@@ -15,5 +15,10 @@
     "title": "settings",
     "theme": "theme",
     "language": "language"
+  },
+  "error": {
+    "title": "oops!",
+    "desc": "Something went wrong",
+    "back": "back"
   }
 }

@@ -33,9 +33,7 @@
     "error": {
       "email": "Invalid email",
       "min": "Minimum of 6 characters",
-      "number": "Must contain numbers",
-      "letter": "Must contain letters",
-      "special": "Must contain special characters",
+      "space": "There should be no spaces",
       "forbidden": "Invalid email or password"
     }
   }

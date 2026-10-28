@@ -38,9 +38,12 @@ export default function LoginPage() {
             type="text"
             id="login-email"
             className="input"
+            role="input-email"
             {...register('email')}
           />
-          {errors.email?.message && <p>{t(errors.email.message)}</p>}
+          {errors.email?.message && (
+            <p role="error-email">{t(errors.email.message)}</p>
+          )}
         </div>
         <div className="flex flex-col">
           <label htmlFor="login-password" className="capitalize mb-1">
@@ -50,11 +53,17 @@ export default function LoginPage() {
             type="text"
             id="login-password"
             className="input"
+            role="input-password"
             {...register('password')}
           />
-          {errors.password?.message && <p>{t(errors.password.message)}</p>}
+          {errors.password?.message && (
+            <p role="error-password">{t(errors.password.message)}</p>
+          )}
         </div>
-        <button type="submit" className="button self-center py-2 px-4">
+        <button
+          type="submit"
+          className="button self-center py-2 px-4"
+          role="login-button">
           {submit}
         </button>
         <div>

@@ -27,19 +27,4 @@ export default defineConfig([
       '@typescript-eslint/no-floating-promises': 'off',
     },
   },
-  {
-    files: [
-      './src/app/pages/loginPage/LoginPage.tsx',
-      './src/app/pages/registerPage/RegisterPage.tsx',
-      './src/app/pages/errorPage/ErrorPage.tsx',
-    ],
-    rules: {
-      '@typescript-eslint/no-misused-promises': [
-        'error',
-        {
-          checksVoidReturn: false,
-        },
-      ],
-    },
-  },
 ]);

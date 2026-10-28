@@ -7,14 +7,13 @@ import turboPlugin from 'eslint-plugin-turbo';
 
 const eslintBaseConfig = [
   eslintPluginUnicorn.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommended,
   {
     files: ['**/*.{js,ts,tsx}'],
     plugins: { js, prettier: eslintPluginPrettier, turbo: turboPlugin },
     extends: ['js/recommended'],
     languageOptions: {
       parserOptions: {
-        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },

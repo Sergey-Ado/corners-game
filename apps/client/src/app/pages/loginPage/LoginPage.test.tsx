@@ -62,7 +62,7 @@ describe('LoginPage', () => {
     await user.type(inputPassword, 'invalid password');
     await user.click(button);
 
-    const errorEmail = screen.getByRole('error-password');
-    expect(errorEmail).toBeInTheDocument();
+    const errorPassword = screen.getByRole('error-password');
+    expect(errorPassword).toBeInTheDocument();
   });
 });

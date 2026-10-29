@@ -43,9 +43,12 @@ export default function RegisterPage() {
             type="text"
             id="register-email"
             className="input"
+            role="input-email"
             {...register('email')}
           />
-          {errors.email?.message && <p>{t(errors.email.message)}</p>}
+          {errors.email?.message && (
+            <p role="error-email">{t(errors.email.message)}</p>
+          )}
         </div>
         <div className="flex flex-col">
           <label htmlFor="register-username" className="capitalize mb-1">
@@ -55,9 +58,12 @@ export default function RegisterPage() {
             type="text"
             id="register-username"
             className="input"
+            role="input-username"
             {...register('username')}
           />
-          {errors.username?.message && <p>{t(errors.username.message)}</p>}
+          {errors.username?.message && (
+            <p role="error-username">{t(errors.username.message)}</p>
+          )}
         </div>
         <div className="flex flex-col">
           <label htmlFor="register-password" className="capitalize mb-1">
@@ -67,14 +73,17 @@ export default function RegisterPage() {
             type="text"
             id="register-password"
             className="input"
+            role="input-password"
             {...register('password')}
           />
-          {errors.password?.message && <p>{t(errors.password.message)}</p>}
+          {errors.password?.message && (
+            <p role="error-password">{t(errors.password.message)}</p>
+          )}
         </div>
         <button
           type="submit"
           className="button self-center py-2 px-4"
-          role="login-button">
+          role="register-button">
           {submit}
         </button>
         <div className="text-center">

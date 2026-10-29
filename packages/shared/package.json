@@ -12,6 +12,10 @@
     "./user-schema": {
       "types": "./src/schemas/user.ts",
       "default": "./dist/schemas/user.js"
+    },
+    "./api": {
+      "types": "./src/types/api.ts",
+      "default": "./dist/types/api.js"
     }
   },
   "scripts": {

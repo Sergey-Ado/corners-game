@@ -1,4 +1,8 @@
 import { Pages } from '@/types/general.types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterInput } from '@repo/shared/user';
+import { RegisterInputSchema } from '@repo/shared/user-schema';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
@@ -13,27 +17,59 @@ export default function RegisterPage() {
   const registerDesc = t('register.login.desc');
   const registerLInk = t('register.login.link');
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterInput>({
+    resolver: zodResolver(RegisterInputSchema),
+  });
+
+  const onSubmit = (data: RegisterInput) => {
+    console.log(data);
+  };
+
   return (
     <main className="visual-panel p-2 grow flex items-center justify-center">
-      <form className="flex flex-col gap-4 w-full max-w-2xs">
+      <form
+        className="flex flex-col gap-4 w-full max-w-2xs"
+        onSubmit={handleSubmit(onSubmit)}>
         <h2 className="capitalize self-center font-bold text-xl">{title}</h2>
         <div className="flex flex-col">
           <label htmlFor="register-email" className="capitalize mb-1">
             {email}
           </label>
-          <input type="text" id="register-email" className="input" />
+          <input
+            type="text"
+            id="register-email"
+            className="input"
+            {...register('email')}
+          />
+          {errors.email?.message && <p>{t(errors.email.message)}</p>}
         </div>
         <div className="flex flex-col">
           <label htmlFor="register-username" className="capitalize mb-1">
             {username}
           </label>
-          <input type="text" id="register-username" className="input" />
+          <input
+            type="text"
+            id="register-username"
+            className="input"
+            {...register('username')}
+          />
+          {errors.username?.message && <p>{t(errors.username.message)}</p>}
         </div>
         <div className="flex flex-col">
           <label htmlFor="register-password" className="capitalize mb-1">
             {password}
           </label>
-          <input type="text" id="register-password" className="input" />
+          <input
+            type="text"
+            id="register-password"
+            className="input"
+            {...register('password')}
+          />
+          {errors.password?.message && <p>{t(errors.password.message)}</p>}
         </div>
         <button
           type="submit"

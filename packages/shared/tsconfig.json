@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "rewriteRelativeImportExtensions": true
+    "rewriteRelativeImportExtensions": true,
+    "moduleResolution": "nodenext",
+    "module": "nodenext"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

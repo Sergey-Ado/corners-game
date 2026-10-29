@@ -20,5 +20,21 @@
     "title": "oops!",
     "desc": "Something went wrong",
     "back": "back"
+  },
+  "login": {
+    "title": "login",
+    "email": "email",
+    "password": "password",
+    "button": "submit",
+    "register": {
+      "link": "Register",
+      "desc": " if you don't have an account"
+    },
+    "error": {
+      "email": "Invalid email",
+      "min": "Minimum of 6 characters",
+      "space": "There should be no spaces",
+      "forbidden": "Invalid email or password"
+    }
   }
 }

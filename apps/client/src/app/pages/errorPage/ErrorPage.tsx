@@ -23,9 +23,7 @@ export default function ErrorPage() {
         <p className="pb-4">{desc}</p>
         <button
           className="button px-4 py-2"
-          onClick={() => {
-            handleBack();
-          }}
+          onClick={handleBack}
           role="error-button">
           {back}
         </button>

@@ -1,32 +1,7 @@
 name: Test Corners App
 on: pull_request
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Get repository
-        uses: actions/checkout@v7
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Build application
-        run: npm run lint
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get repository
-        uses: actions/checkout@v7
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Build application
-        run: npm run build
-
-  coverage:
+  build-and-run-coverage:
     runs-on: ubuntu-latest
 
     permissions:
@@ -39,6 +14,12 @@ jobs:
 
       - name: Install dependencies
         run: npm i
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
 
       - name: Run coverage
         run: npm run coverage

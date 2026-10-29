@@ -28,7 +28,9 @@ export default function LoginPage() {
 
   return (
     <main className="visual-panel p-2 grow flex items-center justify-center">
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-4 w-full max-w-2xs"
+        onSubmit={handleSubmit(onSubmit)}>
         <h2 className="capitalize self-center font-bold text-xl">{title}</h2>
         <div className="flex flex-col">
           <label htmlFor="login-email" className="capitalize mb-1">
@@ -66,7 +68,7 @@ export default function LoginPage() {
           role="login-button">
           {submit}
         </button>
-        <div>
+        <div className="text-center">
           <Link to={`/${Pages.REGISTER}`}>
             <span className="hover:text-third-light dark:hover:text-hover-dark duration-300 underline">
               {registerLink}

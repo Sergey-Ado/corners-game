@@ -1,7 +1,56 @@
+import { Pages } from '@/types/general.types';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
+
 export default function RegisterPage() {
+  const { t } = useTranslation();
+
+  const title = t('register.title');
+  const email = t('register.email');
+  const username = t('register.username');
+  const password = t('register.password');
+  const submit = t('register.button');
+  const registerDesc = t('register.login.desc');
+  const registerLInk = t('register.login.link');
+
   return (
     <main className="visual-panel p-2 grow flex items-center justify-center">
-      <div>Register Page</div>
+      <form className="flex flex-col gap-4 w-full max-w-2xs">
+        <h2 className="capitalize self-center font-bold text-xl">{title}</h2>
+        <div className="flex flex-col">
+          <label htmlFor="register-email" className="capitalize mb-1">
+            {email}
+          </label>
+          <input type="text" id="register-email" className="input" />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="register-username" className="capitalize mb-1">
+            {username}
+          </label>
+          <input type="text" id="register-username" className="input" />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="register-password" className="capitalize mb-1">
+            {password}
+          </label>
+          <input type="text" id="register-password" className="input" />
+        </div>
+        <button
+          type="submit"
+          className="button self-center py-2 px-4"
+          role="login-button">
+          {submit}
+        </button>
+        <div className="text-center">
+          <span>{registerDesc}</span>
+          <Link
+            to={`/${Pages.LOGIN}`}
+            className="hover:text-third-light dark:hover:text-hover-dark can-dur:duration-300 underline"
+            role="login-link">
+            {registerLInk}
+          </Link>
+        </div>
+      </form>
     </main>
   );
 }

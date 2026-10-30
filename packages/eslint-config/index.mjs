@@ -25,6 +25,7 @@ const eslintBaseConfig = [
       eqeqeq: 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       'unicorn/no-top-level-side-effects': 'off',
+      'unicorn/no-null': 'off',
       'turbo/no-undeclared-env-vars': 'warn',
       'unicorn/filename-case': [
         'error',

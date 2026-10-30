@@ -40,6 +40,9 @@ const eslintBaseConfig = [
         {
           replacements: {
             props: { properties: false },
+            req: { request: false },
+            res: { response: false, resource: false, result: false },
+            env: { environment: false },
           },
         },
       ],

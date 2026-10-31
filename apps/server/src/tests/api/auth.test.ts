@@ -42,7 +42,6 @@ describe('userRouter', () => {
     expect(res.status).toBe(HttpStatus.CREATED);
     expect(res.body).toEqual({
       id: expect.any(String),
-      email: 'test@mail.ru',
       username: 'John Doe',
     });
     expect(res.headers).toHaveProperty('auth-token');

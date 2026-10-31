@@ -27,7 +27,6 @@ describe('getLanguage', () => {
   it('should not set language if language is invalid', () => {
     setLanguage('en');
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setLanguage('fr' as any);
 
     expect(getLanguage()).toBe('en');
@@ -36,7 +35,6 @@ describe('getLanguage', () => {
   it('should not set theme if theme is invalid', () => {
     setTheme('light');
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setTheme('middle' as any);
 
     expect(getTheme()).toBe('light');

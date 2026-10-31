@@ -33,6 +33,7 @@ const eslintBaseConfig = [
           cases: {
             camelCase: true,
             pascalCase: true,
+            kebabCase: true,
           },
         },
       ],

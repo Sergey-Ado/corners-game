@@ -5,6 +5,10 @@ import { RegisterInputSchema } from '@repo/shared/user-schema';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { Endpoints } from '@repo/shared/api';
+import { getServerUrl } from '@/utils/getServerUrl';
+
+const serverUrl = getServerUrl();
 
 export default function RegisterPage() {
   const { t } = useTranslation();
@@ -25,8 +29,21 @@ export default function RegisterPage() {
     resolver: zodResolver(RegisterInputSchema),
   });
 
-  const onSubmit = (data: RegisterInput) => {
+  const onSubmit = async (data: RegisterInput) => {
     console.log(data);
+
+    const body = JSON.stringify(data);
+    const response = await fetch(`${serverUrl}${Endpoints.REGISTER}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body,
+    });
+
+    if (response.ok) {
+      console.log(await response.json());
+    }
   };
 
   return (

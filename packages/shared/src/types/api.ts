@@ -1,6 +1,8 @@
 export enum defaultEnv {
   SERVER_PORT = '3000',
   JWT_SECRET_KEY = '123456',
+  SERVER_URL = `http://localhost:${defaultEnv.SERVER_PORT}`,
+  FRONTEND_URL = 'http://lockalhost:5173',
 }
 
 export enum Endpoints {

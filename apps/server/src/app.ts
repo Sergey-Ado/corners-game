@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { createServer } from 'node:http';
 import { errorHandler } from './api/errorHandler.ts';
 import userRouter from './api/user.ts';
+import authRouter from './api/auth.ts';
 
 const app = express();
 const server = createServer(app);
@@ -16,6 +17,7 @@ app.get(Endpoints.BASE, (req: Request, res: Response) => {
 });
 
 app.use(Endpoints.USER, userRouter);
+app.use('', authRouter);
 
 app.use(errorHandler);
 

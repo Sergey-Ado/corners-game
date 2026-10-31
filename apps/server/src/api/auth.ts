@@ -51,3 +51,5 @@ const register = async (
 const authRouter = express.Router();
 
 authRouter.post(Endpoints.REGISTER, register);
+
+export default authRouter;

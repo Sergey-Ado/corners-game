@@ -31,3 +31,8 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           working-directory: ./apps/client
+
+      - name: Report server coverage
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: ./apps/server/src

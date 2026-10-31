@@ -5,6 +5,7 @@ import { HttpStatus } from '@repo/shared/api';
 import { v4 as uuid } from 'uuid';
 import getUserWithoutPassword from '../utils/getUserWithoutPassword.ts';
 import { prisma } from '../lib/prisma.ts';
+import * as argon from 'argon2';
 
 const createUser = async (
   req: Request,
@@ -28,7 +29,8 @@ const createUser = async (
       res.sendStatus(HttpStatus.CONFLICT);
     }
 
-    user = { id: uuid(), email, username, password };
+    const hash = await argon.hash(password);
+    user = { id: uuid(), email, username, password: hash };
 
     user = await prisma.user.create({ data: user });
 

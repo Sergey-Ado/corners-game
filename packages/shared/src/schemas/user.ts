@@ -18,3 +18,8 @@ export const RegisterInputSchema = z.object({
     .min(6, 'login.error.min')
     .regex(/^\S+$/, 'login.error.space'),
 });
+
+export const UserOutputSchema = z.object({
+  id: z.string(),
+  username: z.string(),
+});

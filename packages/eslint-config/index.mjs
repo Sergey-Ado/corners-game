@@ -9,7 +9,7 @@ const eslintBaseConfig = [
   eslintPluginUnicorn.configs.recommended,
   tseslint.configs.recommended,
   {
-    files: ['**/*.{js,ts,tsx}'],
+    files: ['**/*.{js,mjs,ts,tsx}'],
     plugins: { js, prettier: eslintPluginPrettier, turbo: turboPlugin },
     extends: ['js/recommended'],
     languageOptions: {
@@ -33,6 +33,7 @@ const eslintBaseConfig = [
           cases: {
             camelCase: true,
             pascalCase: true,
+            kebabCase: true,
           },
         },
       ],
@@ -44,6 +45,7 @@ const eslintBaseConfig = [
             req: { request: false },
             res: { response: false, resource: false, result: false },
             env: { environment: false },
+            fn: { function: false },
           },
         },
       ],
@@ -60,6 +62,7 @@ const eslintBaseConfig = [
     files: ['**/*.test.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      'unicorn/no-global-object-property-assignment': 'off',
     },
   },
   eslintConfigPrettier,

@@ -10,6 +10,7 @@ export default function Avatar({
   size = 32,
   onClick = () => {},
   className: classes = '',
+  title = '',
 }) {
   const avatar = useMemo(() => {
     return new createAvatar(style, {
@@ -20,7 +21,11 @@ export default function Avatar({
   }, [seed, size]);
 
   return (
-    <div className={clsx('flex', classes)} onClick={onClick} role="avatar">
+    <div
+      className={clsx('flex', classes)}
+      onClick={onClick}
+      role="avatar"
+      title={title}>
       <img src={avatar} alt="Avatar" />
     </div>
   );

@@ -1,10 +1,12 @@
 export enum defaultEnv {
   SERVER_PORT = '3000',
+  JWT_SECRET_KEY = '123456',
 }
 
 export enum Endpoints {
   BASE = '/',
   USER = '/api/user',
+  REGISTER = '/api/register',
 }
 
 export enum HttpStatus {

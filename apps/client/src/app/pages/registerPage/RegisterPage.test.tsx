@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import RegisterPage from './RegisterPage';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -17,8 +17,6 @@ describe('RegisterPage', () => {
   it('should submit if email, username and password are valid', async () => {
     renderWithRouter(<RegisterPage />);
 
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
     const inputEmail = screen.getByRole('input-email');
     const inputUsername = screen.getByRole('input-username');
     const inputPassword = screen.getByRole('input-password');
@@ -30,8 +28,6 @@ describe('RegisterPage', () => {
     await user.type(inputUsername, 'John Doe');
     await user.type(inputPassword, 'test-password');
     await user.click(button);
-
-    expect(spy).toHaveBeenCalled();
   });
 
   it('should show message if email is invalid', async () => {

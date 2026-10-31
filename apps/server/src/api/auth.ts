@@ -5,9 +5,9 @@ import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma.ts';
 import * as argon from 'argon2';
 import { v4 as uuid } from 'uuid';
-import getUserWithoutPassword from '../utils/getUserWithoutPassword.ts';
 import jwt from 'jsonwebtoken';
 import process from 'node:process';
+import { UserOutput } from '@repo/shared/user';
 
 const register = async (
   req: Request,
@@ -38,7 +38,7 @@ const register = async (
 
     const secretKey = process.env.JWT_SECRET_KEY || defaultEnv.JWT_SECRET_KEY;
     const token = jwt.sign({ userId: user.id }, secretKey);
-    const output = getUserWithoutPassword(user);
+    const output: UserOutput = { id: user.id, username: user.username };
 
     res.setHeader('auth-token', token);
     res.setHeader('Access-Control-Expose-Headers', 'auth-token');

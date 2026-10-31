@@ -4,6 +4,12 @@ import Burger from './Burger';
 
 vi.mock('react-redux', () => ({
   useDispatch: () => vi.fn(),
+  useSelector: (fn: any) =>
+    fn({
+      general: {
+        userdata: { id: 'id', username: 'username' },
+      },
+    }),
 }));
 
 describe('Burger', () => {

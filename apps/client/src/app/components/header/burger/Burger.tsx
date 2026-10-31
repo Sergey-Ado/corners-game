@@ -2,6 +2,8 @@ import Avatar from '@components/avatar/Avatar';
 import BurgerMenu from './burgerMenu/BurgerMenu';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store/store';
 
 export default function Burger() {
   const [showMenu, setShowMenu] = useState(false);
@@ -15,6 +17,10 @@ export default function Burger() {
     setShowMenu(false);
   };
 
+  const { id, username } = useSelector(
+    (state: RootState) => state.general.userdata
+  );
+
   return (
     <div className="relative" id="burger" role="burger">
       <Avatar
@@ -24,6 +30,8 @@ export default function Burger() {
         )}
         onClick={onAvatarClick}
         size={48}
+        seed={id}
+        title={username}
       />
       {showMenu && <BurgerMenu onCloseMenu={onCloseMenu} />}
     </div>

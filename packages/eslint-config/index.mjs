@@ -9,7 +9,7 @@ const eslintBaseConfig = [
   eslintPluginUnicorn.configs.recommended,
   tseslint.configs.recommended,
   {
-    files: ['**/*.{js,ts,tsx}'],
+    files: ['**/*.{js,mjs,ts,tsx}'],
     plugins: { js, prettier: eslintPluginPrettier, turbo: turboPlugin },
     extends: ['js/recommended'],
     languageOptions: {
@@ -44,6 +44,7 @@ const eslintBaseConfig = [
             req: { request: false },
             res: { response: false, resource: false, result: false },
             env: { environment: false },
+            fn: { function: false },
           },
         },
       ],

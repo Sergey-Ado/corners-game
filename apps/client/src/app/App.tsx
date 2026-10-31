@@ -4,6 +4,7 @@ import { Outlet } from 'react-router';
 import SettingsModal from '@components/settingsModal/SettingsModal';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
+import { Toaster } from 'sonner';
 
 export default function App() {
   const isShowSetting = useSelector(
@@ -26,6 +27,7 @@ export default function App() {
         )}>
         <Header />
         <Outlet />
+        <Toaster position="top-center" richColors duration={2000} />
         {isShowSetting && <SettingsModal />}
       </div>
     </div>

@@ -1,12 +1,18 @@
 import { Pages } from '@/types/general.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterInput } from '@repo/shared/user';
-import { RegisterInputSchema } from '@repo/shared/user-schema';
+import {
+  RegisterInputSchema,
+  UserOutputSchema,
+} from '@repo/shared/user-schema';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { Endpoints } from '@repo/shared/api';
+import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { getServerUrl } from '@/utils/getServerUrl';
+import { toast } from 'sonner';
+import store from '@/app/store/store';
+import { changeUserdata } from '@/app/store/generalSlice';
 
 const serverUrl = getServerUrl();
 
@@ -20,6 +26,7 @@ export default function RegisterPage() {
   const submit = t('register.button');
   const registerDesc = t('register.login.desc');
   const registerLInk = t('register.login.link');
+  const conflict = t('register.error.conflict');
 
   const {
     register,
@@ -30,8 +37,6 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (data: RegisterInput) => {
-    console.log(data);
-
     const body = JSON.stringify(data);
     const response = await fetch(`${serverUrl}${Endpoints.REGISTER}`, {
       method: 'POST',
@@ -42,7 +47,21 @@ export default function RegisterPage() {
     });
 
     if (response.ok) {
-      console.log(await response.json());
+      try {
+        const userdata = UserOutputSchema.safeParse(await response.json());
+        const token = response.headers.get('auth-token');
+
+        if (token && userdata.data) {
+          const { id, username } = userdata.data;
+          store.dispatch(changeUserdata({ id, username }));
+        }
+      } catch {
+        toast.error('Error data');
+      }
+    } else {
+      if (response.status === Number(HttpStatus.CONFLICT)) {
+        toast.error(conflict);
+      }
     }
   };
 

@@ -62,6 +62,7 @@ const eslintBaseConfig = [
     files: ['**/*.test.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      'unicorn/no-global-object-property-assignment': 'off',
     },
   },
   eslintConfigPrettier,

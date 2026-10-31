@@ -1,14 +1,14 @@
-import { defaultEnv, Endpoints } from '@repo/shared/api';
+import { Endpoints } from '@repo/shared/api';
 import express from 'express';
 import { Request, Response } from 'express';
 import { createServer } from 'node:http';
 import { errorHandler } from './api/errorHandler.ts';
 import userRouter from './api/user.ts';
 import authRouter from './api/auth.ts';
-import process from 'node:process';
 import cors from 'cors';
+import getFrontendUrl from './utils/getFrontendUrl.ts';
 
-const origin = process.env.FRONTEND_URL || defaultEnv.FRONTEND_URL;
+const origin = getFrontendUrl();
 
 const app = express();
 const server = createServer(app);

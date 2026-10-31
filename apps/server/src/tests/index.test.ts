@@ -32,7 +32,7 @@ describe('server entry point', () => {
     expect(log).toHaveBeenCalledWith('Server running on port 4321...');
   });
 
-  it('use default port if port is empty', async () => {
+  it('use default port if PORT is empty', async () => {
     vi.stubEnv('PORT', '');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 

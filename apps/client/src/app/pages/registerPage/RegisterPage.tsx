@@ -7,7 +7,7 @@ import {
 } from '@repo/shared/user-schema';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { toast } from 'sonner';
@@ -19,6 +19,7 @@ const serverUrl = getServerUrl();
 export default function RegisterPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const title = t('register.title');
   const email = t('register.email');
@@ -55,6 +56,7 @@ export default function RegisterPage() {
         if (token && userdata.data) {
           const { id, username } = userdata.data;
           dispatch(changeUserdata({ id, username }));
+          navigate(`/${Pages.LOBBY}`);
         }
       } catch {
         toast.error('Error data');

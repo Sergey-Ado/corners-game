@@ -5,6 +5,7 @@ import LoginPage from '@pages/loginPage/LoginPage';
 import { Pages } from '@/types/general.types';
 import RegisterPage from '@pages/registerPage/RegisterPage';
 import ErrorPage from '@pages/errorPage/ErrorPage';
+import LobbyPage from '../pages/lobbyPage/LobbyPage';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, Component: WelcomePage },
       { path: Pages.LOGIN, Component: LoginPage },
       { path: Pages.REGISTER, Component: RegisterPage },
+      { path: Pages.LOBBY, Component: LobbyPage },
       { path: '*', Component: ErrorPage },
     ],
   },

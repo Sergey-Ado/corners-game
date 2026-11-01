@@ -9,7 +9,8 @@
   },
   "header": {
     "logo": "corners",
-    "settings": "settings"
+    "settings": "settings",
+    "logout": "logout"
   },
   "settings": {
     "title": "settings",

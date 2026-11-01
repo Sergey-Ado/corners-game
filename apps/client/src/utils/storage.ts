@@ -4,6 +4,7 @@ enum StorageKeys {
   PREFIX = 'corners-game-',
   LANGUAGE = StorageKeys.PREFIX + 'language',
   THEME = StorageKeys.PREFIX + 'theme',
+  TOKEN = StorageKeys.PREFIX + 'token',
 }
 
 export function getLanguage(): Languages {
@@ -31,4 +32,12 @@ export function getTheme(): Themes {
 export function setTheme(value: Themes): void {
   if (value === 'light' || value === 'dark')
     localStorage.setItem(StorageKeys.THEME, value);
+}
+
+export function setToken(value: string): void {
+  sessionStorage.setItem(StorageKeys.TOKEN, value);
+}
+
+export function removeToken(): void {
+  sessionStorage.removeItem(StorageKeys.TOKEN);
 }

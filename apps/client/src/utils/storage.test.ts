@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getLanguage, getTheme, setLanguage, setTheme } from './storage';
+import {
+  getLanguage,
+  getTheme,
+  removeToken,
+  setLanguage,
+  setTheme,
+} from './storage';
 
 describe('getLanguage', () => {
   beforeEach(() => {
@@ -38,5 +44,13 @@ describe('getLanguage', () => {
     setTheme('middle' as any);
 
     expect(getTheme()).toBe('light');
+  });
+
+  it('should remove token', () => {
+    sessionStorage.setItem('corners-game-token', 'token');
+
+    removeToken();
+
+    expect(sessionStorage.getItem('corners-game-token')).toBeNull();
   });
 });

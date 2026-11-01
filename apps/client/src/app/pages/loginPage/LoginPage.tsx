@@ -1,6 +1,6 @@
 import { Pages } from '@/types/general.types';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginInput } from '@repo/shared/user';
@@ -10,12 +10,14 @@ import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { toast } from 'sonner';
 import { changeUserdata } from '@/app/store/generalSlice';
 import { useDispatch } from 'react-redux';
+import { setToken } from '@/utils/storage';
 
 const serverUrl = getServerUrl();
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const title = t('login.title');
   const email = t('login.email');
@@ -49,6 +51,8 @@ export default function LoginPage() {
         if (token && userdata.data) {
           const { id, username } = userdata.data;
           dispatch(changeUserdata({ id, username }));
+          setToken(token);
+          navigate(`/${Pages.LOBBY}`);
         }
       } catch {
         toast.error('Error data');

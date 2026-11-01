@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import RegisterPage from './RegisterPage';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -12,12 +12,25 @@ const renderWithRouter = (ui: ReactNode) => {
 };
 
 const mockDispatch = vi.fn();
+const mockNavigate = vi.fn();
 
 vi.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
 }));
 
+vi.mock(import('react-router'), async importOriginal => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('RegisterPage', () => {
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
   it('should rendered', () => {
     renderWithRouter(<RegisterPage />);
   });

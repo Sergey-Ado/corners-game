@@ -1,9 +1,13 @@
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import BurgerItem from './burgerItem/BurgerItem';
-import { useDispatch } from 'react-redux';
-import { changeShowSettings } from '@/app/store/generalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeShowSettings, changeUserdata } from '@/app/store/generalSlice';
 import { useTranslation } from 'react-i18next';
+import { RootState } from '@/app/store/store';
+import { useNavigate } from 'react-router';
+import { Pages } from '@/types/general.types';
+import { removeToken } from '@/utils/storage';
 
 interface props {
   onCloseMenu: () => void;
@@ -24,14 +28,25 @@ export default function BurgerMenu({ onCloseMenu }: props) {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { id } = useSelector((state: RootState) => state.general.userdata);
 
   const onClickSettings = () => {
     onCloseMenu();
     dispatch(changeShowSettings(true));
   };
 
+  const onClickLogout = () => {
+    onCloseMenu();
+    removeToken();
+    dispatch(changeUserdata({ id: '', username: '' }));
+    navigate(`/${Pages.LOGIN}`);
+  };
+
   const { t } = useTranslation();
   const settings = t('header.settings');
+  const logout = t('header.logout');
 
   return (
     <div
@@ -46,6 +61,9 @@ export default function BurgerMenu({ onCloseMenu }: props) {
         title={settings}
         onClick={onClickSettings}
       />
+      {id && (
+        <BurgerItem iconType="logout" title={logout} onClick={onClickLogout} />
+      )}
     </div>
   );
 }

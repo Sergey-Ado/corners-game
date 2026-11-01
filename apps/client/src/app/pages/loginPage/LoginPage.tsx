@@ -4,10 +4,18 @@ import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginInput } from '@repo/shared/user';
-import { LoginInputSchema } from '@repo/shared/user-schema';
+import { LoginInputSchema, UserOutputSchema } from '@repo/shared/user-schema';
+import { getServerUrl } from '@/utils/getServerUrl';
+import { Endpoints, HttpStatus } from '@repo/shared/api';
+import { toast } from 'sonner';
+import { changeUserdata } from '@/app/store/generalSlice';
+import { useDispatch } from 'react-redux';
+
+const serverUrl = getServerUrl();
 
 export default function LoginPage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const title = t('login.title');
   const email = t('login.email');
@@ -15,6 +23,7 @@ export default function LoginPage() {
   const submit = t('login.button');
   const registerLink = t('login.register.link');
   const registerDesc = t('login.register.desc');
+  const forbidden = t('login.error.forbidden');
 
   const {
     register,
@@ -22,8 +31,33 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginInput>({ resolver: zodResolver(LoginInputSchema) });
 
-  const onSubmit = (data: LoginInput) => {
-    console.log(data);
+  const onSubmit = async (data: LoginInput) => {
+    const body = JSON.stringify(data);
+    const response = await fetch(`${serverUrl}${Endpoints.LOGIN}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body,
+    });
+
+    if (response.ok) {
+      try {
+        const userdata = UserOutputSchema.safeParse(await response.json());
+        const token = response.headers.get('auth-token');
+
+        if (token && userdata.data) {
+          const { id, username } = userdata.data;
+          dispatch(changeUserdata({ id, username }));
+        }
+      } catch {
+        toast.error('Error data');
+      }
+    } else {
+      if (response.status === Number(HttpStatus.FORBIDDEN)) {
+        toast.error(forbidden);
+      }
+    }
   };
 
   return (

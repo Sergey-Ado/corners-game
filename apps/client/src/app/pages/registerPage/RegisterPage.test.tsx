@@ -11,14 +11,10 @@ const renderWithRouter = (ui: ReactNode) => {
   return render(<MemoryRouter>{ui}</MemoryRouter>);
 };
 
-const { mockDispatch } = vi.hoisted(() => ({
-  mockDispatch: vi.fn(),
-}));
+const mockDispatch = vi.fn();
 
-vi.mock('@/app/store/store', () => ({
-  default: {
-    dispatch: mockDispatch,
-  },
+vi.mock('react-redux', () => ({
+  useDispatch: () => mockDispatch,
 }));
 
 describe('RegisterPage', () => {
@@ -34,7 +30,6 @@ describe('RegisterPage', () => {
           Promise.resolve({
             id: 'userId',
             username: 'username',
-            email: 'test@mail.com',
           }),
         headers: { get: vi.fn(() => 'mock-token') },
       })

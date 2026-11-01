@@ -7,7 +7,7 @@ const routerMiddleware: MiddlewareFunction = ({ request }) => {
 
   const authToken = getToken();
   const urlEnd = request.url.split('/').at(-1) || '';
-  console.log(authToken, urlEnd);
+
   if (authToken) {
     if (!protectedPages.has(urlEnd)) {
       throw redirect(`/${Pages.LOBBY}`);

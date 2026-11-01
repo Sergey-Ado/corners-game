@@ -7,11 +7,19 @@ import userRouter from './api/user.ts';
 import authRouter from './api/auth.ts';
 import cors from 'cors';
 import getFrontendUrl from './utils/getFrontendUrl.ts';
+import { Server } from 'socket.io';
 
 const origin = getFrontendUrl();
 
 const app = express();
 const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin,
+    methods: ['GET', 'POST'],
+  },
+});
 
 app.use(
   cors({
@@ -30,5 +38,9 @@ app.use(Endpoints.USER, userRouter);
 app.use('', authRouter);
 
 app.use(errorHandler);
+
+io.on('connection', socket => {
+  socket.emit('message', 'connection...');
+});
 
 export default server;

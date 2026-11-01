@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Burger from './Burger';
 
+const mockNavigate = vi.fn();
+
 vi.mock('react-redux', () => ({
   useDispatch: () => vi.fn(),
   useSelector: (fn: any) =>
@@ -11,6 +13,14 @@ vi.mock('react-redux', () => ({
       },
     }),
 }));
+
+vi.mock(import('react-router'), async importOriginal => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 describe('Burger', () => {
   it('should rendered', () => {

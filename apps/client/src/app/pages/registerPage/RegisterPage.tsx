@@ -13,6 +13,7 @@ import { getServerUrl } from '@/utils/getServerUrl';
 import { toast } from 'sonner';
 import { changeUserdata } from '@/app/store/generalSlice';
 import { useDispatch } from 'react-redux';
+import { setToken } from '@/utils/storage';
 
 const serverUrl = getServerUrl();
 
@@ -56,6 +57,7 @@ export default function RegisterPage() {
         if (token && userdata.data) {
           const { id, username } = userdata.data;
           dispatch(changeUserdata({ id, username }));
+          setToken(token);
           navigate(`/${Pages.LOBBY}`);
         }
       } catch {

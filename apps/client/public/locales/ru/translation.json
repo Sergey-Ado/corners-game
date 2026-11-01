@@ -9,7 +9,8 @@
   },
   "header": {
     "logo": "уголки",
-    "settings": "настройки"
+    "settings": "настройки",
+    "logout": "выйти"
   },
   "settings": {
     "title": "настройки",

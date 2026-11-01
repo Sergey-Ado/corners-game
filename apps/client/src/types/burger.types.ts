@@ -1,1 +1,1 @@
-export type BurgerIconType = 'settings';
+export type BurgerIconType = 'settings' | 'logout';

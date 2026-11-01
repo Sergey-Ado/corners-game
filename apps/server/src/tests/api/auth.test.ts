@@ -2,13 +2,12 @@ import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
-import { prisma } from '../../lib/prisma.ts';
 import authRouter from '../../api/auth.ts';
 
-const userData = {
-  email: 'test@mail.ru',
+const loginData = { email: 'test@mail.ru', password: 'password' };
+const registerData = {
   username: 'John Doe',
-  password: 'password',
+  ...loginData,
 };
 
 vi.mock('../../lib/prisma.ts', () => ({
@@ -16,9 +15,18 @@ vi.mock('../../lib/prisma.ts', () => ({
     user: {
       findUnique: vi.fn(),
       create: vi.fn(),
-      findMany: vi.fn(),
-      delete: vi.fn(),
     },
+  },
+}));
+
+vi.mock('argon2', () => ({
+  verify: vi.fn(),
+  hash: vi.fn(),
+}));
+
+vi.mock('jsonwebtoken', () => ({
+  default: {
+    sign: vi.fn(() => 'jwt-token'),
   },
 }));
 
@@ -26,47 +34,99 @@ const app = express();
 app.use(express.json());
 app.use('', authRouter);
 
-describe('userRouter', () => {
+describe('authRouter', () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
-  it('should create user', async () => {
+  it('should login user', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+    const argon = await import('argon2');
+
+    (prisma.user.findUnique as Mock).mockResolvedValue({
+      id: 'uuid',
+      ...registerData,
+    });
+    (argon.verify as Mock).mockResolvedValue(true);
+
+    const res = await request(app).post(Endpoints.LOGIN).send(loginData);
+
+    expect(res.status).toBe(HttpStatus.OK);
+    expect(res.header['auth-token']).toBe('jwt-token');
+    expect(res.body).toEqual({
+      id: 'uuid',
+      username: 'John Doe',
+    });
+  });
+
+  it('should return 400 status if body is invalid when login', async () => {
+    const res = await request(app)
+      .post(Endpoints.LOGIN)
+      .send({ email: 'test@mail.ru' });
+
+    expect(res.status).toBe(HttpStatus.BAD_REQUEST);
+  });
+
+  it('should return 403 status if user is not found when login', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+    (prisma.user.findUnique as Mock).mockResolvedValue(null);
+
+    const res = await request(app).post(Endpoints.LOGIN).send(loginData);
+
+    expect(res.status).toBe(HttpStatus.FORBIDDEN);
+  });
+
+  it('should return 500 status if there is error when login', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+    (prisma.user.findUnique as Mock).mockRejectedValue(new Error('error'));
+
+    const res = await request(app).post(Endpoints.LOGIN).send(loginData);
+
+    expect(res.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+  });
+
+  it('should register user', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+
     (prisma.user.create as Mock).mockResolvedValue({
       id: 'uuid',
-      ...userData,
+      ...registerData,
     });
 
-    const res = await request(app).post(Endpoints.REGISTER).send(userData);
+    const res = await request(app).post(Endpoints.REGISTER).send(registerData);
 
     expect(res.status).toBe(HttpStatus.CREATED);
+    expect(res.header['auth-token']).toBe('jwt-token');
     expect(res.body).toEqual({
       id: expect.any(String),
       username: 'John Doe',
     });
-    expect(res.headers).toHaveProperty('auth-token');
   });
 
-  it('should return 400 status if body is incorrect when creating user', async () => {
-    const invalidBody = { email: userData.email };
+  it('should return 400 status if body is incorrect when register', async () => {
+    const invalidBody = { email: registerData.email };
 
     const res = await request(app).post(Endpoints.REGISTER).send(invalidBody);
 
     expect(res.status).toBe(HttpStatus.BAD_REQUEST);
   });
 
-  it('should return 409 status if email is already taken when creating user', async () => {
+  it('should return 409 status if email is already taken when register', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+
     (prisma.user.findUnique as Mock).mockResolvedValue(expect.any(Object));
 
-    const res = await request(app).post(Endpoints.REGISTER).send(userData);
+    const res = await request(app).post(Endpoints.REGISTER).send(registerData);
 
     expect(res.status).toBe(HttpStatus.CONFLICT);
   });
 
   it('should return 500 status if there is internal error when creating user', async () => {
+    const { prisma } = await import('../../lib/prisma.ts');
+
     (prisma.user.findUnique as Mock).mockRejectedValue(new Error('error'));
 
-    const res = await request(app).post(Endpoints.REGISTER).send(userData);
+    const res = await request(app).post(Endpoints.REGISTER).send(registerData);
 
     expect(res.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
   });

@@ -11,13 +11,14 @@ import { Link } from 'react-router';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { toast } from 'sonner';
-import store from '@/app/store/store';
 import { changeUserdata } from '@/app/store/generalSlice';
+import { useDispatch } from 'react-redux';
 
 const serverUrl = getServerUrl();
 
 export default function RegisterPage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const title = t('register.title');
   const email = t('register.email');
@@ -53,7 +54,7 @@ export default function RegisterPage() {
 
         if (token && userdata.data) {
           const { id, username } = userdata.data;
-          store.dispatch(changeUserdata({ id, username }));
+          dispatch(changeUserdata({ id, username }));
         }
       } catch {
         toast.error('Error data');

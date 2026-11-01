@@ -64,4 +64,21 @@ describe('BurgerMenu', () => {
     expect(mockDispatch).not.toHaveBeenCalled();
     expect(onCloseMenu).not.toHaveBeenCalled();
   });
+
+  it('should logout user when click logout button', async () => {
+    renderWithRouter(<BurgerMenu onCloseMenu={onCloseMenu} />);
+
+    const spy = vi
+      .spyOn(await import('@/utils/storage'), 'removeToken')
+      .mockImplementation(() => {});
+
+    const logoutItem = screen.getByRole('logout-icon');
+
+    fireEvent.click(logoutItem);
+
+    expect(onCloseMenu).toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
+  });
 });

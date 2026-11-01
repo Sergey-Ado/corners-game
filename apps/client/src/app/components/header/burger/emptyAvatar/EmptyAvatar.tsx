@@ -15,7 +15,8 @@ export default function EmptyAvatar() {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="size-7.5">
+        className="size-7.5"
+        role="empty-avatar">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"

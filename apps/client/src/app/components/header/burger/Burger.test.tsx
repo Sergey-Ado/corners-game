@@ -63,4 +63,25 @@ describe('Burger', () => {
     const burgerMenu = screen.queryByRole('burger-menu');
     expect(burgerMenu).not.toBeInTheDocument();
   });
+
+  it('should render empty avatar if user id is empty', async () => {
+    vi.resetModules();
+    vi.doMock('react-redux', () => ({
+      useDispatch: () => vi.fn(),
+      useSelector: (fn: any) =>
+        fn({
+          general: {
+            userdata: { id: '', username: '' },
+          },
+        }),
+    }));
+
+    // eslint-disable-next-line unicorn/no-await-expression-member
+    const Burger = (await import('./Burger')).default;
+    render(<Burger />);
+
+    const emptyAvatar = screen.getByRole('empty-avatar');
+
+    expect(emptyAvatar).toBeInTheDocument();
+  });
 });

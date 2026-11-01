@@ -34,6 +34,10 @@ export function setTheme(value: Themes): void {
     localStorage.setItem(StorageKeys.THEME, value);
 }
 
+export function getToken(): string | null {
+  return sessionStorage.getItem(StorageKeys.TOKEN);
+}
+
 export function setToken(value: string): void {
   sessionStorage.setItem(StorageKeys.TOKEN, value);
 }

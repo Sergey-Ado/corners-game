@@ -8,6 +8,9 @@ import authRouter from './api/auth.ts';
 import cors from 'cors';
 import getFrontendUrl from './utils/getFrontendUrl.ts';
 import { Server } from 'socket.io';
+import { SocketManager } from './socketManager/socketManager.ts';
+
+const manager = new SocketManager();
 
 const origin = getFrontendUrl();
 
@@ -41,6 +44,11 @@ app.use(errorHandler);
 
 io.on('connection', socket => {
   socket.emit('message', 'connection...');
+
+  socket.on('session:ask-status', ({ id, username }) => {
+    const status = manager.getUserStatus();
+    socket.emit('session:send-status', { userId: id, username, status });
+  });
 });
 
 export default server;

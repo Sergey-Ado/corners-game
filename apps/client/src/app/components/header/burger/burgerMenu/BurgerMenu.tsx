@@ -40,6 +40,8 @@ export default function BurgerMenu({ onCloseMenu }: props) {
   const onClickLogout = () => {
     onCloseMenu();
     removeToken();
+    sessionStorage.removeItem('id');
+    sessionStorage.removeItem('username');
     dispatch(changeUserdata({ id: '', username: '' }));
     navigate(`/${Pages.LOGIN}`);
   };

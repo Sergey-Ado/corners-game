@@ -16,6 +16,10 @@
     "./api": {
       "types": "./src/types/api.ts",
       "default": "./dist/types/api.js"
+    },
+    "./socketEvents": {
+      "types": "./src/socketEvents.ts",
+      "default": "./dist/socketEvents.js"
     }
   },
   "scripts": {

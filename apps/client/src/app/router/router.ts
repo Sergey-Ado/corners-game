@@ -12,7 +12,9 @@ import { io } from 'socket.io-client';
 
 const serverUrl = getServerUrl();
 
-const socket = io(serverUrl);
+const socket = io(serverUrl, {
+  autoConnect: false,
+});
 
 socket.on('connect', () => {
   console.log('connected');
@@ -24,7 +26,7 @@ socket.on('message', data => {
   console.log(data);
 });
 
-const { routerMiddleware } = getRouterMiddleware();
+const { routerMiddleware } = getRouterMiddleware(socket);
 
 const router = createBrowserRouter([
   {

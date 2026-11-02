@@ -4,9 +4,10 @@ import router from './app/router/router';
 import { Provider } from 'react-redux';
 import store from './app/store/store';
 import './i18n';
-import { getTheme } from './utils/storage';
+import Storage from './utils/storage';
 
 const root = document.querySelector('#root');
+const storage = new Storage();
 
 createRoot(root!).render(
   <Provider store={store}>
@@ -15,7 +16,7 @@ createRoot(root!).render(
 );
 
 function setGlobalStyles() {
-  const theme = getTheme();
+  const theme = storage.getTheme();
   if (theme === 'dark') document.documentElement.classList.add('dark');
 }
 

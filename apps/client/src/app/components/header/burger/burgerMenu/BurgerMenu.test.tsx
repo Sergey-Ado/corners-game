@@ -30,6 +30,18 @@ vi.mock(import('react-router'), async importOriginal => {
   };
 });
 
+const { removeTokenMock } = vi.hoisted(() => ({
+  removeTokenMock: vi.fn(),
+}));
+
+vi.mock('@/utils/storage', () => ({
+  default: class MockStorage {
+    public removeToken(): void {
+      removeTokenMock();
+    }
+  },
+}));
+
 describe('BurgerMenu', () => {
   afterEach(() => {
     vi.resetAllMocks();
@@ -68,10 +80,6 @@ describe('BurgerMenu', () => {
   it('should logout user when click logout button', async () => {
     renderWithRouter(<BurgerMenu onCloseMenu={onCloseMenu} />);
 
-    const spy = vi
-      .spyOn(await import('@/utils/storage'), 'removeToken')
-      .mockImplementation(() => {});
-
     const logoutItem = screen.getByRole('logout-icon');
 
     fireEvent.click(logoutItem);
@@ -79,6 +87,6 @@ describe('BurgerMenu', () => {
     expect(onCloseMenu).toHaveBeenCalled();
     expect(mockDispatch).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalled();
-    expect(spy).toHaveBeenCalled();
+    expect(removeTokenMock).toHaveBeenCalled();
   });
 });

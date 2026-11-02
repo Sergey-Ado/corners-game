@@ -8,9 +8,10 @@ import { LoginInputSchema } from '@repo/shared/user-schema';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { toast } from 'sonner';
-import { setToken } from '@/utils/storage';
+import Storage from '@/utils/storage';
 
 const serverUrl = getServerUrl();
+const storage = new Storage();
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export default function LoginPage() {
         const token = response.headers.get('auth-token');
 
         if (token) {
-          setToken(token);
+          storage.setToken(token);
           navigate(`/${Pages.LOBBY}`);
         }
       } catch {

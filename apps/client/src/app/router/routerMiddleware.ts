@@ -1,15 +1,17 @@
 import { Pages, TypedSocket } from '@/types/general.types';
-import { getToken, removeToken } from '@/utils/storage';
 import { MiddlewareFunction, redirect } from 'react-router';
 import store from '../store/store';
 import { changeUserdata } from '../store/generalSlice';
 import { ServerToClientEvents, UserStatus } from '@repo/shared/socketEvents';
+import Storage from '@/utils/storage';
+
+const storage = new Storage();
 
 export default function getRouterMiddleware(socket: TypedSocket) {
   const routerMiddleware: MiddlewareFunction = async ({ request }) => {
     const protectedPages = new Set([Pages.LOBBY].map(String));
 
-    const authToken = getToken();
+    const authToken = storage.getToken();
     const urlEnd = request.url.split('/').at(-1) || '';
 
     if (authToken) {
@@ -48,7 +50,7 @@ export default function getRouterMiddleware(socket: TypedSocket) {
           throw redirect(`/${Pages.LOBBY}`);
         }
       } catch {
-        removeToken();
+        storage.removeToken();
         store.dispatch(changeUserdata({ id: '', username: '' }));
 
         throw redirect(`/${Pages.LOGIN}`);

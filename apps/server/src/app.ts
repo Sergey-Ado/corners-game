@@ -9,6 +9,10 @@ import cors from 'cors';
 import getFrontendUrl from './utils/getFrontendUrl.ts';
 import { Server } from 'socket.io';
 import { SocketManager } from './socketManager/socketManager.ts';
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from '@repo/shared/socketEvents';
 
 const manager = new SocketManager();
 
@@ -17,7 +21,7 @@ const origin = getFrontendUrl();
 const app = express();
 const server = createServer(app);
 
-const io = new Server(server, {
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
     origin,
     methods: ['GET', 'POST'],
@@ -43,8 +47,6 @@ app.use('', authRouter);
 app.use(errorHandler);
 
 io.on('connection', socket => {
-  socket.emit('message', 'connection...');
-
   socket.on('session:ask-status', ({ id, username }) => {
     const status = manager.getUserStatus();
     socket.emit('session:send-status', { userId: id, username, status });

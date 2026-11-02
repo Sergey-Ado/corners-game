@@ -4,7 +4,7 @@ import { MiddlewareFunction, redirect } from 'react-router';
 import { Socket } from 'socket.io-client';
 import store from '../store/store';
 import { changeUserdata } from '../store/generalSlice';
-import { UserStatus } from '@repo/shared/socketEvents';
+import { ServerToClientEvents, UserStatus } from '@repo/shared/socketEvents';
 
 export default function getRouterMiddleware(socket: Socket) {
   const routerMiddleware: MiddlewareFunction = async ({ request }) => {
@@ -30,19 +30,12 @@ export default function getRouterMiddleware(socket: Socket) {
             socket.emit('session:ask-status', { id, username });
         };
 
-        const sendStatusListener = ({
-          userId,
-          username,
-          status,
-        }: {
-          userId: string;
-          username: string;
-          status: string;
-        }) => {
-          socket.off('session:send-status', sendStatusListener);
-          store.dispatch(changeUserdata({ id: userId, username }));
-          res(status);
-        };
+        const sendStatusListener: ServerToClientEvents['session:send-status'] =
+          ({ userId, username, status }) => {
+            socket.off('session:send-status', sendStatusListener);
+            store.dispatch(changeUserdata({ id: userId, username }));
+            res(status);
+          };
 
         socket.on('connect', connectListener);
         socket.on('session:send-status', sendStatusListener);

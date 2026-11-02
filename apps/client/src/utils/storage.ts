@@ -1,11 +1,5 @@
+import { StorageKeys } from '@/types/general.types';
 import { Languages, Themes } from '@/types/switcher.types';
-
-enum StorageKeys {
-  PREFIX = 'corners-game-',
-  LANGUAGE = StorageKeys.PREFIX + 'language',
-  THEME = StorageKeys.PREFIX + 'theme',
-  TOKEN = StorageKeys.PREFIX + 'token',
-}
 
 export function getLanguage(): Languages {
   const language = localStorage.getItem(StorageKeys.LANGUAGE);

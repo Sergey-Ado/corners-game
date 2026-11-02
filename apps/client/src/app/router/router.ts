@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import App from '../App';
 import WelcomePage from '@pages/welcomePage/WelcomePage';
 import LoginPage from '@pages/loginPage/LoginPage';
-import { Pages } from '@/types/general.types';
+import { Pages, TypedSocket } from '@/types/general.types';
 import RegisterPage from '@pages/registerPage/RegisterPage';
 import ErrorPage from '@pages/errorPage/ErrorPage';
 import LobbyPage from '../pages/lobbyPage/LobbyPage';
@@ -12,19 +12,15 @@ import { io } from 'socket.io-client';
 
 const serverUrl = getServerUrl();
 
-const socket = io(serverUrl);
+const socket: TypedSocket = io(serverUrl, {
+  autoConnect: false,
+});
 
 socket.on('connect', () => {
   console.log('connected');
 });
-socket.on('disconnected', () => {
-  console.log('disconnected');
-});
-socket.on('message', data => {
-  console.log(data);
-});
 
-const { routerMiddleware } = getRouterMiddleware();
+const { routerMiddleware } = getRouterMiddleware(socket);
 
 const router = createBrowserRouter([
   {

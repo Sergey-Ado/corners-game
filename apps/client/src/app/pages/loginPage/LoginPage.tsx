@@ -52,6 +52,8 @@ export default function LoginPage() {
           const { id, username } = userdata.data;
           dispatch(changeUserdata({ id, username }));
           setToken(token);
+          sessionStorage.setItem('id', id);
+          sessionStorage.setItem('username', username);
           navigate(`/${Pages.LOBBY}`);
         }
       } catch {

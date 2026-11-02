@@ -2,7 +2,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from '@repo/shared/socketEvents';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 interface SocketData {
   userId: string;
@@ -15,3 +15,5 @@ export type TypedSocket = Socket<
   object,
   SocketData
 >;
+
+export type TypedServerIo = Server<ClientToServerEvents, ServerToClientEvents>;

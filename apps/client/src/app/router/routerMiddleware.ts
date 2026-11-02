@@ -1,12 +1,11 @@
-import { Pages } from '@/types/general.types';
-import { getToken } from '@/utils/storage';
+import { Pages, TypedSocket } from '@/types/general.types';
+import { getToken, removeToken } from '@/utils/storage';
 import { MiddlewareFunction, redirect } from 'react-router';
-import { Socket } from 'socket.io-client';
 import store from '../store/store';
 import { changeUserdata } from '../store/generalSlice';
 import { ServerToClientEvents, UserStatus } from '@repo/shared/socketEvents';
 
-export default function getRouterMiddleware(socket: Socket) {
+export default function getRouterMiddleware(socket: TypedSocket) {
   const routerMiddleware: MiddlewareFunction = async ({ request }) => {
     const protectedPages = new Set([Pages.LOBBY].map(String));
 
@@ -18,31 +17,41 @@ export default function getRouterMiddleware(socket: Socket) {
         throw redirect(`/${Pages.LOBBY}`);
       }
 
-      const status = await new Promise<string>(res => {
-        socket.auth = { authToken };
-        socket.disconnect().connect();
+      try {
+        const status = await new Promise<string>((res, rej) => {
+          socket.auth = { authToken };
+          socket.disconnect().connect();
 
-        const connectListener = () => {
-          socket.off('connect', connectListener);
-          const id = sessionStorage.getItem('id') || 'x';
-          const username = sessionStorage.getItem('username') || 'x';
-          if (id && username)
-            socket.emit('session:ask-status', { id, username });
-        };
-
-        const sendStatusListener: ServerToClientEvents['session:send-status'] =
-          ({ userId, username, status }) => {
-            socket.off('session:send-status', sendStatusListener);
-            store.dispatch(changeUserdata({ id: userId, username }));
-            res(status);
+          const connectListener = () => {
+            socket.off('connect', connectListener);
+            socket.emit('session:ask-status');
           };
 
-        socket.on('connect', connectListener);
-        socket.on('session:send-status', sendStatusListener);
-      });
+          const connectErrorListener = () => {
+            socket.off('connect_error', connectErrorListener);
+            rej();
+          };
 
-      if (status === UserStatus.IN_LOBBY && urlEnd !== Pages.LOBBY) {
-        throw redirect(`/${Pages.LOBBY}`);
+          const sendStatusListener: ServerToClientEvents['session:send-status'] =
+            ({ userId, username, status }) => {
+              socket.off('session:send-status', sendStatusListener);
+              store.dispatch(changeUserdata({ id: userId, username }));
+              res(status);
+            };
+
+          socket.on('connect', connectListener);
+          socket.on('connect_error', connectErrorListener);
+          socket.on('session:send-status', sendStatusListener);
+        });
+
+        if (status === UserStatus.IN_LOBBY && urlEnd !== Pages.LOBBY) {
+          throw redirect(`/${Pages.LOBBY}`);
+        }
+      } catch {
+        removeToken();
+        store.dispatch(changeUserdata({ id: '', username: '' }));
+
+        throw redirect(`/${Pages.LOGIN}`);
       }
     } else {
       if (protectedPages.has(urlEnd)) {

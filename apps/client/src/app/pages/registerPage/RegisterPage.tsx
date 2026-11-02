@@ -1,25 +1,19 @@
 import { Pages } from '@/types/general.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterInput } from '@repo/shared/user';
-import {
-  RegisterInputSchema,
-  UserOutputSchema,
-} from '@repo/shared/user-schema';
+import { RegisterInputSchema } from '@repo/shared/user-schema';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { toast } from 'sonner';
-import { changeUserdata } from '@/app/store/generalSlice';
-import { useDispatch } from 'react-redux';
 import { setToken } from '@/utils/storage';
 
 const serverUrl = getServerUrl();
 
 export default function RegisterPage() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const title = t('register.title');
@@ -51,15 +45,10 @@ export default function RegisterPage() {
 
     if (response.ok) {
       try {
-        const userdata = UserOutputSchema.safeParse(await response.json());
         const token = response.headers.get('auth-token');
 
-        if (token && userdata.data) {
-          const { id, username } = userdata.data;
-          dispatch(changeUserdata({ id, username }));
+        if (token) {
           setToken(token);
-          sessionStorage.setItem('id', id);
-          sessionStorage.setItem('username', username);
           navigate(`/${Pages.LOBBY}`);
         }
       } catch {

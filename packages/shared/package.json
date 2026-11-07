@@ -20,6 +20,10 @@
     "./socketEvents": {
       "types": "./src/socketEvents.ts",
       "default": "./dist/socketEvents.js"
+    },
+    "./roomData": {
+      "types": "./src/types/roomData.ts",
+      "default": "./dist/types/roomData.js"
     }
   },
   "scripts": {

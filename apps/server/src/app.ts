@@ -12,7 +12,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from '@repo/shared/socketEvents';
-import authMiddleware from './socket/middlerwares/authMiddleware.ts';
+import authMiddleware from './socket/middlewares/authMiddleware.ts';
 import initialConnected from './socket/handlers/initialConnected.ts';
 
 const origin = getFrontendUrl();

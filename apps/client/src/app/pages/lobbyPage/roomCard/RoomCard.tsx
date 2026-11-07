@@ -13,7 +13,7 @@ const onClickDelete = () => console.log('delete');
 
 const onClickJoin = () => console.log('join');
 
-export default function Room({ room }: props) {
+export default function RoomCard({ room }: props) {
   const { ownerId, ownerName } = room;
 
   const { t } = useTranslation();
@@ -24,13 +24,21 @@ export default function Room({ room }: props) {
   const userId = useSelector((state: RootState) => state.general.userdata.id);
 
   const joinButton = (
-    <button type="button" className="button px-2 py-1" onClick={onClickJoin}>
+    <button
+      type="button"
+      className="button px-2 py-1"
+      onClick={onClickJoin}
+      role="room-join">
       {join}
     </button>
   );
 
   const deleteButton = (
-    <button type="button" className="button px-2 py-1" onClick={onClickDelete}>
+    <button
+      type="button"
+      className="button px-2 py-1"
+      onClick={onClickDelete}
+      role="room-delete">
       {del}
     </button>
   );

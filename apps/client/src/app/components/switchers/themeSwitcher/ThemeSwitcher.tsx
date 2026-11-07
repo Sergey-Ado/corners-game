@@ -2,10 +2,12 @@ import { useState } from 'react';
 import BaseSwitcher from '../baseSwitcher/BaseSwitcher';
 import SwitcherIcon from '../switcherIcon/SwitcherIcon';
 import { SwitcherPosition } from '@/types/switcher.types';
-import { getTheme, setTheme } from '@/utils/storage';
+import Storage from '@/utils/storage';
+
+const storage = new Storage();
 
 export default function ThemeSwitcher() {
-  const theme = getTheme();
+  const theme = storage.getTheme();
 
   const [position, setPosition] = useState<SwitcherPosition>(
     theme === 'light' ? 'left' : 'right'
@@ -14,12 +16,12 @@ export default function ThemeSwitcher() {
   const onLeftClick = () => {
     setPosition('left');
     document.documentElement.classList.remove('dark');
-    setTheme('light');
+    storage.setTheme('light');
   };
   const onRightClick = () => {
     setPosition('right');
     document.documentElement.classList.add('dark');
-    setTheme('dark');
+    storage.setTheme('dark');
   };
 
   const leftIcon = (

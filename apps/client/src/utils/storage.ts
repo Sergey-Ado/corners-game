@@ -1,41 +1,49 @@
 import { StorageKeys } from '@/types/general.types';
 import { Languages, Themes } from '@/types/switcher.types';
 
-export function getLanguage(): Languages {
-  const language = localStorage.getItem(StorageKeys.LANGUAGE);
+export default class Storage {
+  public constructor(
+    private languagePath = StorageKeys.LANGUAGE,
+    private themePath = StorageKeys.THEME,
+    private tokenPath = StorageKeys.TOKEN
+  ) {}
 
-  return typeof language === 'string' &&
-    (language === 'en' || language === 'ru')
-    ? language
-    : 'en';
-}
+  public getLanguage(): Languages {
+    const language = localStorage.getItem(this.languagePath);
 
-export function setLanguage(value: Languages): void {
-  if (value === 'en' || value === 'ru')
-    localStorage.setItem(StorageKeys.LANGUAGE, value);
-}
+    return typeof language === 'string' &&
+      (language === 'en' || language === 'ru')
+      ? language
+      : 'en';
+  }
 
-export function getTheme(): Themes {
-  const theme = localStorage.getItem(StorageKeys.THEME);
+  public setLanguage(value: Languages): void {
+    if (value === 'en' || value === 'ru')
+      localStorage.setItem(this.languagePath, value);
+  }
 
-  return typeof theme === 'string' && (theme === 'light' || theme === 'dark')
-    ? theme
-    : 'light';
-}
+  public getTheme(): Themes {
+    const theme = localStorage.getItem(this.themePath);
 
-export function setTheme(value: Themes): void {
-  if (value === 'light' || value === 'dark')
-    localStorage.setItem(StorageKeys.THEME, value);
-}
+    return typeof theme === 'string' && (theme === 'light' || theme === 'dark')
+      ? theme
+      : 'light';
+  }
 
-export function getToken(): string | null {
-  return sessionStorage.getItem(StorageKeys.TOKEN);
-}
+  public setTheme(value: Themes): void {
+    if (value === 'light' || value === 'dark')
+      localStorage.setItem(this.themePath, value);
+  }
 
-export function setToken(value: string): void {
-  sessionStorage.setItem(StorageKeys.TOKEN, value);
-}
+  public getToken(): string | null {
+    return sessionStorage.getItem(this.tokenPath);
+  }
 
-export function removeToken(): void {
-  sessionStorage.removeItem(StorageKeys.TOKEN);
+  public setToken(value: string): void {
+    sessionStorage.setItem(this.tokenPath, value);
+  }
+
+  public removeToken(): void {
+    sessionStorage.removeItem(this.tokenPath);
+  }
 }

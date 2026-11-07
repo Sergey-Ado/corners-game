@@ -4,7 +4,6 @@ export enum UserStatus {
 
 type ClientEvent = {
   type: 'session:ask-status';
-  payload: { id: string; username: string };
 };
 
 type ServerEvent = {

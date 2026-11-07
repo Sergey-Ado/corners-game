@@ -1,56 +1,61 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  getLanguage,
-  getTheme,
-  removeToken,
-  setLanguage,
-  setTheme,
-} from './storage';
+import { StorageKeys } from '@/types/general.types';
+import Storage from './storage';
 
-describe('getLanguage', () => {
+describe('storage', () => {
+  const storage = new Storage();
+
   beforeEach(() => {
     localStorage.clear();
   });
 
   it('should get en from storage if it is there', () => {
-    localStorage.setItem('corners-game-language', 'en');
+    localStorage.setItem(StorageKeys.LANGUAGE, 'en');
 
-    expect(getLanguage()).toBe('en');
+    expect(storage.getLanguage()).toBe('en');
   });
 
   it('should get ru from storage if it is there', () => {
-    localStorage.setItem('corners-game-language', 'ru');
+    localStorage.setItem(StorageKeys.LANGUAGE, 'ru');
 
-    expect(getLanguage()).toBe('ru');
+    expect(storage.getLanguage()).toBe('ru');
   });
 
   it('should get en from storage if language is not there', () => {
-    localStorage.setItem('corners-game-language', 'fr');
+    localStorage.setItem(StorageKeys.LANGUAGE, 'fr');
 
-    expect(getLanguage()).toBe('en');
+    expect(storage.getLanguage()).toBe('en');
   });
 
   it('should not set language if language is invalid', () => {
-    setLanguage('en');
+    storage.setLanguage('en');
 
-    setLanguage('fr' as any);
+    storage.setLanguage('fr' as any);
 
-    expect(getLanguage()).toBe('en');
+    expect(storage.getLanguage()).toBe('en');
   });
 
   it('should not set theme if theme is invalid', () => {
-    setTheme('light');
+    storage.setTheme('light');
 
-    setTheme('middle' as any);
+    storage.setTheme('middle' as any);
 
-    expect(getTheme()).toBe('light');
+    expect(storage.getTheme()).toBe('light');
+  });
+
+  it('should get token if token is in storage', () => {
+    sessionStorage.setItem(StorageKeys.TOKEN, 'token');
+
+    const token = storage.getToken();
+
+    expect(token).toBe('token');
   });
 
   it('should remove token', () => {
-    sessionStorage.setItem('corners-game-token', 'token');
+    sessionStorage.setItem(StorageKeys.TOKEN, 'token');
 
-    removeToken();
+    storage.removeToken();
 
-    expect(sessionStorage.getItem('corners-game-token')).toBeNull();
+    expect(sessionStorage.getItem(StorageKeys.TOKEN)).toBeNull();
   });
 });

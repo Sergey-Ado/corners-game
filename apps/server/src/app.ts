@@ -8,13 +8,12 @@ import authRouter from './api/auth.ts';
 import cors from 'cors';
 import getFrontendUrl from './utils/getFrontendUrl.ts';
 import { Server } from 'socket.io';
-import { SocketManager } from './socketManager/socketManager.ts';
 import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from '@repo/shared/socketEvents';
-
-const manager = new SocketManager();
+import authMiddleware from './socket/middlewares/authMiddleware.ts';
+import initialConnected from './socket/handlers/initialConnected.ts';
 
 const origin = getFrontendUrl();
 
@@ -46,11 +45,10 @@ app.use('', authRouter);
 
 app.use(errorHandler);
 
-io.on('connection', socket => {
-  socket.on('session:ask-status', ({ id, username }) => {
-    const status = manager.getUserStatus();
-    socket.emit('session:send-status', { userId: id, username, status });
-  });
-});
+io.use(authMiddleware);
+
+const onConnection = initialConnected(io);
+
+io.on('connection', onConnection);
 
 export default server;

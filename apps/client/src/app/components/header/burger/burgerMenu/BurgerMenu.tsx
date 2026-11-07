@@ -7,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from '@/app/store/store';
 import { useNavigate } from 'react-router';
 import { Pages } from '@/types/general.types';
-import { removeToken } from '@/utils/storage';
+import Storage from '@/utils/storage';
 
 interface props {
   onCloseMenu: () => void;
 }
+
+const storage = new Storage();
 
 export default function BurgerMenu({ onCloseMenu }: props) {
   useEffect(() => {
@@ -39,9 +41,7 @@ export default function BurgerMenu({ onCloseMenu }: props) {
 
   const onClickLogout = () => {
     onCloseMenu();
-    removeToken();
-    sessionStorage.removeItem('id');
-    sessionStorage.removeItem('username');
+    storage.removeToken();
     dispatch(changeUserdata({ id: '', username: '' }));
     navigate(`/${Pages.LOGIN}`);
   };

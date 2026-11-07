@@ -4,19 +4,17 @@ import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginInput } from '@repo/shared/user';
-import { LoginInputSchema, UserOutputSchema } from '@repo/shared/user-schema';
+import { LoginInputSchema } from '@repo/shared/user-schema';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
 import { toast } from 'sonner';
-import { changeUserdata } from '@/app/store/generalSlice';
-import { useDispatch } from 'react-redux';
-import { setToken } from '@/utils/storage';
+import Storage from '@/utils/storage';
 
 const serverUrl = getServerUrl();
+const storage = new Storage();
 
 export default function LoginPage() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const title = t('login.title');
@@ -45,15 +43,10 @@ export default function LoginPage() {
 
     if (response.ok) {
       try {
-        const userdata = UserOutputSchema.safeParse(await response.json());
         const token = response.headers.get('auth-token');
 
-        if (token && userdata.data) {
-          const { id, username } = userdata.data;
-          dispatch(changeUserdata({ id, username }));
-          setToken(token);
-          sessionStorage.setItem('id', id);
-          sessionStorage.setItem('username', username);
+        if (token) {
+          storage.setToken(token);
           navigate(`/${Pages.LOBBY}`);
         }
       } catch {

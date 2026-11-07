@@ -11,12 +11,7 @@ const renderWithRouter = (ui: ReactNode) => {
   render(<MemoryRouter>{ui}</MemoryRouter>);
 };
 
-const mockDispatch = vi.fn();
 const mockNavigate = vi.fn();
-
-vi.mock('react-redux', () => ({
-  useDispatch: () => mockDispatch,
-}));
 
 vi.mock(import('react-router'), async importOriginal => {
   const actual = await importOriginal();
@@ -64,7 +59,6 @@ describe('LoginPage', () => {
     await user.click(button);
 
     expect(fetchMock).toHaveBeenCalled();
-    expect(mockDispatch).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalled();
   });
 
@@ -131,7 +125,7 @@ describe('LoginPage', () => {
     await user.click(button);
 
     expect(fetchMock).toHaveBeenCalled();
-    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it('should call toast if there is error when response.ok=true', async () => {
@@ -170,7 +164,7 @@ describe('LoginPage', () => {
 
     expect(fetchMock).toHaveBeenCalled();
     expect(toastSpy).toHaveBeenCalled();
-    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     toastSpy.mockRestore();
   });
@@ -202,7 +196,7 @@ describe('LoginPage', () => {
 
     expect(fetchMock).toHaveBeenCalled();
     expect(toastSpy).toHaveBeenCalled();
-    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it('should not call toast if there is response.ok=false and status is not 403', async () => {
@@ -232,6 +226,6 @@ describe('LoginPage', () => {
 
     expect(fetchMock).toHaveBeenCalled();
     expect(toastSpy).not.toHaveBeenCalled();
-    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 });

@@ -56,5 +56,9 @@
       "special": "Must contain special characters",
       "conflict": "This email is already busied"
     }
+  },
+  "lobby": {
+    "join": "join",
+    "delete": "delete"
   }
 }

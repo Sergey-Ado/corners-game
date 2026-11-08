@@ -3,6 +3,7 @@ import {
   ServerToClientEvents,
 } from '@repo/shared/socketEvents';
 import { Server, Socket } from 'socket.io';
+import { SocketManager } from '../socket/socketManager/socketManager.ts';
 
 interface SocketData {
   userId: string;
@@ -17,3 +18,9 @@ export type TypedSocket = Socket<
 >;
 
 export type TypedServerIo = Server<ClientToServerEvents, ServerToClientEvents>;
+
+export type HandlerData = {
+  io: TypedServerIo;
+  socket: TypedSocket;
+  socketManager: SocketManager;
+};

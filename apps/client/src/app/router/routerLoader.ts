@@ -1,15 +1,13 @@
 import { RoomData } from '@repo/shared/roomData';
 import mockRooms from '../mockData/mockRooms';
 
-const loader = () => {
-  return new Promise<RoomData[]>(res => {
-    const roomData = mockRooms;
+const loader = async () => {
+  const roomData = await Promise.resolve<RoomData[]>(mockRooms);
 
-    res(roomData);
-  });
+  return { roomData };
 };
 
-export default function getRouterLoaders() {
+export default function getPageLoaders() {
   const roomLoader = loader;
 
   return { roomLoader };

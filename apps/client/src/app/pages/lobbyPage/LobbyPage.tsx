@@ -1,8 +1,11 @@
-import mockRooms from '@/app/mockData/mockRooms';
 import Room from './roomCard/RoomCard';
+import { useLoaderData } from 'react-router';
+import { RoomData } from '@repo/shared/roomData';
 
 export default function LobbyPage() {
-  const rooms = mockRooms.map(room => {
+  const { roomData } = useLoaderData<{ roomData: RoomData[] }>();
+
+  const rooms = roomData.map(room => {
     return <Room room={room} key={room.id} />;
   });
 

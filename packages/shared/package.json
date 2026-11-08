@@ -22,8 +22,8 @@
       "default": "./dist/socketEvents.js"
     },
     "./roomData": {
-      "types": "./src/types/roomData.ts",
-      "default": "./dist/types/roomData.js"
+      "types": "./src/types/room.ts",
+      "default": "./dist/types/room.js"
     }
   },
   "scripts": {

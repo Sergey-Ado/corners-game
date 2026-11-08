@@ -6,6 +6,7 @@ describe('getRouterLoader', () => {
     const { roomLoader } = getRouterLoader.default();
     const res = await roomLoader();
 
-    expect(Array.isArray(res)).toBeTruthy();
+    expect(res).toHaveProperty('roomData');
+    expect(Array.isArray(res.roomData)).toBeTruthy();
   });
 });

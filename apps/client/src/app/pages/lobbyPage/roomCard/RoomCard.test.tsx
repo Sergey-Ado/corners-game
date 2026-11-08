@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import RoomCard from './RoomCard';
-import { RoomData } from '@repo/shared/roomData';
+import { RoomData } from '../../../../../../../packages/shared/dist/types/room';
 
 const room: RoomData = {
   id: 'roomId',

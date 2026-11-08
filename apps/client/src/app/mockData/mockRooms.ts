@@ -1,4 +1,4 @@
-import { RoomData } from '@repo/shared/roomData';
+import { RoomData } from '../../../../../packages/shared/dist/types/room';
 
 const mockRooms: RoomData[] = [
   {

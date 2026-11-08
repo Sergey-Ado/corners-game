@@ -1,5 +1,8 @@
-export interface RoomData {
-  id: string;
+export interface RoomInput {
   ownerId: string;
   ownerName: string;
+}
+
+export interface RoomData extends RoomInput {
+  id: string;
 }

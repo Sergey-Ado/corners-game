@@ -1,4 +1,4 @@
-import { RoomData } from '@repo/shared/roomData';
+import { RoomData } from '@repo/shared/room';
 import mockRooms from '../mockData/mockRooms';
 
 const loader = async () => {

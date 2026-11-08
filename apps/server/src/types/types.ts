@@ -19,8 +19,11 @@ export type TypedSocket = Socket<
 
 export type TypedServerIo = Server<ClientToServerEvents, ServerToClientEvents>;
 
+export type SocketIdsMap = Map<string, Set<string>>;
+
 export type HandlerData = {
   io: TypedServerIo;
   socket: TypedSocket;
+  socketIdsMap: SocketIdsMap;
   socketManager: SocketManager;
 };

@@ -1,3 +1,4 @@
+import mockRooms from '../../mockData/mockRooms.ts';
 import { SocketIdsMap } from '../../types/types.ts';
 import { SocketManager } from '../socketManager/socketManager.ts';
 
@@ -8,6 +9,8 @@ class SocketStores {
 
   public constructor() {
     if (SocketStores.instance) return SocketStores.instance;
+
+    this.socketManager.setRooms(mockRooms);
 
     SocketStores.instance = this;
   }

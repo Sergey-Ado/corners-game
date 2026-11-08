@@ -15,4 +15,8 @@ export default class Room {
   public getData(): RoomData {
     return { id: this.id, ownerId: this.ownerId, ownerName: this.ownerName };
   }
+
+  public setId(id: string): void {
+    this.id = id;
+  }
 }

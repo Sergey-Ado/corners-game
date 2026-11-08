@@ -1,5 +1,6 @@
 import { TypedServerIo, TypedSocket } from '../../types/types.ts';
 import initialSocketStores from './initialSocketStores.ts';
+import { sendLobbyState } from './lobbyHandlers.ts';
 import { sendStatus } from './sessionHandlers.ts';
 
 const initialConnected = (io: TypedServerIo) => {
@@ -22,6 +23,8 @@ const initialConnected = (io: TypedServerIo) => {
     const handlerData = { io, socket, socketIdsMap, socketManager };
 
     socket.on('session:ask-status', sendStatus(handlerData));
+
+    socket.on('lobby:ask-state', sendLobbyState(handlerData));
   };
 };
 

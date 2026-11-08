@@ -1,12 +1,46 @@
-import { describe, expect, it } from 'vitest';
+import { TypedSocket } from '@/types/general.types';
+import { RoomData } from '@repo/shared/room';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('getRouterLoader', () => {
-  it('should return roomLoader', async () => {
-    const getRouterLoader = await import('./routerLoader');
-    const { roomLoader } = getRouterLoader.default();
-    const res = await roomLoader();
+  it('should ask lobby state and return rooms from socket response', async () => {
+    const roomData: RoomData[] = [
+      { id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' },
+    ];
 
-    expect(res).toHaveProperty('roomData');
-    expect(Array.isArray(res.roomData)).toBeTruthy();
+    let sendState: ((payload: { roomData: RoomData[] }) => void) | undefined;
+
+    const socket = {
+      emit: vi.fn(),
+      on: vi.fn(
+        (
+          event: string,
+          handler: (payload: { roomData: RoomData[] }) => void
+        ) => {
+          if (event === 'lobby:send-state') {
+            sendState = handler;
+          }
+        }
+      ),
+    } as unknown as TypedSocket;
+
+    const { default: getRouterLoader } = await import('./routerLoaders');
+    const { lobbyLoader } = getRouterLoader(socket);
+
+    const resultPromise = lobbyLoader();
+
+    expect(socket.emit).toHaveBeenCalledWith('lobby:ask-state');
+    expect(socket.on).toHaveBeenCalledWith(
+      'lobby:send-state',
+      expect.any(Function)
+    );
+
+    if (!sendState) {
+      throw new Error('Handler of lobby:send-state is not registered');
+    }
+
+    sendState({ roomData });
+
+    await expect(resultPromise).resolves.toEqual({ roomData });
   });
 });

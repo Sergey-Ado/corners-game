@@ -1,6 +1,6 @@
 import Avatar from '@/app/components/avatar/Avatar';
 import { RootState } from '@/app/store/store';
-import { RoomData } from '../../../../../../../packages/shared/dist/types/room';
+import { RoomData } from '@repo/shared/room';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';

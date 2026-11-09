@@ -9,7 +9,7 @@ import LobbyPage from '../pages/lobbyPage/LobbyPage';
 import getRouterMiddleware from './routerMiddleware';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { io } from 'socket.io-client';
-import getRouterLoaders from './routerLoader';
+import getPageLoaders from './routerLoaders';
 
 const serverUrl = getServerUrl();
 
@@ -22,7 +22,7 @@ socket.on('connect', () => {
 });
 
 const { routerMiddleware } = getRouterMiddleware(socket);
-const { roomLoader } = getRouterLoaders();
+const { lobbyLoader } = getPageLoaders(socket);
 
 const router = createBrowserRouter([
   {
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         path: Pages.LOBBY,
         Component: LobbyPage,
         middleware: [routerMiddleware],
-        loader: roomLoader,
+        loader: lobbyLoader,
       },
       { path: '*', Component: ErrorPage },
     ],

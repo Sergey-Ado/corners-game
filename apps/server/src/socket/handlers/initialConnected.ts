@@ -1,18 +1,30 @@
 import { TypedServerIo, TypedSocket } from '../../types/types.ts';
-import { SocketManager } from '../socketManager/socketManager.ts';
+import initialSocketStores from './initialSocketStores.ts';
+import { sendLobbyState } from './lobbyHandlers.ts';
+import { sendStatus } from './sessionHandlers.ts';
 
 const initialConnected = (io: TypedServerIo) => {
   console.log('call initialConnected');
-  const manager = new SocketManager();
 
   return (socket: TypedSocket): void => {
-    socket.on('session:ask-status', () => {
-      const { userId, username } = socket.data;
+    const { userId } = socket.data;
 
-      const status = manager.getUserStatus();
+    const { socketIdsMap, socketManager } = initialSocketStores();
 
-      io.emit('session:send-status', { userId, username, status });
-    });
+    const socketIds = socketIdsMap.get(userId);
+
+    if (socketIds) {
+      socketIds.add(socket.id);
+      socketIdsMap.set(userId, socketIds);
+    } else {
+      socketIdsMap.set(userId, new Set([socket.id]));
+    }
+
+    const handlerData = { io, socket, socketIdsMap, socketManager };
+
+    socket.on('session:ask-status', sendStatus(handlerData));
+
+    socket.on('lobby:ask-state', sendLobbyState(handlerData));
   };
 };
 

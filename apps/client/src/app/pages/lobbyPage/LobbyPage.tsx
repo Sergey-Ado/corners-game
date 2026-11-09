@@ -1,6 +1,6 @@
 import Room from './roomCard/RoomCard';
 import { useLoaderData } from 'react-router';
-import { RoomData } from '@repo/shared/roomData';
+import { RoomData } from '@repo/shared/room';
 
 export default function LobbyPage() {
   const { roomData } = useLoaderData<{ roomData: RoomData[] }>();

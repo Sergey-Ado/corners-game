@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LobbyPage from './LobbyPage';
-import { RoomData } from '@repo/shared/roomData';
+import { RoomData } from '@repo/shared/room';
 
 const roomData: RoomData[] = [
   { id: 'roomId1', ownerId: 'ownerId1', ownerName: 'ownerName1' },

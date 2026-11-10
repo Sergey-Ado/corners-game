@@ -5,8 +5,6 @@ import { sendLobbyState } from './lobbyHandlers.ts';
 import { sendStatus } from './sessionHandlers.ts';
 
 const initialConnected = (io: TypedServerIo) => {
-  console.log('call initialConnected');
-
   return (socket: TypedSocket): void => {
     const { userId } = socket.data;
 

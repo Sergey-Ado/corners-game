@@ -31,7 +31,6 @@ const login = async (
       where: { email },
     });
 
-    console.log('start test');
     if (!user || !(await argon.verify(user.password, password))) {
       res.sendStatus(HttpStatus.FORBIDDEN);
       return;

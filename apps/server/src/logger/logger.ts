@@ -56,6 +56,18 @@ class Logger {
 
     console.log(...messages.map(message => colors.blue(message)));
   }
+
+  public request(method: string, url: string, body: unknown): void {
+    console.log(
+      colors.magenta('Request:'),
+      colors.green(method),
+      colors.green(url)
+    );
+
+    if (!body) return;
+
+    console.log('body:', body);
+  }
 }
 
 export const getLogger = (): Logger => new Logger();

@@ -14,6 +14,7 @@ import {
 } from '@repo/shared/socketEvents';
 import authMiddleware from './socket/middlewares/authMiddleware.ts';
 import initialConnected from './socket/handlers/initialConnected.ts';
+import apiRequestMiddleware from './socket/middlewares/apiRequestMiddleware.ts';
 
 const origin = getFrontendUrl();
 
@@ -35,6 +36,8 @@ app.use(
 );
 
 app.use(express.json());
+
+app.use(apiRequestMiddleware);
 
 app.get(Endpoints.BASE, (req: Request, res: Response) => {
   res.send('Hello world!');

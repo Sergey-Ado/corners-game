@@ -1,5 +1,6 @@
 import { defaultEnv } from '@repo/shared/api';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import colors from 'colors';
 
 const { listenMock } = vi.hoisted(() => ({
   listenMock: vi.fn((_port: string | number, onListening: () => void) =>
@@ -10,6 +11,8 @@ const { listenMock } = vi.hoisted(() => ({
 vi.mock('../app.ts', () => ({
   default: { listen: listenMock },
 }));
+
+vi.mock('.');
 
 describe('server entry point', () => {
   beforeEach(() => {
@@ -29,7 +32,9 @@ describe('server entry point', () => {
     await import('../index.ts');
 
     expect(listenMock).toHaveBeenCalledWith('4321', expect.any(Function));
-    expect(log).toHaveBeenCalledWith('Server running on port 4321...');
+    expect(log).toHaveBeenCalledWith(
+      colors.blue('Server running on port 4321...')
+    );
   });
 
   it('use default port if PORT is empty', async () => {
@@ -43,7 +48,7 @@ describe('server entry point', () => {
       expect.any(Function)
     );
     expect(log).toHaveBeenCalledWith(
-      `Server running on port ${defaultEnv.SERVER_PORT}...`
+      colors.blue(`Server running on port ${defaultEnv.SERVER_PORT}...`)
     );
   });
 });

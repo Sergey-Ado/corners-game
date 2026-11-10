@@ -27,3 +27,5 @@ export type HandlerData = {
   socketIdsMap: SocketIdsMap;
   socketManager: SocketManager;
 };
+
+export const KEY_FOR_SHOW_KEY = 'yes';

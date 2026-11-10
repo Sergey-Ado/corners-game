@@ -11,6 +11,7 @@ const socket: Partial<TypedSocket> = {
   id: 'socketId1',
   on: mockOn,
   data: { userId: 'userId', username: 'username' },
+  use: vi.fn(),
 };
 
 vi.mock('../../socket/handlers/initialSocketStores.ts', () => ({

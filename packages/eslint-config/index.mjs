@@ -46,6 +46,7 @@ const eslintBaseConfig = [
             res: { response: false, resource: false, result: false },
             env: { environment: false },
             fn: { function: false },
+            args: { arguments: false },
           },
         },
       ],

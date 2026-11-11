@@ -68,6 +68,24 @@ class Logger {
 
     console.log('body:', body);
   }
+
+  public response(
+    method: string,
+    url: string,
+    statusCode: number,
+    body: unknown
+  ): void {
+    console.log(
+      colors.yellow('Response: '),
+      colors.green(method),
+      colors.green(url),
+      colors.red(statusCode.toString())
+    );
+
+    if (!body) return;
+
+    console.log('body:', body);
+  }
 }
 
 export const getLogger = (): Logger => new Logger();

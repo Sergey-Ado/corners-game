@@ -6,7 +6,6 @@ const apiRequestMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  // console.log(req.method, req.url, req.body || '');
   const logger = getLogger();
 
   logger.request(req.method, req.url, req.body || '');

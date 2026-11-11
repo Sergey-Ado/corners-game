@@ -1,4 +1,4 @@
-import { getLogger } from '../../logger/logger.ts';
+import getLogger from '../../logger/logger.ts';
 import { HandlerData } from '../../types/types.ts';
 
 export function sendStatus(handlerData: HandlerData) {

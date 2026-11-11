@@ -88,4 +88,6 @@ class Logger {
   }
 }
 
-export const getLogger = (): Logger => new Logger();
+const getLogger = (): Logger => new Logger();
+
+export default getLogger;

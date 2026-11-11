@@ -1,8 +1,8 @@
 import { ClientToServerEvents } from '@repo/shared/socketEvents';
-import { getLogger } from '../../logger/logger.ts';
+import getLogger from '../../logger/logger.ts';
 import { Event } from 'socket.io';
 
-export const getSocketMiddleware = (userId: string) => {
+const getSocketMiddleware = (userId: string) => {
   return (args: Event, next: (error?: Error | undefined) => void): void => {
     const logger = getLogger();
 
@@ -13,3 +13,5 @@ export const getSocketMiddleware = (userId: string) => {
     next();
   };
 };
+
+export default getSocketMiddleware;

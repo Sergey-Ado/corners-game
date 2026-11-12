@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { sendStatus } from '../../socket/handlers/sessionHandlers.ts';
-import { HandlerData, TypedServerIo, TypedSocket } from '../../types/types.ts';
-import { SocketManager } from '../../socket/socketManager/socketManager.ts';
+import {
+  HandlerData,
+  TypedServerIo,
+  TypedSocket,
+} from '../../../src/types/types.ts';
+import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
+import { sendLobbyState } from '../../../src/socket/handlers/lobbyHandlers.ts';
 
 const mockEmit = vi.fn();
 
@@ -24,23 +28,29 @@ const handlerData: Partial<HandlerData> = {
   socketManager: new SocketManager(),
 };
 
-describe('sendStatus', () => {
+describe('sendLobbyState', () => {
   it('should return function', () => {
-    const resultFunction = sendStatus(handlerData as HandlerData);
+    const resultFunction = sendLobbyState(handlerData as HandlerData);
 
     expect(resultFunction).toEqual(expect.any(Function));
   });
 
   it('should send user status if socketId exists', () => {
-    const resultFunction = sendStatus(handlerData as HandlerData);
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'getRoomData')
+      .mockImplementation(() => {
+        return [{ id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' }];
+      });
+
+    const resultFunction = sendLobbyState(handlerData as HandlerData);
 
     resultFunction();
 
-    expect(mockEmit).toHaveBeenCalledWith('session:send-status', {
-      userId: 'userId',
-      username: 'username',
-      status: 'in-lobby',
+    expect(mockEmit).toHaveBeenCalledWith('lobby:send-state', {
+      roomData: [{ id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' }],
     });
+
+    spy.mockRestore();
   });
 
   it('should send user status if socketId does not exist', () => {
@@ -48,7 +58,7 @@ describe('sendStatus', () => {
       .spyOn(Map.prototype, 'get')
       .mockImplementation(() => null);
 
-    const resultFunction = sendStatus(handlerData as HandlerData);
+    const resultFunction = sendLobbyState(handlerData as HandlerData);
 
     resultFunction();
 

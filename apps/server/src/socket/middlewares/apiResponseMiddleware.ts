@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import getLogger from '../../logger/logger.ts';
+import getLogger from '../../utils/logger.ts';
 
 const apiResponseMiddleware = (
   req: Request,

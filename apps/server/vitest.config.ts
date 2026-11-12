@@ -3,12 +3,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     globals: true,
-    root: 'src',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json'],
-      include: ['./**/*.{ts,tsx}'],
-      exclude: ['types', 'generated/**/*', 'prisma'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/types/**/*', 'src/generated/**/*', 'src/lib/prisma.ts'],
     },
   },
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import Room from '../../socket/socketManager/room.ts';
+import Room from '../../../src/socket/socketManager/room.ts';
 
 describe('Room', () => {
   it('should return room data using getData method', () => {

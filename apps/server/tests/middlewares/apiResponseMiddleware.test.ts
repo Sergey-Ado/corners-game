@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { Request, Response, NextFunction } from 'express';
-import apiResponseMiddleware from '../../socket/middlewares/apiResponseMiddleware.ts';
+import apiResponseMiddleware from '../../src/socket/middlewares/apiResponseMiddleware.ts';
 
 const { logResponse } = vi.hoisted(() => ({
   logResponse: vi.fn(),
 }));
 
-vi.mock('../../logger/logger.ts', () => ({
+vi.mock('../../src/utils/logger.ts', () => ({
   default: (): any => ({ response: logResponse }),
 }));
 

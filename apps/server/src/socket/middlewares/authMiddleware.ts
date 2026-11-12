@@ -3,7 +3,7 @@ import { TypedSocket } from '../../types/types.ts';
 import getSecretKey from '../../utils/getSecretKey.ts';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../../lib/prisma.ts';
-import getLogger from '../../logger/logger.ts';
+import getLogger from '../../utils/logger.ts';
 
 const authMiddleware = async (
   socket: TypedSocket,

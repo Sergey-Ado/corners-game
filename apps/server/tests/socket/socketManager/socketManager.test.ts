@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SocketManager } from '../../socket/socketManager/socketManager.ts';
+import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
 import { RoomData } from '@repo/shared/room';
 import { UserStatus } from '@repo/shared/socketEvents';
 

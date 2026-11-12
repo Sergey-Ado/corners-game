@@ -1,3 +1,4 @@
+import getLogger from '../../logger/logger.ts';
 import { HandlerData } from '../../types/types.ts';
 
 export function sendLobbyState(handlerData: HandlerData) {
@@ -10,10 +11,14 @@ export function sendLobbyState(handlerData: HandlerData) {
 
     const socketIds = socketIdsMap.get(userId);
 
-    if (socketIds) {
-      for (const socketId of socketIds) {
-        io.to(socketId).emit('lobby:send-state', { roomData });
-      }
+    if (!socketIds) return;
+
+    const logger = getLogger();
+
+    for (const socketId of socketIds) {
+      io.to(socketId).emit('lobby:send-state', { roomData });
     }
+
+    logger.emit([userId], 'lobby:send-state', { roomData });
   };
 }

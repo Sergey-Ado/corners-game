@@ -27,6 +27,7 @@ describe('server entry point', () => {
 
   it('start server on port from PORT', async () => {
     vi.stubEnv('PORT', '4321');
+    vi.stubEnv('SHOW_LOG', 'yes');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     await import('../index.ts');
@@ -39,6 +40,7 @@ describe('server entry point', () => {
 
   it('use default port if PORT is empty', async () => {
     vi.stubEnv('PORT', '');
+    vi.stubEnv('SHOW_LOG', 'yes');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     await import('../index.ts');

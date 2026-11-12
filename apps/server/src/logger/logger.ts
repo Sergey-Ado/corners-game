@@ -58,6 +58,8 @@ class Logger {
   }
 
   public request(method: string, url: string, body: unknown): void {
+    if (!this.isShow) return;
+
     console.log(
       colors.magenta('Request:'),
       colors.green(method),
@@ -75,6 +77,8 @@ class Logger {
     statusCode: number,
     body: unknown
   ): void {
+    if (!this.isShow) return;
+
     console.log(
       colors.yellow('Response: '),
       colors.green(method),

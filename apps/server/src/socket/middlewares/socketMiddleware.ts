@@ -1,5 +1,5 @@
 import { ClientToServerEvents } from '@repo/shared/socketEvents';
-import getLogger from '../../logger/logger.ts';
+import getLogger from '../../utils/logger.ts';
 import { Event } from 'socket.io';
 
 const getSocketMiddleware = (userId: string) => {

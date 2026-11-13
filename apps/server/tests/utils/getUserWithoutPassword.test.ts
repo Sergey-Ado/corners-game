@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import getUserWithoutPassword from '../../utils/getUserWithoutPassword.ts';
+import getUserWithoutPassword from '../../src/utils/getUserWithoutPassword.ts';
 
 describe('getUserWithoutPassword', () => {
   it('should return user without password', () => {

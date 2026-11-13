@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import initialSocketStores from '../../socket/handlers/initialSocketStores.ts';
-import { SocketManager } from '../../socket/socketManager/socketManager.ts';
+import initialSocketStores from '../../../src/socket/handlers/initialSocketStores.ts';
+import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
 
 describe('initialSocketStore', () => {
   it('should return object with socketIdsMap and socketManager', () => {

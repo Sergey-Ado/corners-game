@@ -8,11 +8,9 @@ const { listenMock } = vi.hoisted(() => ({
   ),
 }));
 
-vi.mock('../app.ts', () => ({
+vi.mock('../src/app.ts', () => ({
   default: { listen: listenMock },
 }));
-
-vi.mock('.');
 
 describe('server entry point', () => {
   beforeEach(() => {
@@ -30,7 +28,7 @@ describe('server entry point', () => {
     vi.stubEnv('SHOW_LOG', 'yes');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    await import('../index.ts');
+    await import('../src/index.ts');
 
     expect(listenMock).toHaveBeenCalledWith('4321', expect.any(Function));
     expect(log).toHaveBeenCalledWith(
@@ -43,7 +41,7 @@ describe('server entry point', () => {
     vi.stubEnv('SHOW_LOG', 'yes');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    await import('../index.ts');
+    await import('../src/index.ts');
 
     expect(listenMock).toHaveBeenCalledWith(
       defaultEnv.SERVER_PORT,

@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { HandlerData, TypedServerIo, TypedSocket } from '../../types/types.ts';
-import { SocketManager } from '../../socket/socketManager/socketManager.ts';
-import { sendLobbyState } from '../../socket/handlers/lobbyHandlers.ts';
+import {
+  HandlerData,
+  TypedServerIo,
+  TypedSocket,
+} from '../../../src/types/types.ts';
+import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
+import { sendStatus } from '../../../src/socket/handlers/sessionHandlers.ts';
 
 const mockEmit = vi.fn();
 
@@ -24,29 +28,23 @@ const handlerData: Partial<HandlerData> = {
   socketManager: new SocketManager(),
 };
 
-describe('sendLobbyState', () => {
+describe('sendStatus', () => {
   it('should return function', () => {
-    const resultFunction = sendLobbyState(handlerData as HandlerData);
+    const resultFunction = sendStatus(handlerData as HandlerData);
 
     expect(resultFunction).toEqual(expect.any(Function));
   });
 
   it('should send user status if socketId exists', () => {
-    const spy = vi
-      .spyOn(SocketManager.prototype, 'getRoomData')
-      .mockImplementation(() => {
-        return [{ id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' }];
-      });
-
-    const resultFunction = sendLobbyState(handlerData as HandlerData);
+    const resultFunction = sendStatus(handlerData as HandlerData);
 
     resultFunction();
 
-    expect(mockEmit).toHaveBeenCalledWith('lobby:send-state', {
-      roomData: [{ id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' }],
+    expect(mockEmit).toHaveBeenCalledWith('session:send-status', {
+      userId: 'userId',
+      username: 'username',
+      status: 'in-lobby',
     });
-
-    spy.mockRestore();
   });
 
   it('should send user status if socketId does not exist', () => {
@@ -54,7 +52,7 @@ describe('sendLobbyState', () => {
       .spyOn(Map.prototype, 'get')
       .mockImplementation(() => null);
 
-    const resultFunction = sendLobbyState(handlerData as HandlerData);
+    const resultFunction = sendStatus(handlerData as HandlerData);
 
     resultFunction();
 

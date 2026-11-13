@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
-import userRouter, { deleteUserById, getUserById } from '../../api/user.ts';
-import { prisma } from '../../lib/prisma.ts';
+import userRouter, { deleteUserById, getUserById } from '../../src/api/user.ts';
+import { prisma } from '../../src/lib/prisma.ts';
 
 const userData = {
   email: 'test@mail.ru',
@@ -11,7 +11,7 @@ const userData = {
   password: 'password',
 };
 
-vi.mock('../../lib/prisma.ts', () => ({
+vi.mock('../../src/lib/prisma.ts', () => ({
   prisma: {
     user: {
       findUnique: vi.fn(),

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import getFrontendUrl from '../../utils/getFrontendUrl.ts';
+import getFrontendUrl from '../../src/utils/getFrontendUrl.ts';
 import { defaultEnv } from '@repo/shared/api';
 
 describe('getFrontendUrl', () => {

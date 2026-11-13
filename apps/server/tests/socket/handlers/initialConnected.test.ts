@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { TypedServerIo, TypedSocket } from '../../types/types.ts';
-import initialConnected from '../../socket/handlers/initialConnected.ts';
-import { SocketManager } from '../../socket/socketManager/socketManager.ts';
+import { TypedServerIo, TypedSocket } from '../../../src/types/types.ts';
+import initialConnected from '../../../src/socket/handlers/initialConnected.ts';
+import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
 
 const mockIo: Partial<TypedServerIo> = {};
 const mockOn = vi.fn();
@@ -14,7 +14,7 @@ const socket: Partial<TypedSocket> = {
   use: vi.fn(),
 };
 
-vi.mock('../../socket/handlers/initialSocketStores.ts', () => ({
+vi.mock('../../../src/socket/handlers/initialSocketStores.ts', () => ({
   default: (): any => ({
     socketIdsMap: new Map([['userId', new Set(['socketId0'])]]),
     socketManager: mockSocketManager,

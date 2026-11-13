@@ -1,4 +1,4 @@
-import getLogger from '../../logger/logger.ts';
+import getLogger from '../../utils/logger.ts';
 import { HandlerData } from '../../types/types.ts';
 
 export function sendLobbyState(handlerData: HandlerData) {

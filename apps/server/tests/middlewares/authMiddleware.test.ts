@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
-import authMiddleware from '../../socket/middlewares/authMiddleware.ts';
-import { TypedSocket } from '../../types/types.ts';
+import authMiddleware from '../../src/socket/middlewares/authMiddleware.ts';
+import { TypedSocket } from '../../src/types/types.ts';
 
 const mockNext = vi.fn();
 
@@ -10,7 +10,7 @@ vi.mock('jsonwebtoken', () => ({
   },
 }));
 
-vi.mock('../../lib/prisma.ts', () => ({
+vi.mock('../../src/lib/prisma.ts', () => ({
   prisma: {
     user: {
       findUnique: vi.fn(),
@@ -47,7 +47,7 @@ describe('authMiddleware', () => {
       userId: 'userId',
     });
 
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     (prisma.user.findUnique as Mock).mockResolvedValue({
       username: 'username',
     });
@@ -77,7 +77,7 @@ describe('authMiddleware', () => {
     const jwt = await import('jsonwebtoken');
     (jwt.default.verify as Mock).mockReturnValue('payload');
 
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     (prisma.user.findUnique as Mock).mockResolvedValue({
       username: 'username',
     });
@@ -132,7 +132,7 @@ describe('authMiddleware', () => {
       userId: 'userId',
     });
 
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     (prisma.user.findUnique as Mock).mockResolvedValue(null);
 
     await authMiddleware(socket as TypedSocket, mockNext);

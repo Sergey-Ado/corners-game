@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 import { Endpoints, HttpStatus } from '@repo/shared/api';
-import authRouter from '../../api/auth.ts';
+import authRouter from '../../src/api/auth.ts';
 
 const loginData = { email: 'test@mail.ru', password: 'password' };
 const registerData = {
@@ -10,7 +10,7 @@ const registerData = {
   ...loginData,
 };
 
-vi.mock('../../lib/prisma.ts', () => ({
+vi.mock('../../src/lib/prisma.ts', () => ({
   prisma: {
     user: {
       findUnique: vi.fn(),
@@ -40,7 +40,7 @@ describe('authRouter', () => {
   });
 
   it('should login user', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     const argon = await import('argon2');
 
     (prisma.user.findUnique as Mock).mockResolvedValue({
@@ -68,7 +68,7 @@ describe('authRouter', () => {
   });
 
   it('should return 403 status if user is not found when login', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     (prisma.user.findUnique as Mock).mockResolvedValue(null);
 
     const res = await request(app).post(Endpoints.LOGIN).send(loginData);
@@ -77,7 +77,7 @@ describe('authRouter', () => {
   });
 
   it('should return 500 status if there is error when login', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
     (prisma.user.findUnique as Mock).mockRejectedValue(new Error('error'));
 
     const res = await request(app).post(Endpoints.LOGIN).send(loginData);
@@ -86,7 +86,7 @@ describe('authRouter', () => {
   });
 
   it('should register user', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
 
     (prisma.user.create as Mock).mockResolvedValue({
       id: 'uuid',
@@ -112,7 +112,7 @@ describe('authRouter', () => {
   });
 
   it('should return 409 status if email is already taken when register', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
 
     (prisma.user.findUnique as Mock).mockResolvedValue(expect.any(Object));
 
@@ -122,7 +122,7 @@ describe('authRouter', () => {
   });
 
   it('should return 500 status if there is internal error when creating user', async () => {
-    const { prisma } = await import('../../lib/prisma.ts');
+    const { prisma } = await import('../../src/lib/prisma.ts');
 
     (prisma.user.findUnique as Mock).mockRejectedValue(new Error('error'));
 

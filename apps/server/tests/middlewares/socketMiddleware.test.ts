@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import getSocketMiddleware from '../../socket/middlewares/socketMiddleware.ts';
+import getSocketMiddleware from '../../src/socket/middlewares/socketMiddleware.ts';
 import { Event } from 'socket.io';
 
 const { mockOn } = vi.hoisted(() => ({
@@ -7,7 +7,7 @@ const { mockOn } = vi.hoisted(() => ({
 }));
 const mockNext = vi.fn();
 
-vi.mock('../../logger/logger.ts', () => ({
+vi.mock('../../src/utils/logger.ts', () => ({
   default: (): any => ({
     on: mockOn,
   }),

@@ -16,7 +16,7 @@ const OLD_ENV = { ...process.env };
 
 describe('getLogger', () => {
   it('should return instance of singleton class', async () => {
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const firstInstance = getLogger();
     const secondInstance = getLogger();
@@ -42,7 +42,7 @@ describe('Logger.emit', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -62,7 +62,7 @@ describe('Logger.emit', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -77,7 +77,7 @@ describe('Logger.emit', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -109,7 +109,7 @@ describe('Logger.on', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -129,7 +129,7 @@ describe('Logger.on', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -144,7 +144,7 @@ describe('Logger.on', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -176,7 +176,7 @@ describe('Logger.info', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -191,7 +191,7 @@ describe('Logger.info', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -218,7 +218,7 @@ describe('Logger.request', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -238,7 +238,7 @@ describe('Logger.request', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -253,7 +253,7 @@ describe('Logger.request', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -285,7 +285,7 @@ describe('Logger.response', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -306,7 +306,7 @@ describe('Logger.response', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 
@@ -321,7 +321,7 @@ describe('Logger.response', () => {
 
     const spyLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { default: getLogger } = await import('../../logger/logger.ts');
+    const { default: getLogger } = await import('../../src/utils/logger.ts');
 
     const logger = getLogger();
 

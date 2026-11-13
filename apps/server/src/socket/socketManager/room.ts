@@ -1,19 +1,18 @@
 import { v4 as uuid } from 'uuid';
-import { RoomData, RoomInput } from '@repo/shared/room';
+import { RoomData } from '@repo/shared/room';
+import { Player } from '@repo/shared/user';
 
 export default class Room {
   private id: string;
-  private ownerId: string;
-  private ownerName: string;
+  private owner: Player;
 
-  public constructor({ ownerId, ownerName }: RoomInput) {
+  public constructor(owner: Player) {
     this.id = uuid();
-    this.ownerId = ownerId;
-    this.ownerName = ownerName;
+    this.owner = { ...owner };
   }
 
   public getData(): RoomData {
-    return { id: this.id, ownerId: this.ownerId, ownerName: this.ownerName };
+    return { id: this.id, owner: { ...this.owner } };
   }
 
   public setId(id: string): void {

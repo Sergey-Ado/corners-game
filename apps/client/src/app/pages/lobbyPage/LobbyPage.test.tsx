@@ -4,7 +4,7 @@ import LobbyPage from './LobbyPage';
 import { RoomData } from '@repo/shared/room';
 
 const roomData: RoomData[] = [
-  { id: 'roomId1', ownerId: 'ownerId1', ownerName: 'ownerName1' },
+  { id: 'roomId1', owner: { id: 'userId1', username: 'username1' } },
 ];
 
 vi.mock('react-redux', () => ({

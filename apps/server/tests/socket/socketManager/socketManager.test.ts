@@ -6,13 +6,17 @@ import { UserStatus } from '@repo/shared/socketEvents';
 const mockRoomData: RoomData[] = [
   {
     id: 'room-1',
-    ownerId: 'userId-1',
-    ownerName: 'User-1',
+    owner: {
+      id: 'userId-1',
+      username: 'User-1',
+    },
   },
   {
     id: 'room-2',
-    ownerId: 'userId-2',
-    ownerName: 'User-2',
+    owner: {
+      id: 'userId-2',
+      username: 'User-2',
+    },
   },
 ];
 

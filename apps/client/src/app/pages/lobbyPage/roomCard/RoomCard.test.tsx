@@ -5,15 +5,17 @@ import { RoomData } from '@repo/shared/room';
 
 const room: RoomData = {
   id: 'roomId',
-  ownerId: 'ownerId',
-  ownerName: 'ownerName',
+  owner: {
+    id: 'userId',
+    username: 'username',
+  },
 };
 
 vi.mock('react-redux', () => ({
   useSelector: (fn: any) =>
     fn({
       general: {
-        userdata: { id: 'ownerId', username: 'ownerName' },
+        userdata: { id: 'userId', username: 'username' },
       },
     }),
 }));
@@ -33,7 +35,7 @@ describe('RoomCard', () => {
       useSelector: (fn: any) =>
         fn({
           general: {
-            userdata: { id: 'userId', username: 'username' },
+            userdata: { id: 'userId2', username: 'username2' },
           },
         }),
     }));

@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 describe('getRouterLoader', () => {
   it('should ask lobby state and return rooms from socket response', async () => {
     const roomData: RoomData[] = [
-      { id: 'room-1', ownerId: 'owner-1', ownerName: 'Owner' },
+      { id: 'room-1', owner: { id: 'user-1', username: 'User' } },
     ];
 
     let sendState: ((payload: { roomData: RoomData[] }) => void) | undefined;

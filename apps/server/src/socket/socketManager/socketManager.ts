@@ -11,8 +11,9 @@ export class SocketManager {
 
   public setRooms(mockRooms: RoomData[]): void {
     this.rooms = mockRooms.map(mockRoom => {
-      const { id, ownerId, ownerName } = mockRoom;
-      const room = new Room({ ownerId, ownerName });
+      const { id, owner } = mockRoom;
+
+      const room = new Room(owner);
       room.setId(id);
       return room;
     });

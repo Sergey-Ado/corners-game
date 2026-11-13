@@ -14,7 +14,7 @@ const onClickDelete = () => console.log('delete');
 const onClickJoin = () => console.log('join');
 
 export default function RoomCard({ room }: props) {
-  const { ownerId, ownerName } = room;
+  const { owner } = room;
 
   const { t } = useTranslation();
 
@@ -51,11 +51,11 @@ export default function RoomCard({ room }: props) {
         'flex flex-col items-center gap-2'
       )}>
       <div className="flex items-center">
-        <Avatar seed={ownerId} />
-        <h2 className="truncate max-w-34">{ownerName}</h2>
+        <Avatar seed={owner.id} />
+        <h2 className="truncate max-w-34">{owner.username}</h2>
       </div>
-      {userId === ownerId && deleteButton}
-      {userId !== ownerId && joinButton}
+      {userId === owner.id && deleteButton}
+      {userId !== owner.id && joinButton}
     </div>
   );
 }

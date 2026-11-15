@@ -2,6 +2,12 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import RoomCard from './RoomCard';
 import { RoomData } from '@repo/shared/room';
+import { TypedSocket } from '@/types/general.types';
+
+const mockEmit = vi.fn();
+const socket: Partial<TypedSocket> = {
+  emit: mockEmit,
+};
 
 const room: RoomData = {
   id: 'roomId',
@@ -26,7 +32,7 @@ afterEach(() => {
 
 describe('RoomCard', () => {
   it('should rendered', () => {
-    render(<RoomCard room={room} />);
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
   });
 
   it('should call console.log with "join" if click join button', async () => {
@@ -41,7 +47,7 @@ describe('RoomCard', () => {
     }));
 
     const RoomCard = await import('../roomCard/RoomCard');
-    render(<RoomCard.default room={room} />);
+    render(<RoomCard.default room={room} socket={socket as TypedSocket} />);
 
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
@@ -53,14 +59,14 @@ describe('RoomCard', () => {
   });
 
   it('should call console.log with "join" if click join button', async () => {
-    render(<RoomCard room={room} />);
-
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
 
     const joinButton = await screen.findByRole('room-delete');
 
     fireEvent.click(joinButton);
 
-    expect(spy).toHaveBeenCalledWith('delete');
+    expect(mockEmit).toHaveBeenCalledWith('lobby:remove-room', {
+      roomId: 'roomId',
+    });
   });
 });

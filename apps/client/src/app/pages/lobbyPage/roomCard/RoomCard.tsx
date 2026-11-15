@@ -1,5 +1,6 @@
 import Avatar from '@/app/components/avatar/Avatar';
 import { RootState } from '@/app/store/store';
+import { TypedSocket } from '@/types/general.types';
 import { RoomData } from '@repo/shared/room';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -7,14 +8,13 @@ import { useSelector } from 'react-redux';
 
 interface props {
   room: RoomData;
+  socket: TypedSocket;
 }
-
-const onClickDelete = () => console.log('delete');
 
 const onClickJoin = () => console.log('join');
 
-export default function RoomCard({ room }: props) {
-  const { owner } = room;
+export default function RoomCard({ room, socket }: props) {
+  const { id: roomId, owner } = room;
 
   const { t } = useTranslation();
 
@@ -22,6 +22,10 @@ export default function RoomCard({ room }: props) {
   const del = t('lobby.delete');
 
   const userId = useSelector((state: RootState) => state.general.userdata.id);
+
+  const onClickDelete = () => {
+    socket.emit('lobby:remove-room', { roomId });
+  };
 
   const joinButton = (
     <button

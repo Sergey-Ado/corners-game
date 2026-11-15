@@ -24,7 +24,7 @@ describe('socketManager', () => {
   it('should set and return roomData', () => {
     const socketManager = new SocketManager();
 
-    socketManager.setRooms(mockRoomData);
+    socketManager.initial(mockRoomData);
 
     const roomData = socketManager.getRoomData();
 

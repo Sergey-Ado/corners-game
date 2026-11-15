@@ -1,25 +1,36 @@
 import { UserStatus } from '@repo/shared/socketEvents';
-import Room from './room.ts';
+import { LobbyManager } from './lobbyManager.ts';
+import RoomManager from './roomManager.ts';
 import { RoomData } from '@repo/shared/room';
 
 export class SocketManager {
-  private rooms: Room[] = [];
+  private lobbyManager = new LobbyManager();
+  private roomManager = new RoomManager();
 
   public getUserStatus(): UserStatus {
     return UserStatus.IN_LOBBY;
   }
 
-  public setRooms(mockRooms: RoomData[]): void {
-    this.rooms = mockRooms.map(mockRoom => {
-      const { id, owner } = mockRoom;
-
-      const room = new Room(owner);
-      room.setId(id);
-      return room;
-    });
+  public initial(mockRooms: RoomData[]): void {
+    this.roomManager.setRooms(mockRooms);
+    for (const room of mockRooms) {
+      this.lobbyManager.addPlayer(room.owner);
+    }
   }
 
   public getRoomData(): RoomData[] {
-    return this.rooms.map(room => room.getData());
+    return this.roomManager.getRoomData();
+  }
+
+  public removeRoom(roomId: string):
+    | {
+        lobbyPlayerIds: string[];
+      }
+    | undefined {
+    const lobbyPlayerIds = this.lobbyManager.getPlayerIds();
+
+    if (this.roomManager.removeRoomById(roomId)) {
+      return { lobbyPlayerIds };
+    }
   }
 }

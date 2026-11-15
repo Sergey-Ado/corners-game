@@ -22,3 +22,31 @@ export function sendLobbyState(handlerData: HandlerData) {
     logger.emit([userId], 'lobby:send-state', { roomData });
   };
 }
+
+export function removeRoom(handleData: HandlerData) {
+  const { io, socketIdsMap, socketManager } = handleData;
+
+  return ({ roomId }: { roomId: string }): void => {
+    console.log('remove room', roomId);
+    const response = socketManager.removeRoom(roomId);
+
+    if (!response) return;
+
+    const { lobbyPlayerIds } = response;
+
+    for (const playerId of lobbyPlayerIds) {
+      const socketIds = socketIdsMap.get(playerId);
+
+      if (!socketIds) return;
+
+      const logger = getLogger();
+
+      for (const socketId of socketIds) {
+        io.to(socketId).emit('lobby:removed-room', { roomId });
+      }
+
+      logger.emit(lobbyPlayerIds, 'lobby:removed-room', { roomId });
+    }
+    console.log(lobbyPlayerIds);
+  };
+}

@@ -41,6 +41,6 @@ describe('getRouterLoader', () => {
 
     sendState({ roomData });
 
-    await expect(resultPromise).resolves.toEqual({ roomData });
+    await expect(resultPromise).resolves.toEqual({ roomData, socket });
   });
 });

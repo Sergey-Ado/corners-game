@@ -27,7 +27,6 @@ export function removeRoom(handleData: HandlerData) {
   const { io, socketIdsMap, socketManager } = handleData;
 
   return ({ roomId }: { roomId: string }): void => {
-    console.log('remove room', roomId);
     const response = socketManager.removeRoom(roomId);
 
     if (!response) return;
@@ -47,6 +46,5 @@ export function removeRoom(handleData: HandlerData) {
 
       logger.emit(lobbyPlayerIds, 'lobby:removed-room', { roomId });
     }
-    console.log(lobbyPlayerIds);
   };
 }

@@ -5,7 +5,7 @@ export default defineConfig({
     globals: true,
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json-summary', 'json'],
+      // reporter: ['text', 'json-summary', 'json'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/types/**/*', 'src/generated/**/*', 'src/lib/prisma.ts'],
     },

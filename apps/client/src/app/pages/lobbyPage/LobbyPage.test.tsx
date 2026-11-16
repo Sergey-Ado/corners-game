@@ -1,22 +1,31 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LobbyPage from './LobbyPage';
 import { RoomData } from '@repo/shared/room';
+import { TypedSocket } from '@/types/general.types';
 
 const roomData: RoomData[] = [
-  { id: 'roomId1', ownerId: 'ownerId1', ownerName: 'ownerName1' },
+  { id: 'roomId1', owner: { id: 'userId1', username: 'username1' } },
+  { id: 'roomId2', owner: { id: 'userId2', username: 'username2' } },
 ];
+
+const mockSocket: Partial<TypedSocket> = {
+  on: vi.fn(),
+  off: vi.fn(),
+};
 
 vi.mock('react-redux', () => ({
   useSelector: () => vi.fn(),
 }));
 
 vi.mock('react-router', () => ({
-  useLoaderData: () => ({ roomData }),
+  useLoaderData: () => ({ roomData, socket: mockSocket }),
 }));
 
 vi.mock('./roomCard/RoomCard', () => ({
-  default: ({ room }: { room: RoomData }) => <div>{room.id}</div>,
+  default: ({ room }: { room: RoomData }) => (
+    <div data-testid={room.id}>{room.id}</div>
+  ),
 }));
 
 beforeEach(() => {
@@ -32,5 +41,42 @@ describe('LobbyPage', () => {
     render(<LobbyPage />);
 
     expect(screen.getByText('roomId1'));
+    expect(screen.getByText('roomId2'));
+  });
+
+  it('should set listener on socket event lobby:removed-room', () => {
+    render(<LobbyPage />);
+
+    expect(mockSocket.on).toHaveBeenCalledWith(
+      'lobby:removed-room',
+      expect.any(Function)
+    );
+  });
+
+  it('should remove listener on lobby:removed-room when unmounting', () => {
+    const { unmount } = render(<LobbyPage />);
+
+    unmount();
+
+    expect(mockSocket.off).toHaveBeenCalledWith(
+      'lobby:removed-room',
+      expect.any(Function)
+    );
+  });
+
+  it('should remove room when call socket.on with lobby:removed-room', () => {
+    render(<LobbyPage />);
+
+    expect(screen.getByTestId('roomId1')).toBeInTheDocument();
+
+    const callback = (mockSocket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:removed-room'
+    )?.[1];
+
+    expect(callback).toBeDefined();
+    act(() => {
+      callback({ roomId: 'roomId1' });
+    });
+    expect(screen.queryByTestId('roomId1')).not.toBeInTheDocument();
   });
 });

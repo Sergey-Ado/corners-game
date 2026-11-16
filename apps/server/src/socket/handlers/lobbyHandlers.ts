@@ -1,8 +1,8 @@
-import getLogger from '../../utils/logger.ts';
 import { HandlerData } from '../../types/types.ts';
+import getSender from '../../utils/sender.ts';
 
 export function sendLobbyState(handlerData: HandlerData) {
-  const { io, socket, socketIdsMap, socketManager } = handlerData;
+  const { socket, socketIdsMap, socketManager } = handlerData;
 
   return (): void => {
     const roomData = socketManager.getRoomData();
@@ -13,12 +13,24 @@ export function sendLobbyState(handlerData: HandlerData) {
 
     if (!socketIds) return;
 
-    const logger = getLogger();
+    const sender = getSender(handlerData);
 
-    for (const socketId of socketIds) {
-      io.to(socketId).emit('lobby:send-state', { roomData });
-    }
+    sender([userId], 'lobby:send-state', { roomData });
+  };
+}
 
-    logger.emit([userId], 'lobby:send-state', { roomData });
+export function removeRoom(handleData: HandlerData) {
+  const { socketManager } = handleData;
+
+  return ({ roomId }: { roomId: string }): void => {
+    const response = socketManager.removeRoom(roomId);
+
+    if (!response) return;
+
+    const { lobbyPlayerIds } = response;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:removed-room', { roomId });
   };
 }

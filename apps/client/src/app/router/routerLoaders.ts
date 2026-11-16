@@ -19,7 +19,7 @@ export default function getPageLoaders(
       socket.emit('lobby:ask-state');
     });
 
-    return { roomData };
+    return { roomData, socket };
   };
 
   return { lobbyLoader };

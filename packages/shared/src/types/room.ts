@@ -1,8 +1,6 @@
-export interface RoomInput {
-  ownerId: string;
-  ownerName: string;
-}
+import { Player } from './user.ts';
 
-export interface RoomData extends RoomInput {
+export interface RoomData {
   id: string;
+  owner: Player;
 }

@@ -10,7 +10,7 @@ class SocketStores {
   public constructor() {
     if (SocketStores.instance) return SocketStores.instance;
 
-    this.socketManager.setRooms(mockRooms);
+    this.socketManager.initial(mockRooms);
 
     SocketStores.instance = this;
   }

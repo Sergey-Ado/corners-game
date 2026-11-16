@@ -1,8 +1,8 @@
-import getLogger from '../../utils/logger.ts';
 import { HandlerData } from '../../types/types.ts';
+import getSender from '../../utils/sender.ts';
 
 export function sendStatus(handlerData: HandlerData) {
-  const { io, socket, socketIdsMap, socketManager } = handlerData;
+  const { socket, socketIdsMap, socketManager } = handlerData;
 
   return (): void => {
     const { userId, username } = socket.data;
@@ -12,16 +12,8 @@ export function sendStatus(handlerData: HandlerData) {
 
     if (!socketIds) return;
 
-    const logger = getLogger();
+    const sender = getSender(handlerData);
 
-    for (const socketId of socketIds) {
-      io.to(socketId).emit('session:send-status', {
-        userId,
-        username,
-        status,
-      });
-    }
-
-    logger.emit([userId], 'session:send-status', { userId, username, status });
+    sender([userId], 'session:send-status', { userId, username, status });
   };
 }

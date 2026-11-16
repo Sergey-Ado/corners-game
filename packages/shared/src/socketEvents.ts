@@ -4,14 +4,18 @@ export enum UserStatus {
   IN_LOBBY = 'in-lobby',
 }
 
-type ClientEvent = { type: 'session:ask-status' } | { type: 'lobby:ask-state' };
+type ClientEvent =
+  | { type: 'session:ask-status' }
+  | { type: 'lobby:ask-state' }
+  | { type: 'lobby:remove-room'; payload: { roomId: string } };
 
 type ServerEvent =
   | {
       type: 'session:send-status';
       payload: { userId: string; username: string; status: string };
     }
-  | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } };
+  | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } }
+  | { type: 'lobby:removed-room'; payload: { roomId: string } };
 
 type EventName<T> = T extends { type: infer K } ? K : never;
 

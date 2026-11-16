@@ -3,7 +3,7 @@ import Room from '../../../src/socket/socketManager/room.ts';
 
 describe('Room', () => {
   it('should return room data using getData method', () => {
-    const input = { ownerId: 'owner-1', ownerName: 'Owner' };
+    const input = { id: 'owner-1', username: 'Owner' };
 
     const room = new Room(input);
 
@@ -11,13 +11,15 @@ describe('Room', () => {
 
     expect(data).toEqual({
       id: expect.any(String),
-      ownerId: 'owner-1',
-      ownerName: 'Owner',
+      owner: {
+        id: 'owner-1',
+        username: 'Owner',
+      },
     });
   });
 
   it('should change id using setId method', () => {
-    const input = { ownerId: 'owner-1', ownerName: 'Owner' };
+    const input = { id: 'owner-1', username: 'Owner' };
 
     const room = new Room(input);
 

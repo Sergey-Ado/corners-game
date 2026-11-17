@@ -20,7 +20,8 @@ export default function CreateRoomButton({ disabled, socket }: props) {
       type="button"
       className="button px-2 py-1 normal-case"
       disabled={disabled}
-      onClick={clickButton}>
+      onClick={clickButton}
+      role="room-create">
       {createButton}
     </button>
   );

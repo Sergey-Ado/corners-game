@@ -30,10 +30,21 @@ export default function LobbyPage() {
       );
     };
 
+    const createdRoom = ({ room }: { room: RoomData }) => {
+      const newCardData = [...cardData, room];
+
+      setCardData(newCardData);
+      setDisabledCreateButton(
+        newCardData.some(room => room.owner.id === userId)
+      );
+    };
+
     socket.on('lobby:removed-room', removedRoom);
+    socket.on('lobby:created-room', createdRoom);
 
     return () => {
       socket.off('lobby:removed-room', removedRoom);
+      socket.off('lobby:created-room', createdRoom);
     };
   });
 

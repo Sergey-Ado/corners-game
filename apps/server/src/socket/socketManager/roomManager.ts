@@ -1,4 +1,5 @@
 import { RoomData } from '@repo/shared/room';
+import { v4 as uuid } from 'uuid';
 
 export default class RoomManager {
   private rooms: RoomData[] = [];
@@ -21,5 +22,23 @@ export default class RoomManager {
 
     this.rooms = this.rooms.filter(room => room.id !== id);
     return true;
+  }
+
+  public hasRoom(userId: string): boolean {
+    return Boolean(this.rooms.some(room => room.owner.id === userId));
+  }
+
+  public addRoom(userId: string, username: string): RoomData {
+    const room = {
+      id: uuid(),
+      owner: {
+        id: userId,
+        username,
+      },
+    };
+
+    this.rooms.push(room);
+
+    return room;
   }
 }

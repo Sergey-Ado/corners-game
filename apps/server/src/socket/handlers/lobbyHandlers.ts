@@ -34,3 +34,20 @@ export function removeRoom(handleData: HandlerData) {
     sender(lobbyPlayerIds, 'lobby:removed-room', { roomId });
   };
 }
+
+export function createRoom(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId, username } = socket.data;
+
+  return (): void => {
+    const response = socketManager.createRoom(userId, username);
+
+    if (!response) return;
+
+    const { room, lobbyPlayerIds } = response;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:created-room', { room });
+  };
+}

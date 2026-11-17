@@ -33,4 +33,18 @@ export class SocketManager {
       return { lobbyPlayerIds };
     }
   }
+
+  public createRoom(
+    userId: string,
+    username: string
+  ): { room: RoomData; lobbyPlayerIds: string[] } | undefined {
+    const lobbyPlayerIds = this.lobbyManager.getPlayerIds();
+
+    if (!lobbyPlayerIds.includes(userId) || this.roomManager.hasRoom(userId))
+      return;
+
+    const room = this.roomManager.addRoom(userId, username);
+
+    return { room, lobbyPlayerIds };
+  }
 }

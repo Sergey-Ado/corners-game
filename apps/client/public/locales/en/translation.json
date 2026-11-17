@@ -59,6 +59,7 @@
   },
   "lobby": {
     "join": "join",
-    "delete": "delete"
+    "delete": "delete",
+    "create": "Create room"
   }
 }

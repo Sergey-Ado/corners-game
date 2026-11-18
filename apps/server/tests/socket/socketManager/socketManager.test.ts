@@ -66,4 +66,50 @@ describe('socketManager', () => {
 
     expect(result).toBeUndefined();
   });
+
+  it('should create room and return new room and ids of players in lobby using createRoom method', () => {
+    const socketManager = new SocketManager();
+
+    socketManager['lobbyManager']['players'] = [
+      { id: 'user-1', username: 'username-1' },
+      { id: 'user-2', username: 'username-2' },
+    ];
+
+    const result = socketManager.createRoom('user-1', 'username-1');
+
+    expect(result).toEqual({
+      room: {
+        id: expect.any(String),
+        owner: {
+          id: 'user-1',
+          username: 'username-1',
+        },
+      },
+      lobbyPlayerIds: ['user-1', 'user-2'],
+    });
+  });
+
+  it('should return undefined if player is not in lobby using createRoom method', () => {
+    const socketManager = new SocketManager();
+
+    const result = socketManager.createRoom('user-1', 'username-1');
+
+    expect(result).toBeUndefined();
+  });
+
+  it('should return undefined if player has room using createRoom method', () => {
+    const socketManager = new SocketManager();
+
+    socketManager['lobbyManager']['players'] = [
+      { id: 'user-1', username: 'username-1' },
+      { id: 'user-2', username: 'username-2' },
+    ];
+    socketManager['roomManager']['rooms'] = [
+      { id: 'room-1', owner: { id: 'user-1', username: 'username-1' } },
+    ];
+
+    const result = socketManager.createRoom('user-1', 'username-1');
+
+    expect(result).toBeUndefined();
+  });
 });

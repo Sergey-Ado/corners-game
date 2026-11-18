@@ -7,7 +7,8 @@ export enum UserStatus {
 type ClientEvent =
   | { type: 'session:ask-status' }
   | { type: 'lobby:ask-state' }
-  | { type: 'lobby:remove-room'; payload: { roomId: string } };
+  | { type: 'lobby:remove-room'; payload: { roomId: string } }
+  | { type: 'lobby:create-room' };
 
 type ServerEvent =
   | {
@@ -15,7 +16,8 @@ type ServerEvent =
       payload: { userId: string; username: string; status: string };
     }
   | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } }
-  | { type: 'lobby:removed-room'; payload: { roomId: string } };
+  | { type: 'lobby:removed-room'; payload: { roomId: string } }
+  | { type: 'lobby:created-room'; payload: { room: RoomData } };
 
 type EventName<T> = T extends { type: infer K } ? K : never;
 

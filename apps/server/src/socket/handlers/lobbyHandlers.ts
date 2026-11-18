@@ -2,16 +2,12 @@ import { HandlerData } from '../../types/types.ts';
 import getSender from '../../utils/sender.ts';
 
 export function sendLobbyState(handlerData: HandlerData) {
-  const { socket, socketIdsMap, socketManager } = handlerData;
+  const { socket, socketManager } = handlerData;
 
   return (): void => {
     const roomData = socketManager.getRoomData();
 
     const { userId } = socket.data;
-
-    const socketIds = socketIdsMap.get(userId);
-
-    if (!socketIds) return;
 
     const sender = getSender(handlerData);
 

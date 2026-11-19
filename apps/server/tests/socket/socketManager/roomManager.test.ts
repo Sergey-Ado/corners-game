@@ -11,6 +11,7 @@ describe('roomManager', () => {
           id: 'user-1',
           username: 'username',
         },
+        guest: null,
       },
     ];
 
@@ -28,6 +29,7 @@ describe('roomManager', () => {
           id: 'user-1',
           username: 'username',
         },
+        guest: null,
       },
     ];
     roomManager['rooms'] = rooms;
@@ -46,6 +48,7 @@ describe('roomManager', () => {
           id: 'user-1',
           username: 'username',
         },
+        guest: null,
       },
     ];
     roomManager['rooms'] = rooms;
@@ -73,6 +76,7 @@ describe('roomManager', () => {
           id: 'user-1',
           username: 'username',
         },
+        guest: null,
       },
     ];
     roomManager['rooms'] = rooms;
@@ -97,8 +101,12 @@ describe('roomManager', () => {
     const result = roomManager.addRoom(player.id, player.username);
 
     expect(roomManager['rooms']).toEqual([
-      { id: expect.any(String), owner: player },
+      { id: expect.any(String), owner: player, guest: null },
     ]);
-    expect(result).toEqual({ id: expect.any(String), owner: player });
+    expect(result).toEqual({
+      id: expect.any(String),
+      owner: player,
+      guest: null,
+    });
   });
 });

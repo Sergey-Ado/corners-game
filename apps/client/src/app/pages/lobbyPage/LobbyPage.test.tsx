@@ -6,8 +6,16 @@ import { TypedSocket } from '@/types/general.types';
 import { RootState } from '@/app/store/store';
 
 const roomData: RoomData[] = [
-  { id: 'roomId1', owner: { id: 'userId1', username: 'username1' } },
-  { id: 'roomId2', owner: { id: 'userId2', username: 'username2' } },
+  {
+    id: 'roomId1',
+    owner: { id: 'userId1', username: 'username1' },
+    guest: null,
+  },
+  {
+    id: 'roomId2',
+    owner: { id: 'userId2', username: 'username2' },
+    guest: null,
+  },
 ];
 
 const mockSocket: Partial<TypedSocket> = {

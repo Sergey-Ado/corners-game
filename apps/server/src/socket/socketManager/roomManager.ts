@@ -1,4 +1,5 @@
 import { RoomData } from '@repo/shared/room';
+import { Player } from '@repo/shared/user';
 import { v4 as uuid } from 'uuid';
 
 export default class RoomManager {
@@ -8,7 +9,7 @@ export default class RoomManager {
     this.rooms = mockRooms.map(mockRoom => {
       const { id, owner } = mockRoom;
 
-      const room = { id, owner };
+      const room = { id, owner, guest: null };
       return room;
     });
   }
@@ -35,9 +36,20 @@ export default class RoomManager {
         id: userId,
         username,
       },
+      guest: null,
     };
 
     this.rooms.push(room);
+
+    return room;
+  }
+
+  public addGuest(roomId: string, guest: Player): RoomData | undefined {
+    const room = this.rooms.find(room => room.id === roomId);
+
+    if (!room || room.guest) return;
+
+    room.guest = guest;
 
     return room;
   }

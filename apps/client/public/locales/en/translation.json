@@ -60,6 +60,8 @@
   "lobby": {
     "join": "join",
     "delete": "delete",
-    "create": "Create room"
+    "create": "Create room",
+    "free": "Status: free",
+    "occupied": "Status: occupied"
   }
 }

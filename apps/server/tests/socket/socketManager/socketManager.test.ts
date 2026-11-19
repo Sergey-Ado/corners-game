@@ -10,6 +10,7 @@ const mockRoomData: RoomData[] = [
       id: 'userId-1',
       username: 'User-1',
     },
+    guest: null,
   },
   {
     id: 'room-2',
@@ -17,6 +18,7 @@ const mockRoomData: RoomData[] = [
       id: 'userId-2',
       username: 'User-2',
     },
+    guest: null,
   },
 ];
 const players = mockRoomData.map(room => room.owner);
@@ -75,7 +77,10 @@ describe('socketManager', () => {
       { id: 'user-2', username: 'username-2' },
     ];
 
-    const result = socketManager.createRoom('user-1', 'username-1');
+    const result = socketManager.createRoom({
+      id: 'user-1',
+      username: 'username-1',
+    });
 
     expect(result).toEqual({
       room: {
@@ -84,6 +89,7 @@ describe('socketManager', () => {
           id: 'user-1',
           username: 'username-1',
         },
+        guest: null,
       },
       lobbyPlayerIds: ['user-1', 'user-2'],
     });
@@ -92,7 +98,10 @@ describe('socketManager', () => {
   it('should return undefined if player is not in lobby using createRoom method', () => {
     const socketManager = new SocketManager();
 
-    const result = socketManager.createRoom('user-1', 'username-1');
+    const result = socketManager.createRoom({
+      id: 'user-1',
+      username: 'username-1',
+    });
 
     expect(result).toBeUndefined();
   });
@@ -105,10 +114,17 @@ describe('socketManager', () => {
       { id: 'user-2', username: 'username-2' },
     ];
     socketManager['roomManager']['rooms'] = [
-      { id: 'room-1', owner: { id: 'user-1', username: 'username-1' } },
+      {
+        id: 'room-1',
+        owner: { id: 'user-1', username: 'username-1' },
+        guest: null,
+      },
     ];
 
-    const result = socketManager.createRoom('user-1', 'username-1');
+    const result = socketManager.createRoom({
+      id: 'user-1',
+      username: 'username-1',
+    });
 
     expect(result).toBeUndefined();
   });

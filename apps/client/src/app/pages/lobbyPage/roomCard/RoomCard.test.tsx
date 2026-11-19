@@ -5,8 +5,12 @@ import { RoomData } from '@repo/shared/room';
 import { TypedSocket } from '@/types/general.types';
 
 const mockEmit = vi.fn();
+const mockOn = vi.fn();
+const mockOff = vi.fn();
 const socket: Partial<TypedSocket> = {
   emit: mockEmit,
+  on: mockOn,
+  off: mockOff,
 };
 
 const room: RoomData = {
@@ -15,6 +19,7 @@ const room: RoomData = {
     id: 'userId',
     username: 'username',
   },
+  guest: null,
 };
 
 vi.mock('react-redux', () => ({
@@ -49,13 +54,13 @@ describe('RoomCard', () => {
     const RoomCard = await import('../roomCard/RoomCard');
     render(<RoomCard.default room={room} socket={socket as TypedSocket} />);
 
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
     const joinButton = await screen.findByRole('room-join');
 
     fireEvent.click(joinButton);
 
-    expect(spy).toHaveBeenCalledWith('join');
+    expect(mockEmit).toHaveBeenCalledWith('lobby:ask-joining', {
+      roomId: 'roomId',
+    });
   });
 
   it('should call console.log with "join" if click join button', async () => {

@@ -36,7 +36,7 @@ export function createRoom(handleData: HandlerData) {
   const { userId, username } = socket.data;
 
   return (): void => {
-    const response = socketManager.createRoom(userId, username);
+    const response = socketManager.createRoom({ id: userId, username });
 
     if (!response) return;
 
@@ -45,5 +45,26 @@ export function createRoom(handleData: HandlerData) {
     const sender = getSender(handleData);
 
     sender(lobbyPlayerIds, 'lobby:created-room', { room });
+  };
+}
+
+export function waitJoining(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId, username } = socket.data;
+
+  return ({ roomId }: { roomId: string }): void => {
+    const guest = { id: userId, username };
+
+    const response = socketManager.waitJoining(roomId, guest);
+
+    if (!response) return;
+
+    const { room, lobbyPlayerIds } = response;
+
+    if (!room.guest) return;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:wait-joining', { roomId, guest });
   };
 }

@@ -42,7 +42,11 @@ describe('sendLobbyState', () => {
 
   it('should call sender with roomData', () => {
     const rooms = [
-      { id: 'room-1', owner: { id: 'owner-1', username: 'Owner' } },
+      {
+        id: 'room-1',
+        owner: { id: 'owner-1', username: 'Owner' },
+        guest: null,
+      },
     ];
 
     const spy = vi
@@ -114,6 +118,7 @@ describe('createRoom', () => {
     const room = {
       id: 'room-1',
       owner: { id: 'user-1', username: 'username-1' },
+      guest: null,
     };
 
     const spy = vi

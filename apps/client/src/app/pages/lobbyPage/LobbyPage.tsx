@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import CreateRoomButton from './createRoomButton/CreateRoomButton';
 import { RootState } from '@/app/store/store';
 import { useSelector } from 'react-redux';
+import JoiningWindowOfOwner from './joiningWindowOfOwner/JoiningWindowOfOwner';
+import JoiningWindowOfGuest from './joiningWindowOfGuest/JoiningWindowOfGuest';
 
 export default function LobbyPage() {
   const { roomData, socket } = useLoaderData<{
@@ -19,6 +21,8 @@ export default function LobbyPage() {
   const [disabledCreateButton, setDisabledCreateButton] = useState(
     roomData.some(room => room.owner.id === userId)
   );
+  const [waitOfOwner, setWaitOfOwner] = useState<RoomData | null>(null);
+  const [waitOfGuest, setWaitOfGuest] = useState<RoomData | null>(null);
 
   useEffect(() => {
     const removedRoom = ({ roomId }: { roomId: string }) => {
@@ -39,12 +43,19 @@ export default function LobbyPage() {
       );
     };
 
+    const showWaitJoining = ({ room }: { room: RoomData }) => {
+      if (room.owner.id === userId) setWaitOfOwner(room);
+      if (room.guest && room.guest.id === userId) setWaitOfGuest(room);
+    };
+
     socket.on('lobby:removed-room', removedRoom);
     socket.on('lobby:created-room', createdRoom);
+    socket.on('lobby:wait-joining', showWaitJoining);
 
     return () => {
       socket.off('lobby:removed-room', removedRoom);
       socket.off('lobby:created-room', createdRoom);
+      socket.off('lobby:wait-joining', showWaitJoining);
     };
   });
 
@@ -60,6 +71,8 @@ export default function LobbyPage() {
       <div className="visual-panel p-2 grow flex items-start justify-center">
         <div className="flex flex-wrap justify-center gap-2">{rooms}</div>
       </div>
+      {waitOfOwner && <JoiningWindowOfOwner room={waitOfOwner} />}
+      {waitOfGuest && <JoiningWindowOfGuest room={waitOfGuest} />}
     </main>
   );
 }

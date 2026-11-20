@@ -1,6 +1,4 @@
 import { RoomData } from './types/room.ts';
-import { Player } from './types/user.ts';
-
 export enum UserStatus {
   IN_LOBBY = 'in-lobby',
 }
@@ -20,7 +18,7 @@ type ServerEvent =
   | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } }
   | { type: 'lobby:removed-room'; payload: { roomId: string } }
   | { type: 'lobby:created-room'; payload: { room: RoomData } }
-  | { type: 'lobby:wait-joining'; payload: { roomId: string; guest: Player } };
+  | { type: 'lobby:wait-joining'; payload: { room: RoomData } };
 
 type EventName<T> = T extends { type: infer K } ? K : never;
 

@@ -2,7 +2,6 @@ import Avatar from '@/app/components/avatar/Avatar';
 import { RootState } from '@/app/store/store';
 import { TypedSocket } from '@/types/general.types';
 import { RoomData } from '@repo/shared/room';
-import { Player } from '@repo/shared/user';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,13 +18,8 @@ export default function RoomCard({ room, socket }: props) {
   const { id: roomId, owner } = room;
 
   useEffect(() => {
-    const onSetWaiting = ({
-      roomId: id,
-    }: {
-      roomId: string;
-      guest: Player;
-    }) => {
-      if (roomId !== id) return;
+    const onSetWaiting = ({ room }: { room: RoomData }) => {
+      if (roomId !== room.id) return;
 
       setWaiting(true);
     };

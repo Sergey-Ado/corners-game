@@ -62,6 +62,12 @@
     "delete": "delete",
     "create": "Create room",
     "free": "Status: free",
-    "occupied": "Status: occupied"
+    "occupied": "Status: occupied",
+    "wait-to-play": "wants to play with you.",
+    "question": "Do you agree to play?",
+    "yes": "yes",
+    "no": "no",
+    "wait": "Wait for confirmation from",
+    "cancel": "cancel"
   }
 }

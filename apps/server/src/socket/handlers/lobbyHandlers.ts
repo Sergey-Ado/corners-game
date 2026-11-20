@@ -65,6 +65,6 @@ export function waitJoining(handleData: HandlerData) {
 
     const sender = getSender(handleData);
 
-    sender(lobbyPlayerIds, 'lobby:wait-joining', { roomId, guest });
+    sender(lobbyPlayerIds, 'lobby:wait-joining', { room });
   };
 }

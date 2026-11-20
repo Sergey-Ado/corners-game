@@ -2,6 +2,7 @@ import { TypedServerIo, TypedSocket } from '../../types/types.ts';
 import getSocketMiddleware from '../middlewares/socketMiddleware.ts';
 import initialSocketStores from './initialSocketStores.ts';
 import {
+  cancelJoining,
   createRoom,
   removeRoom,
   sendLobbyState,
@@ -35,6 +36,7 @@ const initialConnected = (io: TypedServerIo) => {
     socket.on('lobby:remove-room', removeRoom(handlerData));
     socket.on('lobby:create-room', createRoom(handlerData));
     socket.on('lobby:ask-joining', waitJoining(handlerData));
+    socket.on('lobby:cancel-joining', cancelJoining(handlerData));
   };
 };
 

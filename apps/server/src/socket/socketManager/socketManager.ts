@@ -62,4 +62,19 @@ export class SocketManager {
 
     return { room, lobbyPlayerIds };
   }
+
+  public cancelJoining(userId: string):
+    | {
+        room: RoomData;
+        lobbyPlayerIds: string[];
+      }
+    | undefined {
+    const room = this.roomManager.cancelJoining(userId);
+
+    if (!room) return;
+
+    const lobbyPlayerIds = this.lobbyManager.getPlayerIds();
+
+    return { room, lobbyPlayerIds };
+  }
 }

@@ -68,3 +68,23 @@ export function waitJoining(handleData: HandlerData) {
     sender(lobbyPlayerIds, 'lobby:wait-joining', { room });
   };
 }
+
+export function cancelJoining(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId, username } = socket.data;
+
+  return (): void => {
+    const response = socketManager.cancelJoining(userId);
+
+    if (!response) return;
+
+    const { room, lobbyPlayerIds } = response;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:canceled-joining', {
+      room,
+      initiator: { id: userId, username },
+    });
+  };
+}

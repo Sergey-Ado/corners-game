@@ -48,14 +48,21 @@ export default function LobbyPage() {
       if (room.guest && room.guest.id === userId) setWaitOfGuest(room);
     };
 
+    const canceledJoining = () => {
+      setWaitOfOwner(null);
+      setWaitOfGuest(null);
+    };
+
     socket.on('lobby:removed-room', removedRoom);
     socket.on('lobby:created-room', createdRoom);
     socket.on('lobby:wait-joining', showWaitJoining);
+    socket.on('lobby:canceled-joining', canceledJoining);
 
     return () => {
       socket.off('lobby:removed-room', removedRoom);
       socket.off('lobby:created-room', createdRoom);
       socket.off('lobby:wait-joining', showWaitJoining);
+      socket.off('lobby:canceled-joining', canceledJoining);
     };
   });
 
@@ -71,8 +78,12 @@ export default function LobbyPage() {
       <div className="visual-panel p-2 grow flex items-start justify-center">
         <div className="flex flex-wrap justify-center gap-2">{rooms}</div>
       </div>
-      {waitOfOwner && <JoiningWindowOfOwner room={waitOfOwner} />}
-      {waitOfGuest && <JoiningWindowOfGuest room={waitOfGuest} />}
+      {waitOfOwner && (
+        <JoiningWindowOfOwner room={waitOfOwner} socket={socket} />
+      )}
+      {waitOfGuest && (
+        <JoiningWindowOfGuest room={waitOfGuest} socket={socket} />
+      )}
     </main>
   );
 }

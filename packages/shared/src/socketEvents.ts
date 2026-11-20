@@ -1,4 +1,5 @@
 import { RoomData } from './types/room.ts';
+import { Player } from './types/user.ts';
 export enum UserStatus {
   IN_LOBBY = 'in-lobby',
 }
@@ -8,7 +9,8 @@ type ClientEvent =
   | { type: 'lobby:ask-state' }
   | { type: 'lobby:remove-room'; payload: { roomId: string } }
   | { type: 'lobby:create-room' }
-  | { type: 'lobby:ask-joining'; payload: { roomId: string } };
+  | { type: 'lobby:ask-joining'; payload: { roomId: string } }
+  | { type: 'lobby:cancel-joining' };
 
 type ServerEvent =
   | {
@@ -18,7 +20,11 @@ type ServerEvent =
   | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } }
   | { type: 'lobby:removed-room'; payload: { roomId: string } }
   | { type: 'lobby:created-room'; payload: { room: RoomData } }
-  | { type: 'lobby:wait-joining'; payload: { room: RoomData } };
+  | { type: 'lobby:wait-joining'; payload: { room: RoomData } }
+  | {
+      type: 'lobby:canceled-joining';
+      payload: { room: RoomData; initiator: Player };
+    };
 
 type EventName<T> = T extends { type: infer K } ? K : never;
 

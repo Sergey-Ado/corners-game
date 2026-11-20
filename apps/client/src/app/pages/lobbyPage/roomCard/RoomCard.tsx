@@ -24,7 +24,14 @@ export default function RoomCard({ room, socket }: props) {
       setWaiting(true);
     };
 
+    const onCancelJoining = ({ room }: { room: RoomData }) => {
+      if (roomId !== room.id) return;
+
+      setWaiting(false);
+    };
+
     socket.on('lobby:wait-joining', onSetWaiting);
+    socket.on('lobby:canceled-joining', onCancelJoining);
 
     return () => {
       socket.off('lobby:wait-joining', onSetWaiting);

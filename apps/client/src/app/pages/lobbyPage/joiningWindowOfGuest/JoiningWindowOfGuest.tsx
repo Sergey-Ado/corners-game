@@ -1,19 +1,25 @@
 import ModalWrapper from '@/app/components/modalWrapper/ModalWrapper';
+import { TypedSocket } from '@/types/general.types';
 import { RoomData } from '@repo/shared/room';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
 interface props {
   room: RoomData;
+  socket: TypedSocket;
 }
 
-export default function JoiningWindowOfGuest({ room }: props) {
+export default function JoiningWindowOfGuest({ room, socket }: props) {
   const { t } = useTranslation();
 
   const wait = t('lobby.wait');
   const cancel = t('lobby.cancel');
 
   const ownerName = room.owner.username;
+
+  const onClickNo = () => {
+    socket.emit('lobby:cancel-joining');
+  };
 
   return (
     <ModalWrapper>
@@ -31,7 +37,9 @@ export default function JoiningWindowOfGuest({ room }: props) {
             'text-primary-dark dark:text-white'
           )}
           role="status"></div>
-        <button className="button px-2 py-1">{cancel}</button>
+        <button className="button px-2 py-1" onClick={onClickNo}>
+          {cancel}
+        </button>
       </div>
     </ModalWrapper>
   );

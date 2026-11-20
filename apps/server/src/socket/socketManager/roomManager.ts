@@ -53,4 +53,20 @@ export default class RoomManager {
 
     return room;
   }
+
+  public cancelJoining(userId: string): RoomData | undefined {
+    const room = this.rooms.find(
+      room =>
+        (room.owner.id === userId && room.guest !== null) ||
+        room.guest?.id === userId
+    );
+    if (!room) return;
+
+    // const roomOld = Object.assign({}, room);
+    const roomOld = { ...room };
+
+    room.guest = null;
+
+    return roomOld;
+  }
 }

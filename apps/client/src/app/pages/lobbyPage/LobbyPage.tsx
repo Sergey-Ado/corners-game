@@ -8,6 +8,9 @@ import { RootState } from '@/app/store/store';
 import { useSelector } from 'react-redux';
 import JoiningWindowOfOwner from './joiningWindowOfOwner/JoiningWindowOfOwner';
 import JoiningWindowOfGuest from './joiningWindowOfGuest/JoiningWindowOfGuest';
+import { Player } from '@repo/shared/user';
+import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export default function LobbyPage() {
   const { roomData, socket } = useLoaderData<{
@@ -23,6 +26,11 @@ export default function LobbyPage() {
   );
   const [waitOfOwner, setWaitOfOwner] = useState<RoomData | null>(null);
   const [waitOfGuest, setWaitOfGuest] = useState<RoomData | null>(null);
+
+  const { t } = useTranslation();
+
+  const refused = t('lobby.refused');
+  const changeMind = t('lobby.change-mind');
 
   useEffect(() => {
     const removedRoom = ({ roomId }: { roomId: string }) => {
@@ -48,9 +56,26 @@ export default function LobbyPage() {
       if (room.guest && room.guest.id === userId) setWaitOfGuest(room);
     };
 
-    const canceledJoining = () => {
-      setWaitOfOwner(null);
-      setWaitOfGuest(null);
+    const canceledJoining = ({
+      room,
+      initiator,
+    }: {
+      room: RoomData;
+      initiator: Player;
+    }) => {
+      if (room.owner.id === userId) {
+        setWaitOfOwner(null);
+
+        if (initiator.id !== userId)
+          toast(`${initiator.username} ${changeMind}`);
+      }
+
+      // eslint-disable-next-line unicorn/prefer-early-return
+      if (room.guest && room.guest.id === userId) {
+        setWaitOfGuest(null);
+
+        if (initiator.id !== userId) toast(`${initiator.username} ${refused}`);
+      }
     };
 
     socket.on('lobby:removed-room', removedRoom);

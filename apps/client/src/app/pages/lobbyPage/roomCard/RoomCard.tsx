@@ -19,15 +19,21 @@ export default function RoomCard({ room, socket }: props) {
 
   useEffect(() => {
     const onSetWaiting = ({ room }: { room: RoomData }) => {
-      if (roomId !== room.id) return;
-
-      setWaiting(true);
+      if (
+        room.owner.id === owner.id ||
+        (room.guest && room.guest.id === owner.id)
+      ) {
+        setWaiting(true);
+      }
     };
 
     const onCancelJoining = ({ room }: { room: RoomData }) => {
-      if (roomId !== room.id) return;
-
-      setWaiting(false);
+      if (
+        room.owner.id === owner.id ||
+        (room.guest && room.guest.id === owner.id)
+      ) {
+        setWaiting(false);
+      }
     };
 
     socket.on('lobby:wait-joining', onSetWaiting);
@@ -35,6 +41,7 @@ export default function RoomCard({ room, socket }: props) {
 
     return () => {
       socket.off('lobby:wait-joining', onSetWaiting);
+      socket.off('lobby:canceled-joining', onCancelJoining);
     };
   });
 
@@ -43,7 +50,7 @@ export default function RoomCard({ room, socket }: props) {
   const join = t('lobby.join');
   const del = t('lobby.delete');
   const freeStatus = t('lobby.free');
-  const occupiedStatus = t('lobby.occupied');
+  const inaccessibleStatus = t('lobby.inaccessible');
 
   const userId = useSelector((state: RootState) => state.general.userdata.id);
 
@@ -88,7 +95,7 @@ export default function RoomCard({ room, socket }: props) {
         <Avatar seed={owner.id} />
         <h2 className="truncate max-w-34">{owner.username}</h2>
       </div>
-      <p>{waiting ? occupiedStatus : freeStatus}</p>
+      <p>{waiting ? inaccessibleStatus : freeStatus}</p>
       {userId === owner.id && deleteButton}
       {userId !== owner.id && joinButton}
     </div>

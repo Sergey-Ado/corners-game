@@ -1,7 +1,7 @@
 import { UserStatus } from '@repo/shared/socketEvents';
 import { LobbyManager } from './lobbyManager.ts';
 import RoomManager from './roomManager.ts';
-import { RoomData } from '@repo/shared/room';
+import { RoomData, RoomState } from '@repo/shared/room';
 import { Player } from '@repo/shared/user';
 
 export class SocketManager {
@@ -19,8 +19,10 @@ export class SocketManager {
     }
   }
 
-  public getRoomData(): RoomData[] {
-    return this.roomManager.getRoomData();
+  public getRoomState(userId: string): RoomState {
+    const waitRoom = this.roomManager.getRoomByPlayerId(userId);
+    const roomData = this.roomManager.getRoomData();
+    return { roomData, waitRoom };
   }
 
   public removeRoom(roomId: string):

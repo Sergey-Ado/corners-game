@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
-import { RoomData } from '@repo/shared/room';
+import { RoomData, RoomState } from '@repo/shared/room';
 import { UserStatus } from '@repo/shared/socketEvents';
 
 const mockRoomData: RoomData[] = [
@@ -23,15 +23,20 @@ const mockRoomData: RoomData[] = [
 ];
 const players = mockRoomData.map(room => room.owner);
 
+const mockRoomState: RoomState = {
+  roomData: mockRoomData,
+  waitRoom: null,
+};
+
 describe('socketManager', () => {
   it('should set and return roomData', () => {
     const socketManager = new SocketManager();
 
     socketManager.initial(mockRoomData);
 
-    const roomData = socketManager.getRoomData();
+    const roomState = socketManager.getRoomState('room-1');
 
-    expect(roomData).toEqual(mockRoomData);
+    expect(roomState).toEqual(mockRoomState);
   });
 
   it('should return user status using getUserStatus method', () => {

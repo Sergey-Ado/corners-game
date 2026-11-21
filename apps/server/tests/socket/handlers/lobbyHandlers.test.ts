@@ -50,9 +50,9 @@ describe('sendLobbyState', () => {
     ];
 
     const spy = vi
-      .spyOn(SocketManager.prototype, 'getRoomData')
+      .spyOn(SocketManager.prototype, 'getRoomState')
       .mockImplementation(() => {
-        return rooms;
+        return { roomData: rooms, waitRoom: null };
       });
 
     const resultFunction = sendLobbyState(handlerData as HandlerData);
@@ -60,7 +60,10 @@ describe('sendLobbyState', () => {
     resultFunction();
 
     expect(mockSender).toHaveBeenCalledWith(['userId'], 'lobby:send-state', {
-      roomData: rooms,
+      roomState: {
+        roomData: rooms,
+        waitRoom: null,
+      },
     });
 
     spy.mockRestore();

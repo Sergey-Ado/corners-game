@@ -5,13 +5,13 @@ export function sendLobbyState(handlerData: HandlerData) {
   const { socket, socketManager } = handlerData;
 
   return (): void => {
-    const roomData = socketManager.getRoomData();
-
     const { userId } = socket.data;
+
+    const roomState = socketManager.getRoomState(userId);
 
     const sender = getSender(handlerData);
 
-    sender([userId], 'lobby:send-state', { roomData });
+    sender([userId], 'lobby:send-state', { roomState });
   };
 }
 

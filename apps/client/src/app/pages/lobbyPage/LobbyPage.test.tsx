@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LobbyPage from './LobbyPage';
-import { RoomData } from '@repo/shared/room';
+import { RoomData, RoomState } from '@repo/shared/room';
 import { TypedSocket } from '@/types/general.types';
 import { RootState } from '@/app/store/store';
 
@@ -18,6 +18,11 @@ const roomData: RoomData[] = [
   },
 ];
 
+const roomState: RoomState = {
+  roomData,
+  waitRoom: null,
+};
+
 const mockSocket: Partial<TypedSocket> = {
   on: vi.fn(),
   off: vi.fn(),
@@ -29,7 +34,7 @@ vi.mock('react-redux', () => ({
 }));
 
 vi.mock('react-router', () => ({
-  useLoaderData: () => ({ roomData, socket: mockSocket }),
+  useLoaderData: () => ({ roomState, socket: mockSocket }),
 }));
 
 vi.mock('./roomCard/RoomCard', () => ({

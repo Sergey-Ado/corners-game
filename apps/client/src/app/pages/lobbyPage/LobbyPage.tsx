@@ -1,6 +1,6 @@
 import Room from './roomCard/RoomCard';
 import { useLoaderData } from 'react-router';
-import { RoomData } from '@repo/shared/room';
+import { RoomData, RoomState } from '@repo/shared/room';
 import { TypedSocket } from '@/types/general.types';
 import { useEffect, useState } from 'react';
 import CreateRoomButton from './createRoomButton/CreateRoomButton';
@@ -13,10 +13,11 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 
 export default function LobbyPage() {
-  const { roomData, socket } = useLoaderData<{
-    roomData: RoomData[];
+  const { roomState, socket } = useLoaderData<{
+    roomState: RoomState;
     socket: TypedSocket;
   }>();
+  const { roomData, waitRoom } = roomState;
 
   const userId = useSelector((state: RootState) => state.general.userdata.id);
 
@@ -24,8 +25,21 @@ export default function LobbyPage() {
   const [disabledCreateButton, setDisabledCreateButton] = useState(
     roomData.some(room => room.owner.id === userId)
   );
-  const [waitOfOwner, setWaitOfOwner] = useState<RoomData | null>(null);
-  const [waitOfGuest, setWaitOfGuest] = useState<RoomData | null>(null);
+
+  const waitOwner = (function () {
+    if (!waitRoom) return null;
+
+    return waitRoom.owner.id === userId ? waitRoom : null;
+  })();
+
+  const waitGuest = (function () {
+    if (!waitRoom) return null;
+
+    return waitRoom.guest && waitRoom.guest.id === userId ? waitRoom : null;
+  })();
+
+  const [waitOfOwner, setWaitOfOwner] = useState<RoomData | null>(waitOwner);
+  const [waitOfGuest, setWaitOfGuest] = useState<RoomData | null>(waitGuest);
 
   const { t } = useTranslation();
 

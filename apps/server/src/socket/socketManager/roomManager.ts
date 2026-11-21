@@ -62,11 +62,20 @@ export default class RoomManager {
     );
     if (!room) return;
 
-    // const roomOld = Object.assign({}, room);
     const roomOld = { ...room };
 
     room.guest = null;
 
     return roomOld;
+  }
+
+  public getRoomByPlayerId(userId: string): RoomData | null {
+    const room = this.rooms.find(
+      room =>
+        (room.owner.id === userId && room.guest) ||
+        (room.guest && room.guest.id === userId)
+    );
+
+    return room || null;
   }
 }

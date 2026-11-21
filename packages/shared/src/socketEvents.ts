@@ -1,4 +1,4 @@
-import { RoomData } from './types/room.ts';
+import { RoomData, RoomState } from './types/room.ts';
 import { Player } from './types/user.ts';
 export enum UserStatus {
   IN_LOBBY = 'in-lobby',
@@ -17,7 +17,7 @@ type ServerEvent =
       type: 'session:send-status';
       payload: { userId: string; username: string; status: string };
     }
-  | { type: 'lobby:send-state'; payload: { roomData: RoomData[] } }
+  | { type: 'lobby:send-state'; payload: { roomState: RoomState } }
   | { type: 'lobby:removed-room'; payload: { roomId: string } }
   | { type: 'lobby:created-room'; payload: { room: RoomData } }
   | { type: 'lobby:wait-joining'; payload: { room: RoomData } }

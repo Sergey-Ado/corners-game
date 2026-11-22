@@ -2,9 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HandlerData, TypedSocket } from '../../../src/types/types.ts';
 import { SocketManager } from '../../../src/socket/socketManager/socketManager.ts';
 import {
+  cancelJoining,
   createRoom,
   removeRoom,
   sendLobbyState,
+  waitJoining,
 } from '../../../src/socket/handlers/lobbyHandlers.ts';
 
 const mockSender = vi.fn();
@@ -150,6 +152,141 @@ describe('createRoom', () => {
       .mockImplementation(() => {});
 
     const resultFunction = createRoom(handlerData as HandlerData);
+
+    resultFunction();
+
+    expect(mockSender).not.toHaveBeenCalled();
+
+    spy.mockRestore();
+  });
+});
+
+describe('waitJoining', () => {
+  it('should return function', () => {
+    const resultFunction = waitJoining(handlerData as HandlerData);
+
+    expect(resultFunction).toEqual(expect.any(Function));
+  });
+
+  it('should call sender if waiting of joining is started', () => {
+    const room = {
+      id: 'room-1',
+      owner: { id: 'user-1', username: 'username-1' },
+      guest: null,
+    };
+
+    const guest = { id: 'userId', username: 'username' };
+
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'waitJoining')
+      .mockImplementation(() => {
+        return {
+          room: { ...room, guest },
+          lobbyPlayerIds: ['userId', 'user-1'],
+        };
+      });
+
+    const resultFunction = waitJoining(handlerData as HandlerData);
+
+    resultFunction({ roomId: 'room-1' });
+
+    expect(mockSender).toHaveBeenCalledWith(
+      ['userId', 'user-1'],
+      'lobby:wait-joining',
+      {
+        room: { ...room, guest },
+      }
+    );
+
+    spy.mockRestore();
+  });
+
+  it('should not call sender if waiting of joining is not started', () => {
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'waitJoining')
+      .mockImplementation(() => {});
+
+    const resultFunction = waitJoining(handlerData as HandlerData);
+
+    resultFunction({ roomId: 'room-1' });
+
+    expect(mockSender).not.toHaveBeenCalled();
+
+    spy.mockRestore();
+  });
+
+  it('should not call sender if guest is not defined', () => {
+    const room = {
+      id: 'room-1',
+      owner: { id: 'user-1', username: 'username-1' },
+      guest: null,
+    };
+
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'waitJoining')
+      .mockImplementation(() => {
+        return {
+          room,
+          lobbyPlayerIds: ['userId', 'user-1'],
+        };
+      });
+
+    const resultFunction = waitJoining(handlerData as HandlerData);
+
+    resultFunction({ roomId: 'room-1' });
+
+    expect(mockSender).not.toHaveBeenCalled();
+
+    spy.mockRestore();
+  });
+});
+
+describe('cancelJoining', () => {
+  it('should return function', () => {
+    const resultFunction = cancelJoining(handlerData as HandlerData);
+
+    expect(resultFunction).toEqual(expect.any(Function));
+  });
+
+  it('should call sender if canceling of joining is started', () => {
+    const guest = { id: 'userId', username: 'username' };
+    const room = {
+      id: 'room-1',
+      owner: { id: 'user-1', username: 'username-1' },
+      guest,
+    };
+
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'cancelJoining')
+      .mockImplementation(() => {
+        return {
+          room,
+          lobbyPlayerIds: ['userId', 'user-1'],
+        };
+      });
+
+    const resultFunction = cancelJoining(handlerData as HandlerData);
+
+    resultFunction();
+
+    expect(mockSender).toHaveBeenCalledWith(
+      ['userId', 'user-1'],
+      'lobby:canceled-joining',
+      {
+        room,
+        initiator: guest,
+      }
+    );
+
+    spy.mockRestore();
+  });
+
+  it('should not call sender if canceling of joining is not started', () => {
+    const spy = vi
+      .spyOn(SocketManager.prototype, 'cancelJoining')
+      .mockImplementation(() => {});
+
+    const resultFunction = cancelJoining(handlerData as HandlerData);
 
     resultFunction();
 

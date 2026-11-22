@@ -50,6 +50,7 @@ const eslintBaseConfig = [
           },
         },
       ],
+      'unicorn/no-useless-undefined': 'off',
     },
   },
   {

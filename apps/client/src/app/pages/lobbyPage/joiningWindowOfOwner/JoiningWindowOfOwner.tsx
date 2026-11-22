@@ -19,7 +19,7 @@ export default function JoiningWindowOfOwner({ room, socket }: props) {
 
   const guestName = room.guest?.username || 'anonymous';
 
-  const onClickCancel = () => {
+  const onClickNo = () => {
     socket.emit('lobby:cancel-joining');
   };
 
@@ -31,12 +31,17 @@ export default function JoiningWindowOfOwner({ room, socket }: props) {
           'bg-primary-light dark:bg-primary-dark',
           'p-5 w-60 border rounded-lg'
         )}>
-        <span className="underline">{guestName}</span>
+        <span className="underline" role="guest-name">
+          {guestName}
+        </span>
         <span className="mb-2">{waitPlay}</span>
         <span className="mb-3">{question}</span>
         <div className="flex gap-4">
           <button className="button px-2 py-1">{yes}</button>
-          <button className="button px-2 py-1" onClick={onClickCancel}>
+          <button
+            className="button px-2 py-1"
+            onClick={onClickNo}
+            role="no-button">
             {no}
           </button>
         </div>

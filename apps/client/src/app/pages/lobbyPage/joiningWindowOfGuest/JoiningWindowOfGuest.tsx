@@ -37,7 +37,10 @@ export default function JoiningWindowOfGuest({ room, socket }: props) {
             'text-primary-dark dark:text-white'
           )}
           role="status"></div>
-        <button className="button px-2 py-1" onClick={onClickNo}>
+        <button
+          className="button px-2 py-1"
+          onClick={onClickNo}
+          role="no-button">
           {cancel}
         </button>
       </div>

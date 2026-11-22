@@ -69,7 +69,7 @@ export default class RoomManager {
     return roomOld;
   }
 
-  public getRoomByPlayerId(userId: string): RoomData | null {
+  public getInaccessibleRoomByPlayerId(userId: string): RoomData | null {
     const room = this.rooms.find(
       room =>
         (room.owner.id === userId && room.guest) ||

@@ -20,7 +20,7 @@ export class SocketManager {
   }
 
   public getRoomState(userId: string): RoomState {
-    const waitRoom = this.roomManager.getRoomByPlayerId(userId);
+    const waitRoom = this.roomManager.getInaccessibleRoomByPlayerId(userId);
     const roomData = this.roomManager.getRoomData();
     return { roomData, waitRoom };
   }

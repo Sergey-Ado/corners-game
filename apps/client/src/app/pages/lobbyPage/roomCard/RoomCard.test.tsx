@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import RoomCard from './RoomCard';
 import { RoomData } from '@repo/shared/room';
@@ -73,5 +73,185 @@ describe('RoomCard', () => {
     expect(mockEmit).toHaveBeenCalledWith('lobby:remove-room', {
       roomId: 'roomId',
     });
+  });
+
+  it('should set disabled for deleteButton if call socket.on with lobby:wait-joining and user is owner', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callback = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    expect(callback).toBeDefined();
+
+    act(() => {
+      callback({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId', username: 'username' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).toBeDisabled();
+  });
+
+  it('should set disabled for deleteButton if call socket.on with lobby:wait-joining and user is guest', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callback = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    expect(callback).toBeDefined();
+
+    act(() => {
+      callback({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId1', username: 'username1' },
+          guest: { id: 'userId', username: 'username' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).toBeDisabled();
+  });
+
+  it('should not set disabled for deleteButton if call socket.on with lobby:wait-joining and user is not owner or guest', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callback = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    expect(callback).toBeDefined();
+
+    act(() => {
+      callback({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId1', username: 'username1' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).not.toBeDisabled();
+  });
+
+  it('should remove disabled of deleteButton if call socket.on with lobby:canceled-joining and user is owner', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callbackWait = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    act(() => {
+      callbackWait({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId', username: 'username' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const callbackCancel = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:canceled-joining'
+    )?.[1];
+
+    act(() => {
+      callbackCancel({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId', username: 'username' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).not.toBeDisabled();
+  });
+
+  it('should remove disabled of deleteButton if call socket.on with lobby:canceled-joining and user is guest', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callbackWait = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    act(() => {
+      callbackWait({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId', username: 'username' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const callbackCancel = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:canceled-joining'
+    )?.[1];
+
+    act(() => {
+      callbackCancel({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId1', username: 'username1' },
+          guest: { id: 'userId', username: 'username' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).not.toBeDisabled();
+  });
+
+  it('should not remove disabled of deleteButton if call socket.on with lobby:canceled-joining and user is not owner or guest', () => {
+    render(<RoomCard room={room} socket={socket as TypedSocket} />);
+
+    const callbackWait = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:wait-joining'
+    )?.[1];
+
+    act(() => {
+      callbackWait({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId', username: 'username' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const callbackCancel = (socket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'lobby:canceled-joining'
+    )?.[1];
+
+    act(() => {
+      callbackCancel({
+        room: {
+          id: 'roomId',
+          owner: { id: 'userId1', username: 'username1' },
+          guest: { id: 'userId2', username: 'username2' },
+        },
+      });
+    });
+
+    const deleteButton = screen.getByRole('room-delete');
+
+    expect(deleteButton).toBeDisabled();
   });
 });

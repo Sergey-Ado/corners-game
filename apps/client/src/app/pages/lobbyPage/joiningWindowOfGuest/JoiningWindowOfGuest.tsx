@@ -24,6 +24,7 @@ export default function JoiningWindowOfGuest({ room, socket }: props) {
   return (
     <ModalWrapper>
       <div
+        role="joining-window-of-guest"
         className={clsx(
           'flex flex-col items-center gap-0.5',
           'bg-primary-light dark:bg-primary-dark',

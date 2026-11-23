@@ -1,21 +1,25 @@
 import { TypedSocket } from '@/types/general.types';
-import { RoomData } from '@repo/shared/room';
+import { RoomData, RoomState } from '@repo/shared/room';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('getRouterLoader', () => {
   it('should ask lobby state and return rooms from socket response', async () => {
     const roomData: RoomData[] = [
-      { id: 'room-1', owner: { id: 'user-1', username: 'User' } },
+      { id: 'room-1', owner: { id: 'user-1', username: 'User' }, guest: null },
     ];
+    const roomState: RoomState = {
+      roomData,
+      waitRoom: null,
+    };
 
-    let sendState: ((payload: { roomData: RoomData[] }) => void) | undefined;
+    let sendState: ((payload: { roomState: RoomState }) => void) | undefined;
 
     const socket = {
       emit: vi.fn(),
       on: vi.fn(
         (
           event: string,
-          handler: (payload: { roomData: RoomData[] }) => void
+          handler: (payload: { roomState: RoomState }) => void
         ) => {
           if (event === 'lobby:send-state') {
             sendState = handler;
@@ -39,8 +43,8 @@ describe('getRouterLoader', () => {
       throw new Error('Handler of lobby:send-state is not registered');
     }
 
-    sendState({ roomData });
+    sendState({ roomState });
 
-    await expect(resultPromise).resolves.toEqual({ roomData, socket });
+    await expect(resultPromise).resolves.toEqual({ roomState, socket });
   });
 });

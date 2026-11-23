@@ -60,6 +60,16 @@
   "lobby": {
     "join": "join",
     "delete": "delete",
-    "create": "Create room"
+    "create": "Create room",
+    "free": "Status: free",
+    "inaccessible": "Status: inaccessible",
+    "wait-to-play": "wants to play with you.",
+    "question": "Do you agree to play?",
+    "yes": "yes",
+    "no": "no",
+    "wait": "Wait for confirmation from",
+    "cancel": "cancel",
+    "refused": "refused to play.",
+    "change-mind": "changed their mind about playing."
   }
 }

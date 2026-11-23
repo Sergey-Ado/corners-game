@@ -5,13 +5,13 @@ export function sendLobbyState(handlerData: HandlerData) {
   const { socket, socketManager } = handlerData;
 
   return (): void => {
-    const roomData = socketManager.getRoomData();
-
     const { userId } = socket.data;
+
+    const roomState = socketManager.getRoomState(userId);
 
     const sender = getSender(handlerData);
 
-    sender([userId], 'lobby:send-state', { roomData });
+    sender([userId], 'lobby:send-state', { roomState });
   };
 }
 
@@ -36,7 +36,7 @@ export function createRoom(handleData: HandlerData) {
   const { userId, username } = socket.data;
 
   return (): void => {
-    const response = socketManager.createRoom(userId, username);
+    const response = socketManager.createRoom({ id: userId, username });
 
     if (!response) return;
 
@@ -45,5 +45,46 @@ export function createRoom(handleData: HandlerData) {
     const sender = getSender(handleData);
 
     sender(lobbyPlayerIds, 'lobby:created-room', { room });
+  };
+}
+
+export function waitJoining(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId, username } = socket.data;
+
+  return ({ roomId }: { roomId: string }): void => {
+    const guest = { id: userId, username };
+
+    const response = socketManager.waitJoining(roomId, guest);
+
+    if (!response) return;
+
+    const { room, lobbyPlayerIds } = response;
+
+    if (!room.guest) return;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:wait-joining', { room });
+  };
+}
+
+export function cancelJoining(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId, username } = socket.data;
+
+  return (): void => {
+    const response = socketManager.cancelJoining(userId);
+
+    if (!response) return;
+
+    const { room, lobbyPlayerIds } = response;
+
+    const sender = getSender(handleData);
+
+    sender(lobbyPlayerIds, 'lobby:canceled-joining', {
+      room,
+      initiator: { id: userId, username },
+    });
   };
 }

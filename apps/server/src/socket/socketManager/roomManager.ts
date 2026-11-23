@@ -1,4 +1,5 @@
 import { RoomData } from '@repo/shared/room';
+import { Player } from '@repo/shared/user';
 import { v4 as uuid } from 'uuid';
 
 export default class RoomManager {
@@ -8,7 +9,7 @@ export default class RoomManager {
     this.rooms = mockRooms.map(mockRoom => {
       const { id, owner } = mockRoom;
 
-      const room = { id, owner };
+      const room = { id, owner, guest: null };
       return room;
     });
   }
@@ -35,10 +36,46 @@ export default class RoomManager {
         id: userId,
         username,
       },
+      guest: null,
     };
 
     this.rooms.push(room);
 
     return room;
+  }
+
+  public addGuest(roomId: string, guest: Player): RoomData | undefined {
+    const room = this.rooms.find(room => room.id === roomId);
+
+    if (!room || room.guest) return;
+
+    room.guest = guest;
+
+    return room;
+  }
+
+  public cancelJoining(userId: string): RoomData | undefined {
+    const room = this.rooms.find(
+      room =>
+        (room.owner.id === userId && room.guest !== null) ||
+        room.guest?.id === userId
+    );
+    if (!room) return;
+
+    const roomOld = { ...room };
+
+    room.guest = null;
+
+    return roomOld;
+  }
+
+  public getInaccessibleRoomByPlayerId(userId: string): RoomData | null {
+    const room = this.rooms.find(
+      room =>
+        (room.owner.id === userId && room.guest) ||
+        (room.guest && room.guest.id === userId)
+    );
+
+    return room || null;
   }
 }

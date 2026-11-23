@@ -1,4 +1,4 @@
-import { RoomData } from '@repo/shared/room';
+import { RoomState } from '@repo/shared/room';
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -9,9 +9,9 @@ export default function getPageLoaders(
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
 ) {
   const lobbyLoader = async () => {
-    const roomData = await new Promise<RoomData[]>(res => {
-      const handler = ({ roomData }: { roomData: RoomData[] }) => {
-        res(roomData);
+    const roomState = await new Promise<RoomState>(res => {
+      const handler = ({ roomState }: { roomState: RoomState }) => {
+        res(roomState);
       };
 
       socket.on('lobby:send-state', handler);
@@ -19,7 +19,7 @@ export default function getPageLoaders(
       socket.emit('lobby:ask-state');
     });
 
-    return { roomData, socket };
+    return { roomState, socket };
   };
 
   return { lobbyLoader };

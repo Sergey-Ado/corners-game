@@ -34,9 +34,13 @@ vi.mock('react-redux', () => ({
     selector({ general: { userdata: { id: 'userId1' } } } as RootState),
 }));
 
+const { mockNavigate } = vi.hoisted(() => ({
+  mockNavigate: vi.fn(),
+}));
+
 vi.mock('react-router', () => ({
   useLoaderData: vi.fn(),
-  useNavigate: vi.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 vi.mock('./roomCard/RoomCard', () => ({
@@ -402,5 +406,35 @@ describe('LobbyPage', () => {
 
     expect(joiningWindowOfGuest).not.toBeInTheDocument();
     expect(mockToast).not.toHaveBeenCalled();
+  });
+
+  it('should call navigate to game page when call socket.on with game:started-game', () => {
+    // const roomState: RoomState = {
+    //   roomData,
+    //   waitRoom: {
+    //     id: 'roomId1',
+    //     owner: { id: 'userId1', username: 'username1' },
+    //     guest: { id: 'userId2', username: 'username2' },
+    //   },
+    // };
+
+    // vi.mocked(useLoaderData).mockReturnValue({
+    //   roomState,
+    //   socket: mockSocket,
+    // });
+
+    render(<LobbyPage />);
+
+    const callback = (mockSocket.on as any).mock.calls.find(
+      (call: any[]) => call[0] === 'game:started-game'
+    )?.[1];
+
+    expect(callback).toBeDefined();
+
+    act(() => {
+      callback();
+    });
+
+    expect(mockNavigate).toHaveBeenCalled();
   });
 });

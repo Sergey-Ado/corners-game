@@ -40,4 +40,14 @@ describe('JoiningWindowOfOwner', () => {
 
     expect(span).toBeInTheDocument();
   });
+
+  it('should call socket.emit with lobby:ok-joining when yes-button click', () => {
+    render(<JoiningWindowOfOwner room={room} socket={socket as TypedSocket} />);
+
+    const button = screen.getByRole('yes-button');
+
+    fireEvent.click(button);
+
+    expect(mockEmit).toHaveBeenCalledWith('lobby:ok-joining');
+  });
 });

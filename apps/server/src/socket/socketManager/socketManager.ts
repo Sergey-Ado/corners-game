@@ -3,12 +3,24 @@ import { LobbyManager } from './lobbyManager.ts';
 import RoomManager from './roomManager.ts';
 import { RoomData, RoomState } from '@repo/shared/room';
 import { Player } from '@repo/shared/user';
+import GameManager from './gameManager.ts';
 
 export class SocketManager {
   private lobbyManager = new LobbyManager();
   private roomManager = new RoomManager();
+  private gameManager = new GameManager();
 
-  public getUserStatus(): UserStatus {
+  public getUserStatus(player: Player): UserStatus {
+    const { id } = player;
+
+    const isGame = this.gameManager.hasPlayer(id);
+
+    if (isGame) return UserStatus.IN_GAME;
+
+    const isLobby = this.lobbyManager.inLobby(id);
+
+    if (!isLobby) this.lobbyManager.addPlayer(player);
+
     return UserStatus.IN_LOBBY;
   }
 
@@ -78,5 +90,36 @@ export class SocketManager {
     const lobbyPlayerIds = this.lobbyManager.getPlayerIds();
 
     return { room, lobbyPlayerIds };
+  }
+
+  public okJoining(userId: string):
+    | {
+        roomIds: string[];
+        gamePlayerIds: string[];
+        lobbyPlayerIds: string[];
+      }
+    | undefined {
+    const room = this.roomManager.getRoomByPlayerId(userId);
+    if (!room || !room.guest) return;
+    const roomIds = [room.id];
+    this.roomManager.removeRoomById(room.id);
+
+    const roomOfGuest = this.roomManager.getRoomByPlayerId(room.guest.id);
+
+    if (roomOfGuest) {
+      roomIds.push(roomOfGuest.id);
+      this.roomManager.removeRoomById(roomOfGuest.id);
+    }
+
+    const lobbyPlayerIds = this.lobbyManager.removePlayers([
+      room.owner,
+      room.guest,
+    ]);
+
+    const gamePlayerIds = this.gameManager.addGame(room);
+
+    if (!gamePlayerIds) return;
+
+    return { roomIds, gamePlayerIds, lobbyPlayerIds };
   }
 }

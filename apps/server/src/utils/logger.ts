@@ -22,7 +22,7 @@ class Logger {
   public emit<T extends keyof ServerToClientEvents>(
     userIds: string[],
     event: T,
-    payload: ServerToClientEvents[T] extends (argument: infer P) => void
+    payload?: ServerToClientEvents[T] extends (argument: infer P) => void
       ? P
       : never
   ): void {

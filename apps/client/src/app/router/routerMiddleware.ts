@@ -9,7 +9,7 @@ const storage = new Storage();
 
 export default function getRouterMiddleware(socket: TypedSocket) {
   const routerMiddleware: MiddlewareFunction = async ({ request }) => {
-    const protectedPages = new Set([Pages.LOBBY].map(String));
+    const protectedPages = new Set([Pages.LOBBY, Pages.GAME].map(String));
 
     const authToken = storage.getToken();
     const urlEnd = request.url.split('/').at(-1) || '';
@@ -19,11 +19,10 @@ export default function getRouterMiddleware(socket: TypedSocket) {
         throw redirect(`/${Pages.LOBBY}`);
       }
 
-      try {
-        const status = await new Promise<string>((res, rej) => {
-          socket.auth = { authToken };
-          socket.disconnect().connect();
+      let status: string;
 
+      try {
+        status = await new Promise<string>((res, rej) => {
           const connectListener = () => {
             socket.off('connect', connectListener);
             socket.emit('session:ask-status');
@@ -44,16 +43,23 @@ export default function getRouterMiddleware(socket: TypedSocket) {
           socket.on('connect', connectListener);
           socket.on('connect_error', connectErrorListener);
           socket.on('session:send-status', sendStatusListener);
-        });
 
-        if (status === UserStatus.IN_LOBBY && urlEnd !== Pages.LOBBY) {
-          throw redirect(`/${Pages.LOBBY}`);
-        }
+          socket.auth = { authToken };
+          socket.disconnect().connect();
+        });
       } catch {
         storage.removeToken();
         store.dispatch(changeUserdata({ id: '', username: '' }));
 
         throw redirect(`/${Pages.LOGIN}`);
+      }
+
+      if (status === UserStatus.IN_LOBBY && urlEnd !== Pages.LOBBY) {
+        throw redirect(`/${Pages.LOBBY}`);
+      }
+
+      if (status === UserStatus.IN_GAME && urlEnd !== Pages.GAME) {
+        throw redirect(`/${Pages.GAME}`);
       }
     } else {
       if (protectedPages.has(urlEnd)) {

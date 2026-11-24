@@ -43,7 +43,10 @@ describe('socketManager', () => {
   it('should return user status using getUserStatus method', () => {
     const socketManager = new SocketManager();
 
-    const status = socketManager.getUserStatus();
+    const status = socketManager.getUserStatus({
+      id: 'userId-1',
+      username: 'User-1',
+    });
 
     expect(status).toBe(UserStatus.IN_LOBBY);
   });

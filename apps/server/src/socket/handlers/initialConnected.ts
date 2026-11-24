@@ -4,6 +4,7 @@ import initialSocketStores from './initialSocketStores.ts';
 import {
   cancelJoining,
   createRoom,
+  okJoining,
   removeRoom,
   sendLobbyState,
   waitJoining,
@@ -37,6 +38,8 @@ const initialConnected = (io: TypedServerIo) => {
     socket.on('lobby:create-room', createRoom(handlerData));
     socket.on('lobby:ask-joining', waitJoining(handlerData));
     socket.on('lobby:cancel-joining', cancelJoining(handlerData));
+
+    socket.on('lobby:ok-joining', okJoining(handlerData));
   };
 };
 

@@ -10,6 +10,7 @@ import getRouterMiddleware from './routerMiddleware';
 import { getServerUrl } from '@/utils/getServerUrl';
 import { io } from 'socket.io-client';
 import getPageLoaders from './routerLoaders';
+import GamePage from '../pages/gamePage/GamePage';
 
 const serverUrl = getServerUrl();
 
@@ -45,6 +46,11 @@ const router = createBrowserRouter([
         Component: LobbyPage,
         middleware: [routerMiddleware],
         loader: lobbyLoader,
+      },
+      {
+        path: Pages.GAME,
+        Component: GamePage,
+        middleware: [routerMiddleware],
       },
       { path: '*', Component: ErrorPage },
     ],

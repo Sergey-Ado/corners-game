@@ -36,6 +36,7 @@ vi.mock('react-redux', () => ({
 
 vi.mock('react-router', () => ({
   useLoaderData: vi.fn(),
+  useNavigate: vi.fn(),
 }));
 
 vi.mock('./roomCard/RoomCard', () => ({

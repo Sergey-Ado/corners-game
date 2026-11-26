@@ -8,7 +8,9 @@ export default function getSender(handleData: HandlerData) {
   return <T extends keyof ServerToClientEvents>(
     userIds: string[],
     event: T,
-    payload: ServerToClientEvents[T] extends (args: infer P) => void ? P : never
+    payload?: ServerToClientEvents[T] extends (args: infer P) => void
+      ? P
+      : never
   ): void => {
     const logger = getLogger();
 

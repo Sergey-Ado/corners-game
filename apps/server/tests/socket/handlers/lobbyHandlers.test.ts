@@ -4,6 +4,7 @@ import { SocketManager } from '../../../src/socket/socketManager/socketManager.t
 import {
   cancelJoining,
   createRoom,
+  okJoining,
   removeRoom,
   sendLobbyState,
   waitJoining,
@@ -293,5 +294,39 @@ describe('cancelJoining', () => {
     expect(mockSender).not.toHaveBeenCalled();
 
     spy.mockRestore();
+  });
+});
+
+describe('okJoining', () => {
+  it('should return function', () => {
+    const result = okJoining(handlerData as HandlerData);
+
+    expect(result).toEqual(expect.any(Function));
+  });
+
+  it('should call sender if joining is ok', () => {
+    const spyOk = vi
+      .spyOn(SocketManager.prototype, 'okJoining')
+      .mockImplementation(() => ({
+        roomIds: ['room-1'],
+        gamePlayerIds: ['user-1', 'user-2'],
+        lobbyPlayerIds: ['user-3'],
+      }));
+
+    const resultFunction = okJoining(handlerData as HandlerData);
+
+    resultFunction();
+
+    expect(mockSender).toHaveBeenCalledTimes(2);
+
+    spyOk.mockRestore();
+  });
+
+  it('should return undefined if response of socket.manager is undefined', () => {
+    const resultFunction = okJoining(handlerData as HandlerData);
+
+    const result = resultFunction();
+
+    expect(result).toBeUndefined();
   });
 });

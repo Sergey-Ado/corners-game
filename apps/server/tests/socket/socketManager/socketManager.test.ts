@@ -3,6 +3,7 @@ import { SocketManager } from '../../../src/socket/socketManager/socketManager.t
 import { RoomData, RoomState } from '@repo/shared/room';
 import { UserStatus } from '@repo/shared/socketEvents';
 import RoomManager from '../../../src/socket/socketManager/roomManager.ts';
+import GameManager from '../../../src/socket/socketManager/gameManager.ts';
 
 const mockRoomData: RoomData[] = [
   {
@@ -40,12 +41,31 @@ describe('socketManager', () => {
     expect(roomState).toEqual(mockRoomState);
   });
 
-  it('should return user status using getUserStatus method', () => {
+  it('should return in-lobby status using getUserStatus method if user is not in game', () => {
     const socketManager = new SocketManager();
 
-    const status = socketManager.getUserStatus();
+    const status = socketManager.getUserStatus({
+      id: 'userId-1',
+      username: 'User-1',
+    });
 
     expect(status).toBe(UserStatus.IN_LOBBY);
+  });
+
+  it('should return in-game status using getUserStatus if user is in game', () => {
+    const socketManager = new SocketManager();
+
+    const player = { id: 'user-1', username: 'username-1' };
+    socketManager['gameManager']['games'] = [
+      {
+        owner: player,
+        guest: { id: 'user-2', username: 'username-2' },
+      },
+    ];
+
+    const result = socketManager.getUserStatus(player);
+
+    expect(result).toBe(UserStatus.IN_GAME);
   });
 
   it('should add rooms and players to lobby using initial method', () => {
@@ -206,6 +226,112 @@ describe('socketManager', () => {
       .mockImplementation(() => undefined);
 
     const result = socketManager.cancelJoining('user-1');
+
+    expect(result).toBeUndefined();
+
+    spy.mockRestore();
+  });
+
+  it('should create new game and remove rooms of players using okJoining method', () => {
+    const socketManager = new SocketManager();
+    const player1 = { id: 'user-1', username: 'username-1' };
+    const player2 = { id: 'user-2', username: 'username-2' };
+    socketManager['roomManager']['rooms'] = [
+      {
+        id: 'room-1',
+        owner: player1,
+        guest: player2,
+      },
+      {
+        id: 'room-2',
+        owner: player2,
+        guest: null,
+      },
+    ];
+    socketManager['lobbyManager']['players'] = [player1, player2];
+
+    const result = socketManager.okJoining('user-1');
+
+    expect(result).toEqual({
+      roomIds: ['room-1', 'room-2'],
+      gamePlayerIds: ['user-1', 'user-2'],
+      lobbyPlayerIds: [],
+    });
+    expect(socketManager['roomManager']['rooms']).toEqual([]);
+    expect(socketManager['gameManager']['games']).toEqual([
+      { owner: player1, guest: player2 },
+    ]);
+  });
+
+  it('should return undefined using okJoining method if room is not exist', () => {
+    const socketManager = new SocketManager();
+
+    const result = socketManager.okJoining('userId');
+
+    expect(result).toBeUndefined();
+  });
+
+  it('should return undefined using okJoining method if guest is not exist in room', () => {
+    const socketManager = new SocketManager();
+    socketManager['roomManager']['rooms'] = [
+      {
+        id: 'room-1',
+        owner: { id: 'user-1', username: 'username-1' },
+        guest: null,
+      },
+    ];
+
+    const result = socketManager.okJoining('user-1');
+
+    expect(result).toBeUndefined();
+  });
+
+  it('should not remove room of guest using okJoining method if this room is not exists', () => {
+    const socketManager = new SocketManager();
+    const player1 = { id: 'user-1', username: 'username-1' };
+    const player2 = { id: 'user-2', username: 'username-2' };
+    const player3 = { id: 'user-3', username: 'username-3' };
+    socketManager['roomManager']['rooms'] = [
+      {
+        id: 'room-1',
+        owner: player1,
+        guest: player2,
+      },
+      {
+        id: 'room-2',
+        owner: player3,
+        guest: null,
+      },
+    ];
+
+    socketManager.okJoining('user-1');
+
+    expect(socketManager['roomManager']['rooms']).toEqual([
+      {
+        id: 'room-2',
+        owner: player3,
+        guest: null,
+      },
+    ]);
+  });
+
+  it('should return undefined using okJoining method if new game did not create', () => {
+    const socketManager = new SocketManager();
+    const player1 = { id: 'user-1', username: 'username-1' };
+    const player2 = { id: 'user-2', username: 'username-2' };
+    socketManager['roomManager']['rooms'] = [
+      {
+        id: 'room-1',
+        owner: player1,
+        guest: player2,
+      },
+    ];
+
+    const spy = vi
+      .spyOn(GameManager.prototype, 'addGame')
+      .mockImplementation(() => undefined);
+
+    const result = socketManager.okJoining('user-1');
 
     expect(result).toBeUndefined();
 

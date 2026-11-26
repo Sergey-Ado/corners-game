@@ -78,4 +78,13 @@ export default class RoomManager {
 
     return room || null;
   }
+
+  public getRoomByPlayerId(userId: string): RoomData | null {
+    const room = this.rooms.find(
+      room =>
+        room.owner.id === userId || (room.guest && room.guest.id === userId)
+    );
+
+    return room || null;
+  }
 }

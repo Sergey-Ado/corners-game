@@ -1,7 +1,7 @@
 import Room from './roomCard/RoomCard';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import { RoomData, RoomState } from '@repo/shared/room';
-import { TypedSocket } from '@/types/general.types';
+import { Pages, TypedSocket } from '@/types/general.types';
 import { useEffect, useState } from 'react';
 import CreateRoomButton from './createRoomButton/CreateRoomButton';
 import { RootState } from '@/app/store/store';
@@ -20,6 +20,8 @@ export default function LobbyPage() {
   const { roomData, waitRoom } = roomState;
 
   const userId = useSelector((state: RootState) => state.general.userdata.id);
+
+  const navigate = useNavigate();
 
   const [cardData, setCardData] = useState<RoomData[]>(roomData);
   const [disabledCreateButton, setDisabledCreateButton] = useState(
@@ -92,18 +94,24 @@ export default function LobbyPage() {
       }
     };
 
+    const onGameStarted = () => {
+      navigate(`/${Pages.GAME}`);
+    };
+
     socket.on('lobby:removed-room', removedRoom);
     socket.on('lobby:created-room', createdRoom);
     socket.on('lobby:wait-joining', showWaitJoining);
     socket.on('lobby:canceled-joining', canceledJoining);
+    socket.on('game:started-game', onGameStarted);
 
     return () => {
       socket.off('lobby:removed-room', removedRoom);
       socket.off('lobby:created-room', createdRoom);
       socket.off('lobby:wait-joining', showWaitJoining);
       socket.off('lobby:canceled-joining', canceledJoining);
+      socket.off('game:started-game', onGameStarted);
     };
-  });
+  }, [navigate, cardData, changeMind, refused, socket, userId]);
 
   const rooms = cardData.map(room => {
     return <Room room={room} key={room.id} socket={socket} />;

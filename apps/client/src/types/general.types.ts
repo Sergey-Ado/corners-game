@@ -9,6 +9,7 @@ export enum Pages {
   LOGIN = 'login',
   REGISTER = 'register',
   LOBBY = 'lobby',
+  GAME = 'game',
 }
 
 export enum StorageKeys {

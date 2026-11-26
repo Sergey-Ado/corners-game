@@ -23,6 +23,10 @@ export default function JoiningWindowOfOwner({ room, socket }: props) {
     socket.emit('lobby:cancel-joining');
   };
 
+  const onClickYes = () => {
+    socket.emit('lobby:ok-joining');
+  };
+
   return (
     <ModalWrapper>
       <div
@@ -38,7 +42,12 @@ export default function JoiningWindowOfOwner({ room, socket }: props) {
         <span className="mb-2">{waitPlay}</span>
         <span className="mb-3">{question}</span>
         <div className="flex gap-4">
-          <button className="button px-2 py-1">{yes}</button>
+          <button
+            className="button px-2 py-1"
+            onClick={onClickYes}
+            role="yes-button">
+            {yes}
+          </button>
           <button
             className="button px-2 py-1"
             onClick={onClickNo}

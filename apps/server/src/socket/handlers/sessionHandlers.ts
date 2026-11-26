@@ -6,7 +6,7 @@ export function sendStatus(handlerData: HandlerData) {
 
   return (): void => {
     const { userId, username } = socket.data;
-    const status = socketManager.getUserStatus();
+    const status = socketManager.getUserStatus({ id: userId, username });
 
     const socketIds = socketIdsMap.get(userId);
 

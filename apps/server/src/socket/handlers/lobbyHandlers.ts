@@ -88,3 +88,22 @@ export function cancelJoining(handleData: HandlerData) {
     });
   };
 }
+
+export function okJoining(handleData: HandlerData) {
+  const { socket, socketManager } = handleData;
+  const { userId } = socket.data;
+
+  return (): void => {
+    const response = socketManager.okJoining(userId);
+
+    if (!response) return;
+
+    const { roomIds, gamePlayerIds, lobbyPlayerIds } = response;
+
+    const sender = getSender(handleData);
+
+    sender(gamePlayerIds, 'game:started-game');
+    for (const roomId of roomIds)
+      sender(lobbyPlayerIds, 'lobby:removed-room', { roomId });
+  };
+}

@@ -209,4 +209,58 @@ describe('roomManager', () => {
 
     expect(result).toBeNull();
   });
+
+  it('should find and return room by owner id using getRoomPlayerId method', () => {
+    const roomManager = new RoomManager();
+
+    const room = {
+      id: 'room-1',
+      owner: { id: 'user-1', username: 'username-1' },
+      guest: null,
+    };
+
+    roomManager['rooms'] = [
+      room,
+      {
+        id: 'room-2',
+        owner: { id: 'user-2', username: 'username-2' },
+        guest: null,
+      },
+    ];
+
+    const result = roomManager.getRoomByPlayerId('user-1');
+
+    expect(result).toEqual(room);
+  });
+
+  it('should find and return room by guest id using getRoomPlayerId method', () => {
+    const roomManager = new RoomManager();
+
+    const room = {
+      id: 'room-1',
+      owner: { id: 'user-1', username: 'username-1' },
+      guest: { id: 'user-2', username: 'username-2' },
+    };
+
+    roomManager['rooms'] = [
+      room,
+      {
+        id: 'room-2',
+        owner: { id: 'user-3', username: 'username-3' },
+        guest: null,
+      },
+    ];
+
+    const result = roomManager.getRoomByPlayerId('user-2');
+
+    expect(result).toEqual(room);
+  });
+
+  it('should return null using getRoomPlayerId if room is found by owner or guest id', () => {
+    const roomManager = new RoomManager();
+
+    const result = roomManager.getRoomByPlayerId('user-1');
+
+    expect(result).toBeNull();
+  });
 });
